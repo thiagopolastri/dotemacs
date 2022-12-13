@@ -717,7 +717,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(elfeed-search-unread-count-face ((,class :foreground ,fg)))
   `(elfeed-search-unread-title-face ((,class :inherit 'bold)))
 
-  ;; Just make org, web and sitter more pleasent while I'm not diving into it
+  ;; Just make org, web and sitter more pleasant while I'm not diving into it
   ;; ORG
   `(org-block ((,class :foreground ,fg :background ,bg-alt)))
   `(org-block-begin-line ((,class :foreground ,fg-comment
