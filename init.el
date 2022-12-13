@@ -797,7 +797,7 @@
   :ensure t
   :bind ("C-z d" . devdocs-lookup))
 
-;; hacky styff that I dont want to commit
+;; hacky stuff that I dont want to commit
 (if (file-exists-p (expand-file-name "mess.el" user-emacs-directory))
     (load (expand-file-name "mess.el" user-emacs-directory)))
 
