@@ -144,7 +144,12 @@
   (dired-listing-switches "-valho --group-directories-first")
   :hook (dired-mode . dired-hide-details-mode)) ; use ( to show details
 
-(use-package eldoc :diminish eldoc-mode)
+(use-package eldoc
+  :diminish eldoc-mode
+  :custom
+  ;; Prevent echo area resize and always prefer buffer (C-h .)
+  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-prefer-doc-buffer t))
 
 ;; Some modes that I want to treat as `prog-mode' actually are derived from
 ;; `text-mode' (like XML and others data files).
