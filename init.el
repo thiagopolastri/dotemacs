@@ -661,7 +661,6 @@
   (add-hook 'python-ts-mode-hook 'pyvenv-mode)
   (add-hook 'css-ts-mode-hook #'eglot-ensure)
   (add-hook 'css-ts-mode-hook 'rainbow-mode)
-  (add-hook 'bash-ts-mode-hook #'eglot-ensure)
   (add-hook 'java-ts-mode-hook #'eglot-ensure)
   (add-hook 'json-ts-mode-hook #'eglot-ensure)
   (add-hook 'csharp-ts-mode-hook #'eglot-ensure)
