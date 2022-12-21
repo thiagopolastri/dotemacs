@@ -660,6 +660,9 @@
 ;;   :mode "\\.ts\\'"
 ;;   :hook ((typescript-ts-mode . eglot-ensure) ; bind stuff
 ;;          (typescript-ts-mode . subword-mode)))
+;;
+;; Another way is remap the major mode:
+;; (push '(typescript-mode . typescript-ts-mode) major-mode-remap-alist)
 
 ;; Text modes
 
