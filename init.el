@@ -568,9 +568,7 @@
 (use-package typescript-mode
   :ensure t
   :hook ((typescript-mode . eglot-ensure)
-         (typescript-mode . subword-mode)
-         (tsx-mode . eglot-ensure)
-         (tsx-mode . subword-mode)))
+         (typescript-mode . subword-mode)))
 
 (use-package yaml-mode
   :ensure t
