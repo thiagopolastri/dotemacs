@@ -81,6 +81,12 @@ The default dictionary will be the first item."
   :type '(choice (directory :tag "Roam directory")
                  (const :tag "None" nil)))
 
+(defcustom emacs-custom-config:replace-modes-ts nil
+  "Replace modes with the treesitter alternatives (Emacs 29).
+Install treesitter and parsers to use."
+  :group 'emacs-custom-config
+  :type 'boolean)
+
 ;; Early visual settings
 ;; - Remove initial message on scratch buffer.
 ;; - Remove tool-bar, menu-bar and scrolls.

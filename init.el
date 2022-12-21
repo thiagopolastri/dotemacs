@@ -217,13 +217,6 @@
   :custom (eglot-autoshutdown t)
   :commands (eglot-ensure))
 
-(unless (treesit-available-p)
-  (use-package tree-sitter
-    :ensure t
-    :diminish tree-sitter-mode
-    :init (global-tree-sitter-mode))
-  (use-package tree-sitter-langs :ensure t))
-
 ;; Help enhancements packages
 
 (use-package which-key
@@ -555,9 +548,6 @@
   :hook (python-mode . pyvenv-mode))
 
 (use-package js-mode
-  :mode "\\.[mc]?js\\'"
-  :mode "\\.es6\\'"
-  :mode "\\.jsx\\'"
   :hook ((js-mode . eglot-ensure)
          (js-mode . subword-mode)))
 
@@ -654,16 +644,38 @@
 (add-to-list 'auto-mode-alist
              '("\\.svelte\\'" . emacs-custom-config:svelte-mode))
 
-;; Builtin tree sitter usage:
-;; after install the parser (tree-sitter-typescript-git as example)
-;; (use-package typescript-ts-mode
-;;   :mode "\\.js\\'" ; capture the filetype to treesitter parser...
-;;   :mode "\\.ts\\'"
-;;   :hook ((typescript-ts-mode . eglot-ensure) ; bind stuff
-;;          (typescript-ts-mode . subword-mode)))
-;;
-;; Another way is remap the major mode:
-;; (push '(typescript-mode . typescript-ts-mode) major-mode-remap-alist)
+(when (and (treesit-available-p)
+           (bound-and-true-p emacs-custom-config:replace-modes-ts))
+  (push '(c-mode . c-ts-mode) major-mode-remap-alist)
+  (push '(c++-mode . c++-ts-mode) major-mode-remap-alist)
+  (push '(python-mode . python-ts-mode) major-mode-remap-alist)
+  (push '(css-mode . css-ts-mode) major-mode-remap-alist)
+  (push '(bash-mode . bash-ts-mode) major-mode-remap-alist)
+  (push '(java-mode . java-ts-mode) major-mode-remap-alist)
+  (push '(json-mode . json-ts-mode) major-mode-remap-alist)
+  (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist)
+
+  (add-hook 'c-ts-mode-hook #'eglot-ensure)
+  (add-hook 'c++-ts-mode-hook #'eglot-ensure)
+  (add-hook 'python-ts-mode-hook #'eglot-ensure)
+  (add-hook 'python-ts-mode-hook 'pyvenv-mode)
+  (add-hook 'css-ts-mode-hook #'eglot-ensure)
+  (add-hook 'css-ts-mode-hook 'rainbow-mode)
+  (add-hook 'bash-ts-mode-hook #'eglot-ensure)
+  (add-hook 'java-ts-mode-hook #'eglot-ensure)
+  (add-hook 'json-ts-mode-hook #'eglot-ensure)
+  (add-hook 'csharp-ts-mode-hook #'eglot-ensure)
+
+  (use-package typescript-ts-mode
+    :mode "\\.js\\'"
+    :mode "\\.ts\\'"
+    :hook ((typescript-ts-mode . eglot-ensure)
+           (typescript-ts-mode . subword-mode)))
+  (use-package tsx-ts-mode
+    :mode "\\.jsx\\'"
+    :mode "\\.tsx\\'"
+    :hook ((tsx-ts-mode . eglot-ensure)
+           (tsx-ts-mode . subword-mode))))
 
 ;; Text modes
 
