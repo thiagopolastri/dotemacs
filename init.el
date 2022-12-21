@@ -653,6 +653,14 @@
 (add-to-list 'auto-mode-alist
              '("\\.svelte\\'" . emacs-custom-config:svelte-mode))
 
+;; Builtin tree sitter usage:
+;; after install the parser (tree-sitter-typescript-git as example)
+;; (use-package typescript-ts-mode
+;;   :mode "\\.js\\'" ; capture the filetype to treesitter parser...
+;;   :mode "\\.ts\\'"
+;;   :hook ((typescript-ts-mode . eglot-ensure) ; bind stuff
+;;          (typescript-ts-mode . subword-mode)))
+
 ;; Text modes
 
 (use-package org
