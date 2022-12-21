@@ -509,25 +509,21 @@
   :hook (c++-mode . eglot-ensure))
 
 (use-package ruby-mode
-  :hook ((ruby-mode . eglot-ensure)
-         (ruby-mode . tree-sitter-hl-mode)))
+  :hook (ruby-mode . eglot-ensure))
 
 (use-package python-mode
-  :hook ((python-mode . eglot-ensure)
-         (python-mode . tree-sitter-hl-mode)))
+  :hook (python-mode . eglot-ensure))
 
 (use-package perl-mode
   :hook (perl-mode . eglot-ensure))
 
 (use-package html-mode
   :hook ((html-mode . emacs-custom-config:prog-mode)
-         (html-mode . eglot-ensure)
-         (html-mode . tree-sitter-hl-mode)))
+         (html-mode . eglot-ensure)))
 
 (use-package mhtml-mode
   :hook ((mhtml-mode . emacs-custom-config:prog-mode)
-         (mhtml-mode . eglot-ensure)
-         (mhtml-mode . tree-sitter-hl-mode)))
+         (mhtml-mode . eglot-ensure)))
 
 (use-package racket-mode
   :ensure t
@@ -539,23 +535,19 @@
 
 (use-package rustic
   :ensure t
-  :hook (rustic-mode . tree-sitter-hl-mode)
   :custom (rustic-lsp-client 'eglot))
 
 (use-package go-mode
   :ensure t
-  :hook ((go-mode . tree-sitter-hl-mode)
-         (go-mode . eglot-ensure)))
+  :hook (go-mode . eglot-ensure))
 
 (use-package haskell-mode
   :ensure t
-  :hook ((haskell-mode . tree-sitter-hl-mode)
-         (haskell-mode . eglot-ensure)))
+  :hook (haskell-mode . eglot-ensure))
 
 (use-package php-mode
   :ensure t
-  :hook ((php-mode . tree-sitter-hl-mode)
-         (php-mode . eglot-ensure)))
+  :hook (php-mode . eglot-ensure))
 
 (use-package pyvenv
   :ensure t
@@ -565,21 +557,20 @@
   :mode "\\.[mc]?js\\'"
   :mode "\\.es6\\'"
   :mode "\\.jsx\\'"
-  :hook ((js-mode . tree-sitter-hl-mode)
-         (js-mode . eglot-ensure)
+  :hook ((js-mode . eglot-ensure)
          (js-mode . subword-mode)))
 
 (use-package json-mode
   :ensure t
   :mode "\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'"
-  :hook ((json-mode . tree-sitter-hl-mode)
-         (json-mode . eglot-ensure)))
+  :hook (json-mode . eglot-ensure))
 
 (use-package typescript-mode
   :ensure t
-  :hook ((typescript-mode . tree-sitter-hl-mode)
-         (typescript-mode . eglot-ensure)
-         (typescript-mode . subword-mode)))
+  :hook ((typescript-mode . eglot-ensure)
+         (typescript-mode . subword-mode)
+         (tsx-mode . eglot-ensure)
+         (tsx-mode . subword-mode)))
 
 (use-package yaml-mode
   :ensure t
@@ -600,8 +591,7 @@
   :hook (conf-mode . emacs-custom-config:prog-mode))
 
 (use-package css-mode
-  :hook ((css-mode . tree-sitter-hl-mode)
-         (css-mode . rainbow-mode)
+  :hook ((css-mode . rainbow-mode)
          (css-mode . eglot-ensure)))
 
 (use-package sass-mode
@@ -613,18 +603,15 @@
   :hook (scss-mode . rainbow-mode))
 
 (use-package julia-mode
-  :ensure t
-  :hook (julia-mode . tree-sitter-hl-mode))
+  :ensure t)
 
 (use-package csharp-mode
   :ensure t
-  :hook ((csharp-mode . csharp-tree-sitter-mode)
-         (csharp-mode . eglot-ensure)))
+  :hook (csharp-mode . eglot-ensure))
 
 (use-package elixir-mode
   :ensure t
-  :hook ((elixir-mode . tree-sitter-hl-mode)
-         (elixir-mode . eglot-ensure)))
+  :hook (elixir-mode . eglot-ensure))
 
 (use-package lua-mode
   :ensure t
