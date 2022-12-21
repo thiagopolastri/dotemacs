@@ -374,7 +374,8 @@
   (prefix-help-command #'embark-prefix-help-command)
   :bind (("C-."   . embark-act)
          ("C-z ." . embark-dwim) ; alternative to M-.
-         ("C-h B" . embark-bindings))
+         ("C-h B" . embark-bindings)
+         ("C-z e" . embark-export))
   :config
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
