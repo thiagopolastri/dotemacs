@@ -301,7 +301,7 @@
 
 (use-package highlight-numbers
   :ensure t
-  :hook (emacs-custom-config:prog-mode . rainbow-delimiters-mode))
+  :hook (emacs-custom-config:prog-mode . highlight-numbers-mode))
 
 (use-package highlight-indent-guides
   :ensure t
