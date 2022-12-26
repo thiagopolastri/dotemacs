@@ -4,6 +4,8 @@
 
 ;;; Commentary:
 
+;; This file is not part of GNU Emacs.
+
 ;; Use `customize-group' to change `emacs-custom-config' (local) and
 ;; `github-primer-theme' (faces).
 

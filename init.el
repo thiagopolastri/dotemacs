@@ -646,6 +646,29 @@
 
 (when (and (treesit-available-p)
            (bound-and-true-p emacs-custom-config:replace-modes-ts))
+
+  (defun emacs-custom-config:install-ts-parsers ()
+    "Get parsers for tree-sitter."
+    (interactive)
+    (let ((default-directory (expand-file-name "src" user-emacs-directory))
+          (repo-directory (expand-file-name "src/tree-sitter-module" user-emacs-directory)))
+      (unless (file-directory-p default-directory)
+        (message "Creating src directory in %s" default-directory)
+        (make-directory default-directory))
+      (unless (file-directory-p repo-directory)
+        (message "Cloning tree-sitter-module repository in %s" default-directory)
+        (shell-command "git clone --depth 1 https://github.com/casouri/tree-sitter-module"))
+      (let ((default-directory repo-directory))
+        (when (file-directory-p default-directory)
+          (message "Updating...")
+          (shell-command "git pull")
+          (message "Building parsers...")
+          (shell-command "sh batch.sh")))))
+
+  (push
+   (expand-file-name "src/tree-sitter-module/dist" user-emacs-directory)
+   treesit-extra-load-path)
+
   (push '(c-mode . c-ts-mode) major-mode-remap-alist)
   (push '(c++-mode . c++-ts-mode) major-mode-remap-alist)
   (push '(python-mode . python-ts-mode) major-mode-remap-alist)
