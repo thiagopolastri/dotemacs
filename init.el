@@ -191,7 +191,7 @@
          (dired-mode . hl-line-mode)))
 
 (use-package fill-column
-  :custom (display-fill-column-indicator-character ?\u2506)
+  :custom (display-fill-column-indicator-character ?\u258F) ; ?\u2506
   :hook (emacs-custom-config:prog-mode . display-fill-column-indicator-mode))
 
 (use-package visual-line-mode
