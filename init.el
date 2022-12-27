@@ -322,6 +322,13 @@
   (visual-fill-column-center-text t)
   (visual-fill-column-width 80))
 
+(use-package format-all
+  :ensure t
+  :bind (:map emacs-custom-config:prog-mode-map
+              ("C-c <C-tab>" . format-all-buffer)))
+
+(use-package realgud :ensure t :defer t)
+
 ;; Version control packages
 
 (use-package magit
@@ -342,15 +349,6 @@
   (blamer-idle-time 0.3)
   (blamer-min-offset 70)
   :bind ("C-z b" . blamer-mode))
-
-;; IDE packages
-
-(use-package format-all
-  :ensure t
-  :bind (:map emacs-custom-config:prog-mode-map
-              ("C-c <C-tab>" . format-all-buffer)))
-
-(use-package realgud :ensure t :defer t)
 
 ;; Completions packages
 
@@ -380,7 +378,7 @@
   :custom (vertico-cycle t)
   :init (vertico-mode))
 
-(use-package isearch
+(use-package isearch ; keep isearch bind for keyboard macros
   :bind ("C-z s" . isearch-forward))
 
 (use-package consult
@@ -821,19 +819,9 @@
   :init (yas-global-mode))
 (use-package yasnippet-snippets :ensure t)
 
-;; Extras packages (testing area; not in the daily workflow)
+;; Extras (testing area; not in the daily workflow)
 
 (use-package restclient :ensure t :defer t)
-(use-package sicp :ensure t)
-(use-package nyan-mode :ensure t)
-(use-package elfeed
-  :ensure t
-  :custom (elfeed-feeds
-           '("https://sachachua.com/blog/category/emacs-news/feed"
-             "https://planet.emacslife.com/atom.xml"
-             "https://this-week-in-rust.org/atom.xml"
-             "https://thisweek.gnome.org/index.xml")))
-
 (use-package devdocs ; use devdocs-install to install relevant documentantion
   :ensure t
   :bind ("C-z d" . devdocs-lookup))
