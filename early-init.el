@@ -2,9 +2,9 @@
 
 ;; Author: Thiago Polastri
 
-;;; Commentary:
-
 ;; This file is not part of GNU Emacs.
+
+;;; Commentary:
 
 ;; Use `customize-group' to change `emacs-custom-config' (local) and
 ;; `github-primer-theme' (faces).
