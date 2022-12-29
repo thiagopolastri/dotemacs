@@ -527,7 +527,11 @@
 
 (use-package rustic
   :ensure t
-  :custom (rustic-lsp-client 'eglot))
+  :custom (rustic-lsp-client 'eglot)
+  :init
+  (when (and (treesit-available-p)
+             (bound-and-true-p emacs-custom-config:replace-modes-ts))
+    (setq rustic-treesitter-derive t)))
 
 (use-package go-mode
   :ensure t
@@ -561,7 +565,6 @@
 
 (use-package yaml-mode
   :ensure t
-  :mode "Procfile\\'"
   :hook ((yaml-mode . emacs-custom-config:prog-mode)
          (yaml-mode . eglot-ensure)))
 
@@ -680,6 +683,9 @@
   (push '(java-mode . java-ts-mode) major-mode-remap-alist)
   (push '(json-mode . json-ts-mode) major-mode-remap-alist)
   (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist)
+  (push '(go-mode . go-ts-mode) major-mode-remap-alist)
+  (push '(toml-mode . toml-ts-mode) major-mode-remap-alist)
+  (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
 
   (add-hook 'c-ts-mode-hook #'eglot-ensure)
   (add-hook 'c++-ts-mode-hook #'eglot-ensure)
@@ -690,6 +696,9 @@
   (add-hook 'java-ts-mode-hook #'eglot-ensure)
   (add-hook 'json-ts-mode-hook #'eglot-ensure)
   (add-hook 'csharp-ts-mode-hook #'eglot-ensure)
+  (add-hook 'go-ts-mode-hook #'eglot-ensure)
+  (add-hook 'yaml-ts-mode-hook #'eglot-ensure)
+  (add-hook 'yaml-ts-mode-hook 'emacs-custom-config:prog-mode)
 
   (use-package typescript-ts-mode
     :mode "\\.js\\'"
