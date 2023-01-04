@@ -11,40 +11,14 @@
 
 ;; Enjoy this long file.
 
-;; TODO: setup sly
-;; TODO: configure other modes that should use variable-pitch
-;; TODO: make svelte derived mode work with eglot
-
 ;;; Code:
 
-;; Create a profile message on startup
-
-(defun emacs-custom-config:startup-profile-message ()
-  "Show a startup profile message."
-  (let ((package-count 0))
-    (when (bound-and-true-p package-alist)
-      (setq package-count (length package-activated-list)))
-    (when (boundp 'straight--profile-cache)
-      (setq package-count
-            (+ (hash-table-count straight--profile-cache) package-count)))
-    (if (zerop package-count)
-        (message "Emacs loaded in %s with %d garbage collections."
-                 (format
-                  "%.2f seconds"
-                  (float-time (time-subtract after-init-time before-init-time)))
-                 gcs-done)
-      (message "Emacs loaded %d packages in %s with %d garbage collections."
-               package-count
-               (format
-                "%.2f seconds"
-                (float-time (time-subtract after-init-time before-init-time)))
-               gcs-done))))
-
-(add-hook 'emacs-startup-hook #'emacs-custom-config:startup-profile-message)
-
-;; Set package
-
+(require 'dotemacs)
 (require 'package)
+(require 'recentf)
+
+;; Set package, no-littering, diminish and eglot -------------------------------
+
 (push '("melpa" . "https://melpa.org/packages/") package-archives)
 (package-initialize)
 
@@ -52,28 +26,31 @@
   (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
- (package-refresh-contents)
- (package-install 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (eval-when-compile (require 'use-package))
-(use-package diminish :ensure t)
-
-;; Set no-littering
 
 (use-package no-littering :ensure t)
+(add-to-list 'recentf-exclude no-littering-var-directory)
+(add-to-list 'recentf-exclude no-littering-etc-directory)
 
-(use-package recentf
-  :config
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory))
+(customize-set-variable
+ 'auto-save-file-name-transforms
+ `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
-(customize-set-variable 'auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+(use-package diminish :ensure t)
 
-;; Defaults
+(unless (package-installed-p 'eglot) ; if not builtin...
+  (message "Installing Eglot...")
+  (package-install 'eglot))
 
+;; Defaults --------------------------------------------------------------------
+
+(add-hook 'emacs-startup-hook #'dotemacs:startup-profile-message)
+(add-hook 'prog-mode-hook 'dotemacs:prog-mode)
 (global-unset-key (kbd "C-z")) ; C-x C-z still `suspend-frame' if needed
-(customize-set-variable 'display-time-format "%d/%m/%Y %H:%M")
+(global-set-key (kbd "<f11>") 'dotemacs:toggle-fullscreen)
 
 (setq-default cursor-type 'bar
               indent-tabs-mode nil
@@ -103,11 +80,6 @@
   (uniquify-buffer-name-style 'forward)
   (large-file-warning-threshold 100000000) ; 100MB
   (line-move-visual t)
-  ;; The following clipboard config breaks in emacs 29
-  ;; Just using the default too see if tweaks are still necessary
-  ;;(save-interprogram-paste-before-kill t)
-  ;;(kill-do-not-save-duplicates t)
-  ;;(x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
   (mouse-yank-at-point t)
   ;; Hide commands in M-x which do not work in the current mode.
   (read-extended-command-predicate #'command-completion-default-include-p)
@@ -127,7 +99,10 @@
     (pixel-scroll-precision-mode 1)))
 
 (use-package autorevert ; revert buffers when changed
-  :custom (global-auto-revert-non-file-buffers t)
+  :custom
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-interval 3)
+  (auto-revert-check-vc-info t)
   :config (global-auto-revert-mode 1))
 
 (use-package savehist ; save command history
@@ -151,73 +126,57 @@
   (eldoc-echo-area-use-multiline-p nil)
   (eldoc-echo-area-prefer-doc-buffer t))
 
-;; Some modes that I want to treat as `prog-mode' actually are derived from
-;; `text-mode' (like XML and others data files).
-;; I'll create two modes to hook stuff on it and leave `text-mode' alone.
-(define-minor-mode emacs-custom-config:prog-mode
-  "Stub mode with modes that should be hooked in `prog-mode'."
-  :init-value nil
-  :keymap (make-sparse-keymap))
-
-(define-minor-mode emacs-custom-config:text-mode
-  "Stub mode with modes that should be hooked in `text-mode'."
-  :init-value nil
-  :keymap (make-sparse-keymap))
-
-(add-hook 'prog-mode-hook 'emacs-custom-config:prog-mode)
-
 (use-package whitespace
   :diminish whitespace-mode
   :custom
   (whitespace-style '(face tabs empty trailing tab-mark indentation::space))
   (whitespace-action '(auto-cleanup)) ; clean on save
-  :hook (emacs-custom-config:prog-mode . whitespace-mode))
-
-(defun emacs-custom-config:toggle-line-numbers-type ()
-  "Toggle between normal and relative line-numbers."
-  (interactive)
-  (display-line-numbers-mode -1)
-  (if (eq display-line-numbers-type 'relative)
-      (setq-local display-line-numbers-type t)
-    (setq-local display-line-numbers-type 'relative))
-  (display-line-numbers-mode +1))
+  :hook (dotemacs:prog-mode . whitespace-mode))
 
 (use-package display-line-numbers
-  :hook (emacs-custom-config:prog-mode . display-line-numbers-mode)
-  :bind ("C-z n" . emacs-custom-config:toggle-line-numbers-type))
+  :hook (dotemacs:prog-mode . display-line-numbers-mode)
+  :bind ("C-z n" . dotemacs:toggle-line-numbers-type))
 
 (use-package hl-line
-  :hook ((emacs-custom-config:prog-mode . hl-line-mode)
+  :hook ((dotemacs:prog-mode . hl-line-mode)
          (dired-mode . hl-line-mode)))
 
 (use-package fill-column
-  :custom (display-fill-column-indicator-character ?\u258F) ; ?\u2506
-  :hook (emacs-custom-config:prog-mode . display-fill-column-indicator-mode))
+  :custom (display-fill-column-indicator-character ?\u258F)
+  :hook (dotemacs:prog-mode . display-fill-column-indicator-mode))
 
 (use-package visual-line-mode
-  :hook (emacs-custom-config:text-mode . visual-line-mode))
-
-(defvar emacs-custom-config:fullscreen-p nil
-  "Indicate if Emacs is in fullscreen.")
-
-(defun emacs-custom-config:toggle-fullscreen ()
-  "Toggle frame fullscreen and display time."
-  (interactive)
-  (setq emacs-custom-config:fullscreen-p (not emacs-custom-config:fullscreen-p))
-  (toggle-frame-fullscreen)
-  (if emacs-custom-config:fullscreen-p
-      (display-time-mode +1)
-    (display-time-mode -1)))
-(global-set-key (kbd "<f11>") 'emacs-custom-config:toggle-fullscreen)
-
-(unless (package-installed-p 'eglot)
-  (package-install 'eglot))
+  :hook (dotemacs:text-mode . visual-line-mode))
 
 (use-package eglot
   :custom (eglot-autoshutdown t)
   :commands (eglot-ensure))
 
-;; Help enhancements packages
+;; Essential -------------------------------------------------------------------
+
+(use-package editorconfig
+  :ensure t
+  :diminish editorconfig-mode
+  :config (editorconfig-mode 1))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-c C-S-c"   . mc/edit-lines)
+         ("C-c C-<"       . mc/mark-all-like-this)
+         ("C->"           . mc/mark-next-like-this)
+         ("C-<"           . mc/mark-previous-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :custom
+  (sp-highlight-pair-overlay nil)
+  (sp-highlight-wrap-overlay nil)
+  (sp-highlight-wrap-tag-overlay nil)
+  (sp-max-prefix-length 25)
+  (sp-max-pair-length 4)
+  :init (smartparens-global-mode))
 
 (use-package which-key
   :ensure t
@@ -249,108 +208,7 @@
   :ensure t
   :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
-;; Editor enhancements packages
-
-(use-package editorconfig
-  :ensure t
-  :diminish editorconfig-mode
-  :config (editorconfig-mode 1))
-
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-S-c C-S-c"   . mc/edit-lines)
-         ("C-c C-<"       . mc/mark-all-like-this)
-         ("C->"           . mc/mark-next-like-this)
-         ("C-<"           . mc/mark-previous-like-this)
-         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
-
-(use-package expand-region
-  :ensure t
-  :bind (("C-=" . er/expand-region)))
-
-(use-package drag-stuff
-  :ensure t
-  :diminish drag-stuff-mode
-  :hook (emacs-custom-config:prog-mode . drag-stuff-mode)
-  :config (drag-stuff-define-keys))
-
-(use-package avy
-  :ensure t
-  :bind (("C-:" . 'avy-goto-char)
-         ("C-z >" . 'avy-goto-char-2)
-         ("C-z l" . 'avy-goto-line)))
-
-(use-package smartparens
-  :ensure t
-  :diminish smartparens-mode
-  :custom
-  (sp-highlight-pair-overlay nil)
-  (sp-highlight-wrap-overlay nil)
-  (sp-highlight-wrap-tag-overlay nil)
-  (sp-max-prefix-length 25)
-  (sp-max-pair-length 4)
-  :init (smartparens-global-mode))
-
-(use-package rainbow-mode
-  :ensure t
-  :diminish rainbow-mode)
-
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (emacs-custom-config:prog-mode . rainbow-delimiters-mode))
-
-(use-package highlight-numbers
-  :ensure t
-  :hook (emacs-custom-config:prog-mode . highlight-numbers-mode))
-
-(use-package highlight-indent-guides
-  :ensure t
-  :diminish highlight-indent-guides-mode
-  :custom
-  (highlight-indent-guides-method 'character) ; or 'bitmap or 'column
-  (highlight-indent-guides-suppress-auto-error t)
-  (highlight-indent-guides-auto-odd-face-perc 1.5)
-  (highlight-indent-guides-auto-even-face-perc 1.5)
-  (highlight-indent-guides-auto-character-face-perc 35)
-  :bind (:map emacs-custom-config:prog-mode-map
-              ("C-z g" . highlight-indent-guides-mode)))
-
-(use-package visual-fill-column
-  :ensure t
-  :hook (visual-line-mode . visual-fill-column-mode)
-  :custom
-  (visual-fill-column-center-text t)
-  (visual-fill-column-width 80))
-
-(use-package format-all
-  :ensure t
-  :bind (:map emacs-custom-config:prog-mode-map
-              ("C-c <C-tab>" . format-all-buffer)))
-
-(use-package realgud :ensure t :defer t)
-
-;; Version control packages
-
-(use-package magit
-  :ensure t
-  :custom (magit-diff-refine-hunk t))
-
-(use-package diff-hl
-  :ensure t
-  :hook (dired-mode . diff-hl-dired-mode-unless-remote)
-  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
-  :hook (magit-pre-refresh  . diff-hl-magit-pre-refresh)
-  :init (global-diff-hl-mode) ; or diff-hl-flydiff-mode
-  :config (diff-hl-margin-mode))
-
-(use-package blamer
-  :ensure t
-  :custom
-  (blamer-idle-time 0.3)
-  (blamer-min-offset 70)
-  :bind ("C-z b" . blamer-mode))
-
-;; Completions packages
+;; Completion ------------------------------------------------------------------
 
 (use-package orderless
   :ensure t
@@ -389,7 +247,7 @@
          ("C-x b" . consult-buffer)
          ("C-c k" . consult-ripgrep)
          ("C-z m" . consult-minor-mode-menu)
-         :map emacs-custom-config:prog-mode-map ("C-z c"  . consult-flymake)
+         :map dotemacs:prog-mode-map ("C-z c"  . consult-flymake)
          :map minibuffer-local-map ("C-r" . consult-history)))
 
 (use-package marginalia
@@ -437,22 +295,21 @@
 
 (use-package consult-eglot :ensure t)
 
-;; Speel/Code checking
+;; Spell/Code Check ------------------------------------------------------------
 
 (use-package flymake
-  :hook (emacs-lisp-mode . flymake-mode)) ; eglot will hook it in other languages
+  :hook (dotemacs:prog-mode . flymake-mode))
 
 (use-package ispell
-  :if (> (length emacs-custom-config:hunspell-dict-list) 0)
+  :if (> (length dotemacs:hunspell-dict-list) 0)
   :custom
   (ispell-program-name "hunspell")
-  (ispell-dictionary (car emacs-custom-config:hunspell-dict-list))
+  (ispell-dictionary (car dotemacs:hunspell-dict-list))
   :config
-  (dolist (dict emacs-custom-config:hunspell-dict-list)
+  (dolist (dict dotemacs:hunspell-dict-list)
     (add-to-list
      'ispell-local-dictionary-alist
      `(,dict "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" ,dict) nil utf-8)))
-
   ;; Don't spellcheck org blocks
   (add-to-list 'ispell-skip-region-alist
                '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
@@ -460,62 +317,200 @@
                '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
   (add-to-list 'ispell-skip-region-alist
                '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
-
   (ispell-set-spellchecker-params))
 
-(defun emacs-custom-config:hunspell-set-local-dict (dict)
-  "Set ispell DICT for current buffer."
-  (flyspell-mode -1)
-  (setq-local ispell-local-dictionary dict)
-  (flyspell-mode +1)
-  (flyspell-buffer))
-
-(defun emacs-custom-config:consult-hunspell-dict ()
+(defun dotemacs:consult-hunspell-dict ()
   "Consult interface for dictionary selection."
   (interactive)
-  (emacs-custom-config:hunspell-set-local-dict
+  (dotemacs:hunspell-set-local-dict
    (consult--read
-    emacs-custom-config:hunspell-dict-list
+    dotemacs:hunspell-dict-list
     :prompt "Change dictionary:"
     :require-match t
     :history t
     :sort nil)))
 
 (use-package flyspell
-  :hook (emacs-custom-config:text-mode . flyspell-mode)
-  :bind (:map emacs-custom-config:text-mode-map ("C-z c" . flyspell-buffer)
-         :map flyspell-mode-map
-              ("C-z h" . emacs-custom-config:consult-hunspell-dict)))
+  :hook (dotemacs:text-mode . flyspell-mode)
+  :bind (:map dotemacs:text-mode-map ("C-z c" . flyspell-buffer)
+              :map flyspell-mode-map
+              ("C-z h" . dotemacs:consult-hunspell-dict)))
 
 (use-package flyspell-correct
   :ensure t
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
-;; Programming languages
+;; Version Control -------------------------------------------------------------
 
-(use-package c-mode
-  :hook (c-mode . eglot-ensure))
+(use-package magit
+  :ensure t
+  :custom (magit-diff-refine-hunk t))
 
-(use-package c++-mode
-  :hook (c++-mode . eglot-ensure))
+(use-package diff-hl
+  :ensure t
+  :hook (dired-mode . diff-hl-dired-mode-unless-remote)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
+  :hook (magit-pre-refresh  . diff-hl-magit-pre-refresh)
+  :init (global-diff-hl-mode) ; or diff-hl-flydiff-mode
+  :config (diff-hl-margin-mode))
 
-(use-package ruby-mode
-  :hook (ruby-mode . eglot-ensure))
+(use-package blamer
+  :ensure t
+  :custom
+  (blamer-idle-time 0.3)
+  (blamer-min-offset 70)
+  :bind ("C-z b" . blamer-mode))
 
-(use-package python-mode
-  :hook (python-mode . eglot-ensure))
+;; Extras ----------------------------------------------------------------------
 
-(use-package perl-mode
-  :hook (perl-mode . eglot-ensure))
+(use-package expand-region
+  :ensure t
+  :bind (("C-=" . er/expand-region)))
 
-(use-package html-mode
-  :hook ((html-mode . emacs-custom-config:prog-mode)
-         (html-mode . eglot-ensure)))
+(use-package drag-stuff
+  :ensure t
+  :diminish drag-stuff-mode
+  :hook (dotemacs:prog-mode . drag-stuff-mode)
+  :config (drag-stuff-define-keys))
 
-(use-package mhtml-mode
-  :hook ((mhtml-mode . emacs-custom-config:prog-mode)
-         (mhtml-mode . eglot-ensure)))
+(use-package avy
+  :ensure t
+  :bind (("C-:" . 'avy-goto-char)
+         ("C-z >" . 'avy-goto-char-2)
+         ("C-z l" . 'avy-goto-line)))
+
+(use-package rainbow-mode
+  :ensure t
+  :diminish rainbow-mode)
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (dotemacs:prog-mode . rainbow-delimiters-mode))
+
+(use-package highlight-numbers
+  :ensure t
+  :hook (dotemacs:prog-mode . highlight-numbers-mode))
+
+(use-package highlight-indent-guides
+  :ensure t
+  :diminish highlight-indent-guides-mode
+  :custom
+  (highlight-indent-guides-method 'character) ; or 'bitmap or 'column
+  (highlight-indent-guides-suppress-auto-error t)
+  (highlight-indent-guides-auto-odd-face-perc 1.5)
+  (highlight-indent-guides-auto-even-face-perc 1.5)
+  (highlight-indent-guides-auto-character-face-perc 35)
+  :bind (:map dotemacs:prog-mode-map
+              ("C-z g" . highlight-indent-guides-mode)))
+
+(use-package visual-fill-column
+  :ensure t
+  :hook (visual-line-mode . visual-fill-column-mode)
+  :custom
+  (visual-fill-column-center-text t)
+  (visual-fill-column-width 80))
+
+(use-package format-all
+  :ensure t
+  :bind (:map dotemacs:prog-mode-map
+              ("C-c <C-tab>" . format-all-buffer)))
+
+(use-package realgud :ensure t :defer t)
+
+;; Languages -------------------------------------------------------------------
+
+(add-hook 'c-mode-hook #'eglot-ensure)
+(add-hook 'c++-mode-hook #'eglot-ensure)
+(add-hook 'ruby-mode-hook #'eglot-ensure)
+(add-hook 'css-mode-hook #'eglot-ensure)
+(add-hook 'js-mode-hook #'eglot-ensure)
+(add-hook 'js-json-mode-hook #'eglot-ensure)
+(add-hook 'java-mode-hook #'eglot-ensure)
+(add-hook 'csharp-mode-hook #'eglot-ensure)
+(add-hook 'html-mode-hook #'eglot-ensure)
+(add-hook 'mhtml-mode-hook #'eglot-ensure)
+(add-hook 'nxml-mode-hook #'eglot-ensure)
+(add-hook 'python-mode-hook #'eglot-ensure)
+
+(add-hook 'css-mode-hook 'rainbow-mode)
+(add-hook 'scss-mode-hook 'rainbow-mode)
+(add-hook 'less-css-mode-hook 'rainbow-mode)
+(add-hook 'js-mode-hook 'subword-mode)
+
+(add-hook 'conf-mode-hook 'dotemacs:prog-mode)
+(add-hook 'html-mode-hook 'dotemacs:prog-mode)
+(add-hook 'mhtml-mode-hook 'dotemacs:prog-mode)
+(add-hook 'nxml-mode-hook 'dotemacs:prog-mode)
+
+(use-package go-mode
+  :ensure t
+  :hook (go-mode . eglot-ensure))
+
+(use-package rustic
+  :ensure t
+  :custom (rustic-lsp-client 'eglot)
+  :init
+  (when (and (treesit-available-p)
+             (bound-and-true-p dotemacs:use-treesitter))
+    (setq rustic-treesitter-derive t)))
+
+(use-package yaml-mode
+  :ensure t
+  :hook ((yaml-mode . dotemacs:prog-mode)
+         (yaml-mode . eglot-ensure)))
+
+(use-package typescript-mode
+  :ensure t
+  :hook ((typescript-mode . eglot-ensure)
+         (typescript-mode . subword-mode)))
+
+(when (and (treesit-available-p)
+           (bound-and-true-p dotemacs:use-treesitter))
+
+  (let ((ts-path (dotemacs:get-path "ts-parsers/tree-sitter-module/dist")))
+    (when (file-directory-p ts-path)
+      (push ts-path treesit-extra-load-path)))
+
+  (push '(c-mode . c-ts-mode) major-mode-remap-alist)
+  (push '(c++-mode . c++-ts-mode) major-mode-remap-alist)
+  (push '(python-mode . python-ts-mode) major-mode-remap-alist)
+  (push '(css-mode . css-ts-mode) major-mode-remap-alist)
+  (push '(java-mode . java-ts-mode) major-mode-remap-alist)
+  (push '(js-mode . js-ts-mode) major-mode-remap-alist)
+  (push '(js-json-mode . json-ts-mode) major-mode-remap-alist)
+  (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist)
+  (push '(go-mode . go-ts-mode) major-mode-remap-alist)
+  (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
+
+  (add-hook 'c-ts-mode-hook #'eglot-ensure)
+  (add-hook 'c++-ts-mode-hook #'eglot-ensure)
+  (add-hook 'python-ts-mode-hook #'eglot-ensure)
+  (add-hook 'css-ts-mode-hook #'eglot-ensure)
+  (add-hook 'js-ts-mode-hook #'eglot-ensure)
+  (add-hook 'java-ts-mode-hook #'eglot-ensure)
+  (add-hook 'json-ts-mode-hook #'eglot-ensure)
+  (add-hook 'csharp-ts-mode-hook #'eglot-ensure)
+  (add-hook 'go-ts-mode-hook #'eglot-ensure)
+  (add-hook 'yaml-ts-mode-hook #'eglot-ensure)
+
+  (add-hook 'js-ts-mode-hook 'subword-mode)
+  (add-hook 'css-ts-mode-hook 'rainbow-mode)
+  (add-hook 'yaml-ts-mode-hook 'dotemacs:prog-mode)
+
+  (use-package typescript-ts-mode
+    :mode "\\.js\\'"
+    :mode "\\.ts\\'"
+    :hook ((typescript-ts-mode . eglot-ensure)
+           (typescript-ts-mode . subword-mode)))
+
+  (use-package tsx-ts-mode
+    :mode "\\.jsx\\'"
+    :mode "\\.tsx\\'"
+    :hook ((tsx-ts-mode . eglot-ensure)
+           (tsx-ts-mode . subword-mode))))
+
+;; Extra languages -------------------------------------------------------------
 
 (use-package racket-mode
   :ensure t
@@ -525,79 +520,9 @@
   :ensure t
   :hook (clojure-mode . eglot-ensure))
 
-(use-package rustic
-  :ensure t
-  :custom (rustic-lsp-client 'eglot)
-  :init
-  (when (and (treesit-available-p)
-             (bound-and-true-p emacs-custom-config:replace-modes-ts))
-    (setq rustic-treesitter-derive t)))
-
-(use-package go-mode
-  :ensure t
-  :hook (go-mode . eglot-ensure))
-
 (use-package haskell-mode
   :ensure t
   :hook (haskell-mode . eglot-ensure))
-
-(use-package php-mode
-  :ensure t
-  :hook (php-mode . eglot-ensure))
-
-(use-package pyvenv
-  :ensure t
-  :hook (python-mode . pyvenv-mode))
-
-(use-package js-mode
-  :hook ((js-mode . eglot-ensure)
-         (js-mode . subword-mode)))
-
-(use-package json-mode
-  :ensure t
-  :mode "\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'"
-  :hook (json-mode . eglot-ensure))
-
-(use-package typescript-mode
-  :ensure t
-  :hook ((typescript-mode . eglot-ensure)
-         (typescript-mode . subword-mode)))
-
-(use-package yaml-mode
-  :ensure t
-  :hook ((yaml-mode . emacs-custom-config:prog-mode)
-         (yaml-mode . eglot-ensure)))
-
-(use-package nxml-mode
-  :mode "\\.p\\(?:list\\|om\\)\\'" ; plist, pom
-  :mode "\\.xs\\(?:d\\|lt\\)\\'"   ; xslt, xsd
-  :mode "\\.rss\\'"
-  :hook (nxml-mode . emacs-custom-config:prog-mode)
-  :custom
-  (nxml-slash-auto-complete-flag t)
-  (nxml-auto-insert-xml-declaration-flag t))
-
-(use-package conf-mode
-  :hook (conf-mode . emacs-custom-config:prog-mode))
-
-(use-package css-mode
-  :hook ((css-mode . rainbow-mode)
-         (css-mode . eglot-ensure)))
-
-(use-package sass-mode
-  :ensure t
-  :hook (sass-mode . rainbow-mode))
-
-(use-package scss-mode
-  :ensure t
-  :hook (scss-mode . rainbow-mode))
-
-(use-package julia-mode
-  :ensure t)
-
-(use-package csharp-mode
-  :ensure t
-  :hook (csharp-mode . eglot-ensure))
 
 (use-package elixir-mode
   :ensure t
@@ -607,9 +532,9 @@
   :ensure t
   :hook (lua-mode . eglot-ensure))
 
-(use-package nasm-mode :ensure t)
-
-(use-package sml-mode :ensure t)
+(use-package php-mode
+  :ensure t
+  :hook (php-mode . eglot-ensure))
 
 (use-package web-mode
   :ensure t
@@ -634,88 +559,21 @@
   (web-mode-enable-auto-quoting nil)
   (web-mode-enable-auto-pairing t))
 
-(define-derived-mode emacs-custom-config:vue-mode web-mode "Web/Vue"
+(define-derived-mode dotemacs:vue-mode web-mode "Web/Vue"
   "Custom Vue major mode derived from `web-mode'.")
-(add-to-list 'auto-mode-alist '("\\.vue\\'" . emacs-custom-config:vue-mode))
-(add-to-list 'eglot-server-programs '(emacs-custom-config:vue-mode "vls"))
-(add-hook 'emacs-custom-config:vue-mode-hook #'eglot-ensure)
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . dotemacs:vue-mode))
+(add-to-list 'eglot-server-programs '(dotemacs:vue-mode "vls"))
+(add-hook 'dotemacs:vue-mode-hook #'eglot-ensure)
 
-(define-derived-mode emacs-custom-config:svelte-mode web-mode "Web/Svelte"
+(define-derived-mode dotemacs:svelte-mode web-mode "Web/Svelte"
   "Custom Svelte major mode derived from `web-mode'.")
-(add-to-list 'auto-mode-alist
-             '("\\.svelte\\'" . emacs-custom-config:svelte-mode))
+(add-to-list 'auto-mode-alist '("\\.svelte\\'" . dotemacs:svelte-mode))
 
-(when (and (treesit-available-p)
-           (bound-and-true-p emacs-custom-config:replace-modes-ts))
-
-  (defun emacs-custom-config:install-ts-parsers ()
-    "Get parsers for tree-sitter."
-    (interactive)
-    (let ((default-directory (expand-file-name "src" user-emacs-directory))
-          (repo-directory (expand-file-name
-                           "src/tree-sitter-module"
-                           user-emacs-directory)))
-      (unless (file-directory-p default-directory)
-        (message "Creating src directory in %s" default-directory)
-        (make-directory default-directory))
-      (unless (file-directory-p repo-directory)
-        (message "Cloning tree-sitter-module repository in %s" default-directory)
-        (shell-command
-         "git clone --depth 1 https://github.com/casouri/tree-sitter-module"))
-      (let ((default-directory repo-directory))
-        (when (file-directory-p default-directory)
-          (message "Updating...")
-          (shell-command "git pull")
-          (message "Building parsers...")
-          (shell-command "sh batch.sh")))))
-
-  (when (file-directory-p
-         (expand-file-name "src/tree-sitter-module/dist" user-emacs-directory))
-    (push
-     (expand-file-name "src/tree-sitter-module/dist" user-emacs-directory)
-     treesit-extra-load-path))
-
-  (push '(c-mode . c-ts-mode) major-mode-remap-alist)
-  (push '(c++-mode . c++-ts-mode) major-mode-remap-alist)
-  (push '(python-mode . python-ts-mode) major-mode-remap-alist)
-  (push '(css-mode . css-ts-mode) major-mode-remap-alist)
-  (push '(bash-mode . bash-ts-mode) major-mode-remap-alist)
-  (push '(java-mode . java-ts-mode) major-mode-remap-alist)
-  (push '(json-mode . json-ts-mode) major-mode-remap-alist)
-  (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist)
-  (push '(go-mode . go-ts-mode) major-mode-remap-alist)
-  (push '(toml-mode . toml-ts-mode) major-mode-remap-alist)
-  (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
-
-  (add-hook 'c-ts-mode-hook #'eglot-ensure)
-  (add-hook 'c++-ts-mode-hook #'eglot-ensure)
-  (add-hook 'python-ts-mode-hook #'eglot-ensure)
-  (add-hook 'python-ts-mode-hook 'pyvenv-mode)
-  (add-hook 'css-ts-mode-hook #'eglot-ensure)
-  (add-hook 'css-ts-mode-hook 'rainbow-mode)
-  (add-hook 'java-ts-mode-hook #'eglot-ensure)
-  (add-hook 'json-ts-mode-hook #'eglot-ensure)
-  (add-hook 'csharp-ts-mode-hook #'eglot-ensure)
-  (add-hook 'go-ts-mode-hook #'eglot-ensure)
-  (add-hook 'yaml-ts-mode-hook #'eglot-ensure)
-  (add-hook 'yaml-ts-mode-hook 'emacs-custom-config:prog-mode)
-
-  (use-package typescript-ts-mode
-    :mode "\\.js\\'"
-    :mode "\\.ts\\'"
-    :hook ((typescript-ts-mode . eglot-ensure)
-           (typescript-ts-mode . subword-mode)))
-  (use-package tsx-ts-mode
-    :mode "\\.jsx\\'"
-    :mode "\\.tsx\\'"
-    :hook ((tsx-ts-mode . eglot-ensure)
-           (tsx-ts-mode . subword-mode))))
-
-;; Text modes
+;; Text ------------------------------------------------------------------------
 
 (use-package org
   :commands (org-capture org-agenda)
-  :hook ((org-mode . emacs-custom-config:text-mode)
+  :hook ((org-mode . dotemacs:text-mode)
          (org-mode . variable-pitch-mode))
   :custom
   (org-return-follows-link t) ; Follow links when press enter
@@ -768,14 +626,14 @@
   (org-modern-block-fringe nil)
   :hook (org-mode . org-modern-mode))
 
-(when (and (bound-and-true-p emacs-custom-config:roam-dir)
-           (file-exists-p emacs-custom-config:roam-dir))
+(when (and (bound-and-true-p dotemacs:roam-dir)
+           (file-exists-p dotemacs:roam-dir))
   (use-package org-roam
     :ensure t
     :after org
     :init (setq org-roam-v2-ack t)
     :custom
-    (org-roam-directory emacs-custom-config:roam-dir)
+    (org-roam-directory dotemacs:roam-dir)
     (org-roam-completion-everywhere t)
     (org-roam-completion-system 'default)
     :bind (("C-z r f" . org-roam-node-find)
@@ -786,8 +644,8 @@
 
 (use-package markdown-mode
   :ensure t
-  :hook ((markdown-mode . emacs-custom-config:text-mode)
-         (gfm-mode . emacs-custom-config:text-mode))
+  :hook ((markdown-mode . dotemacs:text-mode)
+         (gfm-mode . dotemacs:text-mode))
   :mode ("/README\\(?:\\.md\\)?\\'" . gfm-mode)
   :custom
   (markdown-command "pandoc") ; or multimarkdown
@@ -820,7 +678,7 @@
 
 (use-package pdf-tools :ensure t :defer t)
 
-;; Snippets
+;; Snippets --------------------------------------------------------------------
 
 (use-package yasnippet
   :ensure t
@@ -828,20 +686,11 @@
   :init (yas-global-mode))
 (use-package yasnippet-snippets :ensure t)
 
-;; Extras (testing area; not in the daily workflow)
-
-(use-package restclient :ensure t :defer t)
-(use-package devdocs ; use devdocs-install to install relevant documentantion
-  :ensure t
-  :bind ("C-z d" . devdocs-lookup))
-
+;; -----------------------------------------------------------------------------
 ;; hacky stuff that I dont want to commit
-(if (file-exists-p (expand-file-name "mess.el" user-emacs-directory))
-    (load (expand-file-name "mess.el" user-emacs-directory)))
+(when (file-exists-p (dotemacs:get-path "mess.el"))
+    (load (dotemacs:get-path "mess.el")))
 
-
-;; Reset GC to Finish
-
-(setq gc-cons-threshold (* 2 1000 1000))
-
+;; Reset GC value and finish ---------------------------------------------------
+(setq gc-cons-threshold 2000000)
 ;;; init.el ends here

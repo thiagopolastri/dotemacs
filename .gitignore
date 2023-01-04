@@ -2,6 +2,6 @@ eln-cache
 elpa
 etc
 var
-src
+ts-parsers
 custom.el
 mess.el

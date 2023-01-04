@@ -725,8 +725,8 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-block-end-line ((,class :foreground ,fg-comment :background ,bg-focus)))
 
   ;; Tree Sitter:
-  `(tree-sitter-hl-face:function.call ((,class :foreground ,fg)))
-  `(tree-sitter-hl-face:tag ((,class :foreground ,fg-markup)))
+  ;; `(tree-sitter-hl-face:function.call ((,class :foreground ,fg)))
+  ;; `(tree-sitter-hl-face:tag ((,class :foreground ,fg-markup)))
 
   ;; Web Mode
   `(web-mode-html-attr-name-face ((,class :inherit 'font-lock-constant-face)))
