@@ -451,8 +451,8 @@
   :ensure t
   :custom (rustic-lsp-client 'eglot)
   :init
-  (when (and (treesit-available-p)
-             (bound-and-true-p dotemacs:use-treesitter))
+  (when (and (bound-and-true-p dotemacs:use-treesitter)
+             (treesit-available-p))
     (setq rustic-treesitter-derive t)))
 
 (use-package yaml-mode
@@ -465,8 +465,8 @@
   :hook ((typescript-mode . eglot-ensure)
          (typescript-mode . subword-mode)))
 
-(when (and (treesit-available-p)
-           (bound-and-true-p dotemacs:use-treesitter))
+(when (and (bound-and-true-p dotemacs:use-treesitter)
+           (treesit-available-p))
 
   (let ((ts-path (dotemacs:get-path "ts-parsers/tree-sitter-module/dist")))
     (when (file-directory-p ts-path)
