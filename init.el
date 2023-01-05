@@ -55,7 +55,6 @@
 (setq-default cursor-type 'bar
               indent-tabs-mode nil
               tab-width 4
-              tab-always-indent 'complete ; indent if needed, else complete
               word-wrap t
               truncate-lines t
               truncate-partial-width-windows nil
@@ -65,7 +64,6 @@
               vc-handled-backends '(Git) ; only git, read the docs before change
               kill-buffer-query-functions nil ; kill process when kill a buffer
               revert-without-query t ; revert buffer without asking
-              enable-recursive-minibuffers t ; useful for vertico
               bidi-paragraph-direction 'left-to-right
               bidi-inhibit-bpa t)
 
@@ -88,6 +86,11 @@
   (scroll-conservatively 101)
   (scroll-margin 0)
   (scroll-preserve-screen-position t)
+  (enable-recursive-minibuffers t) ; use the minibuffer whilst in the minibuffer
+  (completion-cycle-threshold 1) ; TAB cycles candidates
+  (completions-detailed t) ; show annotations
+  (tab-always-indent 'complete) ; try to complete, otherwise, indent
+  (completion-styles '(basic initials substring))
   :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p)
   :init
   (delete-selection-mode 1)

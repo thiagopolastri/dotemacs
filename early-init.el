@@ -6,7 +6,7 @@
 
 ;;; Commentary:
 
-;; Use `customize-group' to change `emacs-custom-config' (local) and
+;; Use `customize-group' to change `dotemacs' (local) and
 ;; `github-primer-theme' (faces).
 
 ;;; Code:
