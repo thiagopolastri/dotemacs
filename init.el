@@ -91,6 +91,7 @@
   (completions-detailed t) ; show annotations
   (tab-always-indent 'complete) ; try to complete, otherwise, indent
   (completion-styles '(basic initials substring))
+  (inferior-lisp-program "sbcl")
   :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p)
   :init
   (delete-selection-mode 1)
@@ -571,6 +572,10 @@
 (define-derived-mode dotemacs:svelte-mode web-mode "Web/Svelte"
   "Custom Svelte major mode derived from `web-mode'.")
 (add-to-list 'auto-mode-alist '("\\.svelte\\'" . dotemacs:svelte-mode))
+
+(use-package sly
+  :ensure t
+  :custom (sly-symbol-completion-mode nil))
 
 ;; Text ------------------------------------------------------------------------
 
