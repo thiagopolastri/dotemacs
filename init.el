@@ -665,24 +665,15 @@
   (markdown-gfm-additional-languages '("sh"))
   (markdown-make-gfm-checkboxes-buttons t))
 
-(use-package auctex
-  :ensure t
+(use-package tex
+  :ensure auctex
   :hook ((LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . reftex-mode)
          (LaTeX-mode . eglot-ensure))
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)
-  (TeX-engine 'luatex)
-  :config
-  (setq-default TeX-master nil))
-
-(use-package cdlatex
-  :ensure t
-  :after org
-  :diminish (cdlatex-mode org-cdlatex-mode)
-  :hook ((LaTeX-mode . cdlatex-mode)
-         (org-mode . org-cdlatex-mode)))
+  :config (setq-default TeX-master nil))
 
 (use-package pdf-tools :ensure t :defer t)
 
