@@ -1,4 +1,4 @@
-# Emacs configuration
+# Dotemacs
 
 Clone in `~/.config/emacs` and use `M-x customize-group` to change `dotemacs` and `github-primer-theme`.
 

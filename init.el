@@ -577,6 +577,8 @@
   :ensure t
   :custom (sly-symbol-completion-mode nil))
 
+(use-package restclient :ensure t :defer t)
+
 ;; Text ------------------------------------------------------------------------
 
 (use-package org
@@ -676,6 +678,32 @@
   :config (setq-default TeX-master nil))
 
 (use-package pdf-tools :ensure t :defer t)
+
+;; Terminal and sudo opened files-----------------------------------------------
+
+(use-package sudo-edit
+  :ensure t
+  :bind ("C-z C-s" . sudo-edit))
+
+(use-package vterm
+  :ensure t
+  :defer t
+  :custom (vterm-max-scrollback 100000)) ; C-c C-t enter copy mode
+
+(use-package multi-vterm
+  :ensure t
+  :bind (("C-z t" . multi-vterm)
+         :map vterm-mode-map ("C-n" . multi-vterm)
+         :map vterm-mode-map ("C->" . multi-vterm-next)
+         :map vterm-mode-map ("C-<" . multi-vterm-prev)))
+
+;; Extra docs ------------------------------------------------------------------
+
+(use-package devdocs ; use devdocs-install to install relevant documentantion
+  :ensure t
+  :bind ("C-z d" . devdocs-lookup))
+
+(use-package sicp :ensure t)
 
 ;; Snippets --------------------------------------------------------------------
 
