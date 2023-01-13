@@ -423,122 +423,266 @@
 (use-package realgud :ensure t :defer t)
 
 ;; Languages -------------------------------------------------------------------
+;; Run `treesit-install-language-grammar' if its unavailable
 
-(add-hook 'c-mode-hook #'eglot-ensure)
-(add-hook 'c++-mode-hook #'eglot-ensure)
-(add-hook 'ruby-mode-hook #'eglot-ensure)
-(add-hook 'css-mode-hook #'eglot-ensure)
-(add-hook 'js-mode-hook #'eglot-ensure)
-(add-hook 'js-json-mode-hook #'eglot-ensure)
-(add-hook 'java-mode-hook #'eglot-ensure)
-(add-hook 'csharp-mode-hook #'eglot-ensure)
-(add-hook 'html-mode-hook #'eglot-ensure)
-(add-hook 'mhtml-mode-hook #'eglot-ensure)
-(add-hook 'nxml-mode-hook #'eglot-ensure)
-(add-hook 'python-mode-hook #'eglot-ensure)
-
-(add-hook 'css-mode-hook 'rainbow-mode)
-(add-hook 'scss-mode-hook 'rainbow-mode)
-(add-hook 'less-css-mode-hook 'rainbow-mode)
-(add-hook 'js-mode-hook 'subword-mode)
-
-(add-hook 'conf-mode-hook 'dotemacs:prog-mode)
-(add-hook 'html-mode-hook 'dotemacs:prog-mode)
-(add-hook 'mhtml-mode-hook 'dotemacs:prog-mode)
-(add-hook 'nxml-mode-hook 'dotemacs:prog-mode)
-
-(use-package go-mode
-  :ensure t
-  :hook (go-mode . eglot-ensure))
+(unless (boundp 'treesit-language-source-alist)
+  (setq treesit-language-source-alist '()))
 
 (use-package rustic
+  ;; language server: rust-analyzer
   :ensure t
   :custom (rustic-lsp-client 'eglot)
   :init
-  (when (and (bound-and-true-p dotemacs:use-treesitter)
-             (treesit-available-p))
+  (add-to-list
+   'treesit-language-source-alist
+   '(rust . ("https://github.com/tree-sitter/tree-sitter-rust")))
+  (when (dotemacs:treesit-available-p)
     (setq rustic-treesitter-derive t)))
 
-(use-package yaml-mode
-  :ensure t
-  :hook ((yaml-mode . dotemacs:prog-mode)
-         (yaml-mode . eglot-ensure)))
+(use-package css-mode
+  ;; language server: vscode-langservers-extracted
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(css . ("https://github.com/tree-sitter/tree-sitter-css")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode)))
+  :hook ((css-mode . eglot-ensure)
+         (css-mode . rainbow-mode)
+         (css-ts-mode . eglot-ensure)
+         (css-ts-mode . rainbow-mode)))
+
+(use-package javascript-mode
+  ;; language server: typescript-language-server
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(javascript-mode . js-ts-mode)))
+  :hook ((javascript-mode . eglot-ensure)
+         (javascript-mode . subword-mode)
+         (js-ts-mode . eglot-ensure)
+         (js-ts-mode . subword-mode)))
 
 (use-package typescript-mode
+  ;; language server: typescript-language-server
   :ensure t
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(typescript . ("https://github.com/tree-sitter/tree-sitter-typescript"
+                   nil
+                   "typescript/src")))
+  (add-to-list
+   'treesit-language-source-alist
+   '(tsx . ("https://github.com/tree-sitter/tree-sitter-typescript"
+            nil
+            "tsx/src")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist
+                 '(typescript-mode . typescript-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode)))
   :hook ((typescript-mode . eglot-ensure)
-         (typescript-mode . subword-mode)))
+         (typescript-mode . subword-mode)
+         (typescript-ts-mode . eglot-ensure)
+         (typescript-ts-mode . subword-mode)
+         (tsx-ts-mode . eglot-ensure)
+         (tsx-ts-mode . subword-mode)))
 
-(when (and (bound-and-true-p dotemacs:use-treesitter)
-           (treesit-available-p))
+(use-package json-mode
+  ;; language server: vscode-langservers-extracted
+  :ensure t
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(json . ("https://github.com/tree-sitter/tree-sitter-json")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode)))
+  :hook ((json-mode . eglot-ensure)
+         (json-ts-mode . eglot-ensure)))
 
-  (let ((ts-path (dotemacs:get-path "ts-parsers/tree-sitter-module/dist")))
-    (when (file-directory-p ts-path)
-      (push ts-path treesit-extra-load-path)))
+(use-package conf-mode
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(toml . ("https://github.com/tree-sitter/tree-sitter-toml")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode)))
+  :hook (conf-mode . dotemacs:prog-mode))
 
-  (push '(c-mode . c-ts-mode) major-mode-remap-alist)
-  (push '(c++-mode . c++-ts-mode) major-mode-remap-alist)
-  (push '(python-mode . python-ts-mode) major-mode-remap-alist)
-  (push '(css-mode . css-ts-mode) major-mode-remap-alist)
-  (push '(java-mode . java-ts-mode) major-mode-remap-alist)
-  (push '(js-mode . js-ts-mode) major-mode-remap-alist)
-  (push '(js-json-mode . json-ts-mode) major-mode-remap-alist)
-  (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist)
-  (push '(go-mode . go-ts-mode) major-mode-remap-alist)
-  (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
+(use-package c-mode
+  ;; language server: clangd
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(c . ("https://github.com/tree-sitter/tree-sitter-c")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode)))
+  :hook (c-mode . eglot-ensure))
 
-  (add-hook 'c-ts-mode-hook #'eglot-ensure)
-  (add-hook 'c++-ts-mode-hook #'eglot-ensure)
-  (add-hook 'python-ts-mode-hook #'eglot-ensure)
-  (add-hook 'css-ts-mode-hook #'eglot-ensure)
-  (add-hook 'js-ts-mode-hook #'eglot-ensure)
-  (add-hook 'java-ts-mode-hook #'eglot-ensure)
-  (add-hook 'json-ts-mode-hook #'eglot-ensure)
-  (add-hook 'csharp-ts-mode-hook #'eglot-ensure)
-  (add-hook 'go-ts-mode-hook #'eglot-ensure)
-  (add-hook 'yaml-ts-mode-hook #'eglot-ensure)
+(use-package c++-mode
+  ;; language server: clangd
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(cpp . ("https://github.com/tree-sitter/tree-sitter-cpp")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode)))
+  :hook (c++-mode . eglot-ensure))
 
-  (add-hook 'js-ts-mode-hook 'subword-mode)
-  (add-hook 'css-ts-mode-hook 'rainbow-mode)
-  (add-hook 'yaml-ts-mode-hook 'dotemacs:prog-mode)
+(use-package cmake-mode
+  :ensure t
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(cmake . ("https://github.com/uyha/tree-sitter-cmake")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(cmake-mode . cmake-ts-mode))))
 
-  (use-package typescript-ts-mode
-    :mode "\\.js\\'"
-    :mode "\\.ts\\'"
-    :hook ((typescript-ts-mode . eglot-ensure)
-           (typescript-ts-mode . subword-mode)))
+(use-package csharp-mode
+  ;; language server: omnisharp
+  :ensure t ; builtin in newer versions
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(csharp . ("https://github.com/tree-sitter/tree-sitter-c-sharp")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(csharp-mode . csharp-ts-mode)))
+  :hook ((csharp-mode . eglot-ensure)
+         (csharp-ts-mode . eglot-ensure)))
 
-  (use-package tsx-ts-mode
-    :mode "\\.jsx\\'"
-    :mode "\\.tsx\\'"
-    :hook ((tsx-ts-mode . eglot-ensure)
-           (tsx-ts-mode . subword-mode))))
+(use-package pyvenv :ensure t)
+(use-package python-mode
+  ;; language server: pylsp
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(python . ("https://github.com/tree-sitter/tree-sitter-python")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode)))
+  :hook ((python-mode . eglot-ensure)
+         (python-mode . pyvenv-mode)
+         (python-ts-mode . eglot-ensure)
+         (python-ts-mode . pyvenv-mode)))
 
-;; Extra languages -------------------------------------------------------------
+(use-package ruby-mode
+  ;; language server: solargraph
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(ruby . ("https://github.com/tree-sitter/tree-sitter-ruby")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode)))
+  :hook ((ruby-mode . eglot-ensure)
+         (ruby-ts-mode . eglot-ensure)))
+
+(use-package yaml-mode
+  ;; language server: yaml-language-server
+  :ensure t
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(yaml . ("https://github.com/ikatyang/tree-sitter-yaml")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode)))
+  :hook ((yaml-mode . eglot-ensure)
+         (yaml-mode . dotemacs:prog-mode)
+         (yaml-ts-mode . eglot-ensure)
+         (yaml-ts-mode . dotemacs:prog-mode)))
+
+(use-package java-mode
+  ;; language server: Eclipse JDT Language Server
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(java . ("https://github.com/tree-sitter/tree-sitter-java")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(java-mode . java-ts-mode)))
+  :hook ((java-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)))
+
+(use-package dockerfile-mode
+  :ensure t
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist
+                 '(dockerfile-mode . dockerfile-ts-mode))))
+
+(use-package go-mode
+  ;; language server: gopls
+  :ensure t
+  :init
+  (add-to-list
+   'treesit-language-source-alist
+   '(go . ("https://github.com/tree-sitter/tree-sitter-go")))
+  (add-to-list
+   'treesit-language-source-alist
+   '(go-mod . ("https://github.com/camdencheek/tree-sitter-go-mod")))
+  (when (dotemacs:treesit-available-p)
+    (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
+    (add-to-list 'major-mode-remap-alist '(go-dot-mod-mode . go-mod-ts-mode)))
+  :hook ((go-mode . eglot-ensure)
+         (go-ts-mode . eglot-ensure)))
+
+(use-package php-mode
+  ;; language server: php-language-server
+  ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-php
+  :ensure t
+  :hook (php-mode . eglot-ensure))
 
 (use-package racket-mode
+  ;; language server: racket-langserver
   :ensure t
   :hook (racket-mode . eglot-ensure))
 
 (use-package clojure-mode
+  ;; language server: clojure-lsp
+  ;; consider install/configure Cider - https://github.com/clojure-emacs/cider
   :ensure t
   :hook (clojure-mode . eglot-ensure))
 
 (use-package haskell-mode
+  ;; language server: hls
+  ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-haskell
   :ensure t
   :hook (haskell-mode . eglot-ensure))
 
 (use-package elixir-mode
+  ;; language server: elixir-ls
   :ensure t
   :hook (elixir-mode . eglot-ensure))
 
 (use-package lua-mode
+  ;; language server: lua-lsp
+  ;; tree-sitter grammar: https://github.com/Azganoth/tree-sitter-lua
   :ensure t
   :hook (lua-mode . eglot-ensure))
 
-(use-package php-mode
+(use-package zig-mode
+  ;; language server: zls
+  ;; tree-sitter grammar: https://github.com/GrayJack/tree-sitter-zig
   :ensure t
-  :hook (php-mode . eglot-ensure))
+  :hook (zig-mode . eglot-ensure))
+
+(use-package julia-mode
+  ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-julia
+  :ensure t)
+
+(use-package html-mode
+  ;; language server: vscode-langservers-extracted
+  ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-html
+  :hook ((html-mode . eglot-ensure)
+         (html-mode . dotemacs:prog-mode)
+         (mhtml-mode . eglot-ensure)
+         (mhtml-mode . dotemacs:prog-mode)))
+
+(use-package xml-mode
+  :hook ((xml-mode . dotemacs:prog-mode)
+         (nxml-mode . dotemacs:prog-mode)))
 
 (use-package web-mode
   :ensure t
@@ -578,6 +722,15 @@
   :custom (sly-symbol-completion-mode nil))
 
 (use-package restclient :ensure t :defer t)
+
+;; Unused treesit grammars (for future reference):
+;; https://github.com/tree-sitter/tree-sitter-bash
+;; https://github.com/tree-sitter/tree-sitter-regex
+;; https://github.com/tree-sitter/tree-sitter-swift
+;; https://github.com/tree-sitter/tree-sitter-scala
+;; https://github.com/alemuller/tree-sitter-make
+;; https://github.com/m-novikov/tree-sitter-sql
+;; https://github.com/tree-sitter/tree-sitter-ocaml
 
 ;; Text ------------------------------------------------------------------------
 
@@ -687,7 +840,7 @@
 
 (use-package vterm
   :ensure t
-  :defer t
+  ;; :defer t
   :custom (vterm-max-scrollback 100000)) ; C-c C-t enter copy mode
 
 (use-package multi-vterm

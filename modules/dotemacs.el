@@ -59,12 +59,6 @@ The default dictionary will be the first item."
   :type '(choice (directory :tag "Roam directory")
                  (const :tag "None" nil)))
 
-(defcustom dotemacs:use-treesitter nil
-  "Replace modes with the treesitter alternatives (Emacs 29).
-Install treesitter and parsers to use."
-  :group 'dotemacs
-  :type 'boolean)
-
 ;; functions
 
 (defun dotemacs:get-path (file)
@@ -122,27 +116,11 @@ Install treesitter and parsers to use."
       (display-time-mode +1)
     (display-time-mode -1)))
 
-(defun dotemacs:install-ts-parsers ()
-  "Install parsers for tree-sitter."
-  (interactive)
-  (if (treesit-available-p)
-      (let ((default-directory (dotemacs:get-path "ts-parsers"))
-            (repo-directory (dotemacs:get-path "ts-parsers/tree-sitter-module")))
-        (unless (file-directory-p default-directory)
-          (message "Creating src directory in %s" default-directory)
-          (make-directory default-directory))
-        (unless (file-directory-p repo-directory)
-          (message "Cloning tree-sitter-module repository in %s"
-                   default-directory)
-          (shell-command
-           "git clone --depth 1 https://github.com/casouri/tree-sitter-module"))
-        (let ((default-directory repo-directory))
-          (when (file-directory-p default-directory)
-            (message "Updating...")
-            (shell-command "git pull")
-            (message "Building parsers...")
-            (shell-command "sh batch.sh"))))
-    (message "treesitter is unavailable")))
+(defun dotemacs:treesit-available-p () ; thats stupid ¯\_(ツ)_/¯
+  "Prevent undefined function error on old Emacs version."
+  (if (fboundp 'treesit-available-p)
+      (treesit-available-p)
+    nil))
 
 ;; Modes
 
