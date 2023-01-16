@@ -474,7 +474,7 @@
    :lang 'tsx
    :github "tree-sitter/tree-sitter-typescript"
    :path "tsx/src"
-   :mode '("\\.tsx?\\'" . tsx-ts-mode))
+   :mode '("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-mode . eglot-ensure)
          (typescript-mode . subword-mode)
          (typescript-ts-mode . eglot-ensure)
