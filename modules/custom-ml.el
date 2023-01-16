@@ -38,20 +38,25 @@
   "Custom mode-line."
   :group 'custom-ml)
 
+(defcustom custom-ml:font-awesome "Font Awesome 6 Free"
+  "Font awesome name.  Usually \"Font Awesome 6 Free\" or \"FontAwesome\"."
+  :group 'custom-ml
+  :type 'string)
+
 (defface custom-ml:muted '((t (:inherit 'shadow)))
   "Mode-line muted face."
   :group 'custom-ml)
 
-(defface custom-ml:icon-muted '((t (:family "Font Awesome 6 Free" :inherit 'shadow)))
+(defface custom-ml:icon-muted `((t (:family ,custom-ml:font-awesome :inherit 'shadow)))
   "Mode-line muted icon face."
   :group 'custom-ml)
 
-(defface custom-ml:icon-accented '((t (:family "Font Awesome 6 Free"
+(defface custom-ml:icon-accented `((t (:family ,custom-ml:font-awesome
                                        :inherit font-lock-constant-face)))
   "Mode-line accented icon face."
   :group 'custom-ml)
 
-(defface custom-ml:icon-warning '((t (:family "Font Awesome 6 Free"
+(defface custom-ml:icon-warning `((t (:family ,custom-ml:font-awesome
                                       :inherit 'error
                                       :bold nil)))
   "Mode-line warning icon face."
