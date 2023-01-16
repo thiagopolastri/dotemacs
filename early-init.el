@@ -36,7 +36,7 @@
 
 (require 'dotemacs)
 
-(when (native-comp-available-p)
+(when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
   (customize-set-variable 'native-comp-async-report-warnings-errors nil)
   (customize-set-variable 'native-comp-deferred-compilation t)
   (let ((cache (dotemacs:get-path "var/eln-cache/")))
