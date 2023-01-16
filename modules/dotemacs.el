@@ -24,6 +24,9 @@
 (require 'display-line-numbers)
 (require 'flyspell)
 
+(when (and (fboundp 'treesit-available-p) (treesit-available-p))
+  (require 'treesit))
+
 ;; Group
 
 (defgroup dotemacs nil
@@ -116,10 +119,34 @@ The default dictionary will be the first item."
       (display-time-mode +1)
     (display-time-mode -1)))
 
-(defun dotemacs:treesit-available-p () ; thats stupid ¯\_(ツ)_/¯
-  "Prevent undefined function error on old Emacs version."
+(defun dotemacs:use-treesit (&rest args)
+  "Setup treesiter with ARGS for a given language.
+:lang - language to setup (symbol)
+:github - github path to grammar (only user/repo)
+:path - path to src inside github repository
+:remap - list to add to `major-mode-remap-alist'
+:mode - list to add to `auto-mode-alist'"
+  (let ((cond (and (fboundp 'treesit-available-p) (treesit-available-p)))
+        (lang (plist-get args :lang))
+        (repo (plist-get args :github))
+        (path (plist-get args :path))
+        (remap (plist-get args :remap))
+        (mode (plist-get args :mode)))
+    (when (and cond lang repo)
+      (unless (boundp 'treesit-language-source-alist)
+        (setq treesit-language-source-alist '()))
+      (add-to-list
+       'treesit-language-source-alist
+       `(,lang . (,(concat "https://github.com/" repo) nil ,path))))
+    (when (and cond lang remap (treesit-ready-p lang t))
+      (add-to-list 'major-mode-remap-alist remap))
+    (when (and cond lang mode (treesit-ready-p lang t))
+      (add-to-list 'auto-mode-alist mode))))
+
+(defun dotemacs:treesit-available-p (lang)
+  "Verify is treesitter is avalable and ready for LANG."
   (if (fboundp 'treesit-available-p)
-      (treesit-available-p)
+      (and (treesit-available-p) (treesit-ready-p lang t))
     nil))
 
 ;; Modes

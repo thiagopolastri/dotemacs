@@ -2,6 +2,6 @@ eln-cache
 elpa
 etc
 var
-ts-parsers
+tree-sitter
 custom.el
 mess.el
