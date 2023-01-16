@@ -1,6 +1,6 @@
 # Dotemacs
 
-Clone in `~/.config/emacs` and use `M-x customize-group` to change `dotemacs` and `github-primer-theme`.
+Clone in `~/.config/emacs` and use `M-x customize-group` to change `dotemacs`, `github-primer-theme` and `custom-ml`.
 
 Modeline needs Font Awesome to work. Theme is a work in progress.
 
