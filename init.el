@@ -156,6 +156,12 @@
   :custom (eglot-autoshutdown t)
   :commands (eglot-ensure))
 
+(use-package proced
+  :custom
+  (proced-auto-update-flag t)
+  (proced-auto-update-interval 1)
+  (proced-enable-color-flag t))
+
 ;; Essential -------------------------------------------------------------------
 
 (use-package editorconfig
@@ -824,7 +830,6 @@
 
 (use-package vterm
   :ensure t
-  ;; :defer t
   :custom (vterm-max-scrollback 100000)) ; C-c C-t enter copy mode
 
 (use-package multi-vterm
