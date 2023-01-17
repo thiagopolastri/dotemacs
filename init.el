@@ -811,11 +811,16 @@
 
 (use-package pdf-tools :ensure t :defer t)
 
-;; Terminal and sudo opened files-----------------------------------------------
+;; Terminal and Crux -----------------------------------------------------------
 
-(use-package sudo-edit
+(use-package crux
   :ensure t
-  :bind ("C-z C-s" . sudo-edit))
+  :bind (("C-a" . crux-move-beginning-of-line)
+         ("C-z o" . crux-open-with)
+         ("C-z C-s" . crux-sudo-edit)
+         ("C-z C-e" . crux-eval-and-replace)
+         ("C-z /" . crux-duplicate-current-line-or-region)
+         ("C-z C-/" . crux-duplicate-and-comment-current-line-or-region)))
 
 (use-package vterm
   :ensure t
