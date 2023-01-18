@@ -169,6 +169,15 @@
   :diminish editorconfig-mode
   :config (editorconfig-mode 1))
 
+(use-package crux
+  :ensure t
+  :bind (("C-z o" . crux-open-with)
+         ("C-z C-s" . crux-sudo-edit)
+         ("C-z C-e" . crux-eval-and-replace)
+         ("C-z /" . crux-duplicate-current-line-or-region)
+         ("C-z C-/" . crux-duplicate-and-comment-current-line-or-region)
+         :map dotemacs:prog-mode-map ("C-a" . crux-move-beginning-of-line)))
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c"   . mc/edit-lines)
@@ -436,12 +445,11 @@
   :ensure t
   :custom (rustic-lsp-client 'eglot)
   :init
+  ;; treesitter integration not ready yet
+  ;; https://github.com/brotzeit/rustic/issues/475
   (dotemacs:use-treesit
    :lang 'rust
-   :github "tree-sitter/tree-sitter-rust")
-  (when (dotemacs:treesit-available-p 'rust)
-    ;; (add-to-list 'tree-sitter-major-mode-language-alist '(rustic-mode . rust)
-    (setq rustic-treesitter-derive t)))
+   :github "tree-sitter/tree-sitter-rust"))
 
 (use-package css-mode
   ;; language server: vscode-langservers-extracted
@@ -817,16 +825,7 @@
 
 (use-package pdf-tools :ensure t :defer t)
 
-;; Terminal and Crux -----------------------------------------------------------
-
-(use-package crux
-  :ensure t
-  :bind (("C-a" . crux-move-beginning-of-line)
-         ("C-z o" . crux-open-with)
-         ("C-z C-s" . crux-sudo-edit)
-         ("C-z C-e" . crux-eval-and-replace)
-         ("C-z /" . crux-duplicate-current-line-or-region)
-         ("C-z C-/" . crux-duplicate-and-comment-current-line-or-region)))
+;; Terminal --------------------------------------------------------------------
 
 (use-package vterm
   :ensure t
