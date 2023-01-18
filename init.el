@@ -26,7 +26,6 @@
   (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
   (package-install 'use-package))
 
 (eval-when-compile (require 'use-package))
@@ -41,8 +40,7 @@
 
 (use-package diminish :ensure t)
 
-(unless (package-installed-p 'eglot) ; if not builtin...
-  (message "Installing Eglot...")
+(unless (package-installed-p 'eglot)
   (package-install 'eglot))
 
 ;; Defaults --------------------------------------------------------------------
@@ -782,21 +780,21 @@
   (org-modern-block-fringe nil)
   :hook (org-mode . org-modern-mode))
 
-(when (and (bound-and-true-p dotemacs:roam-dir)
-           (file-exists-p dotemacs:roam-dir))
-  (use-package org-roam
-    :ensure t
-    :after org
-    :init (setq org-roam-v2-ack t)
-    :custom
-    (org-roam-directory dotemacs:roam-dir)
-    (org-roam-completion-everywhere t)
-    (org-roam-completion-system 'default)
-    :bind (("C-z r f" . org-roam-node-find)
-           ("C-z r i" . org-roam-node-insert)
-           ("C-z r c" . org-roam-capture)
-           ("C-z r t" . org-roam-buffer-toggle))
-    :config (org-roam-setup)))
+(use-package org-roam
+  :ensure t
+  :when (and (bound-and-true-p dotemacs:roam-dir)
+             (file-exists-p dotemacs:roam-dir))
+  :after org
+  :init (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory dotemacs:roam-dir)
+  (org-roam-completion-everywhere t)
+  (org-roam-completion-system 'default)
+  :bind (("C-z r f" . org-roam-node-find)
+         ("C-z r i" . org-roam-node-insert)
+         ("C-z r c" . org-roam-capture)
+         ("C-z r t" . org-roam-buffer-toggle))
+  :config (org-roam-setup))
 
 (use-package markdown-mode
   :ensure t
