@@ -625,17 +625,6 @@
   :ensure t
   :hook (php-mode . eglot-ensure))
 
-(use-package racket-mode
-  ;; language server: racket-langserver
-  :ensure t
-  :hook (racket-mode . eglot-ensure))
-
-(use-package clojure-mode
-  ;; language server: clojure-lsp
-  ;; consider install/configure Cider - https://github.com/clojure-emacs/cider
-  :ensure t
-  :hook (clojure-mode . eglot-ensure))
-
 (use-package haskell-mode
   ;; language server: hls
   ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-haskell
@@ -707,21 +696,41 @@
 (define-derived-mode dotemacs:svelte-mode web-mode "Web/Svelte"
   "Custom Svelte major mode derived from `web-mode'.")
 (add-to-list 'auto-mode-alist '("\\.svelte\\'" . dotemacs:svelte-mode))
+(add-to-list 'eglot-server-programs '(dotemacs:svelte-mode "svelteserver"))
+(add-hook 'dotemacs:svelte-mode-hook #'eglot-ensure)
+
+(use-package restclient :ensure t :defer t)
+
+;; Lisp ------------------------------------------------------------------------
+
+(use-package paredit
+  :ensure t
+  :init
+  (add-hook 'paredit-mode-hook (lambda () (smartparens-mode -1)))
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'common-lisp-mode-hook 'paredit-mode)
+  (add-hook 'scheme-mode-hook 'paredit-mode))
+
+(use-package racket-mode
+  ;; language server: racket-langserver
+  :ensure t
+  :hook ((racket-mode . eglot-ensure)
+         (racket-mode . paredit-mode)))
+
+(use-package clojure-mode
+  ;; language server: clojure-lsp
+  :ensure t
+  :hook ((clojure-mode . eglot-ensure)
+         (clojure-mode . paredit-mode)))
+
+(use-package cider :ensure t)
 
 (use-package sly
   :ensure t
   :custom (sly-symbol-completion-mode nil))
 
-(use-package restclient :ensure t :defer t)
-
-;; Unused treesit grammars (for future reference):
-;; https://github.com/tree-sitter/tree-sitter-bash
-;; https://github.com/tree-sitter/tree-sitter-regex
-;; https://github.com/tree-sitter/tree-sitter-swift
-;; https://github.com/tree-sitter/tree-sitter-scala
-;; https://github.com/alemuller/tree-sitter-make
-;; https://github.com/m-novikov/tree-sitter-sql
-;; https://github.com/tree-sitter/tree-sitter-ocaml
+(use-package geiser-guile :ensure t)
 
 ;; Text ------------------------------------------------------------------------
 
