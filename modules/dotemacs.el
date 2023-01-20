@@ -159,7 +159,7 @@ The default dictionary will be the first item."
     bin-path))
 
 (defun dotemacs:project-eslint-p ()
-  "Verify if eslint is instaled for project."
+  "Verify if eslint is installed for project."
   (when-let ((bin-path (dotemacs:project-npm-bin-path)))
     (file-exists-p (file-name-concat bin-path "eslint"))))
 
