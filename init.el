@@ -323,7 +323,7 @@
   (defun dotemacs:enable-eslint ()
     "Enable eslint only if its installed for the project."
     (interactive)
-    (when (dotemacs:project-eslint-p)
+    (when (dotemacs:project-npm-bin-p flymake-eslint-executable-name)
       (make-local-variable 'exec-path)
       (push (dotemacs:project-npm-bin-path) exec-path)
       (flymake-eslint-enable))))
