@@ -23,6 +23,7 @@
 
 (require 'display-line-numbers)
 (require 'flyspell)
+(require 'project)
 
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
   (require 'treesit))
@@ -148,6 +149,19 @@ The default dictionary will be the first item."
   (if (fboundp 'treesit-available-p)
       (and (treesit-available-p) (treesit-ready-p lang t))
     nil))
+
+(defun dotemacs:project-npm-bin-path ()
+  "Get the local npm project bin path if exists."
+  (when-let* ((proj (project-current))
+              (bin-path (file-name-concat
+                         (project-root proj) "node_modules" ".bin"))
+              (file-exists-p bin-path))
+    bin-path))
+
+(defun dotemacs:project-eslint-p ()
+  "Verify if eslint is instaled for project."
+  (when-let ((bin-path (dotemacs:project-npm-bin-path)))
+    (file-exists-p (file-name-concat bin-path "eslint"))))
 
 ;; Modes
 
