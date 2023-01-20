@@ -155,7 +155,7 @@ The default dictionary will be the first item."
   (when-let* ((proj (project-current))
               (bin-path (file-name-concat
                          (project-root proj) "node_modules" ".bin"))
-              (file-exists-p bin-path))
+              (e (file-exists-p bin-path)))
     bin-path))
 
 (defun dotemacs:project-eslint-p ()
