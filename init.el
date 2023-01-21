@@ -663,7 +663,7 @@
   ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-julia
   :ensure t)
 
-(use-package html-mode
+(use-package sgml-mode
   ;; language server: vscode-langservers-extracted
   ;; tree-sitter grammar: https://github.com/tree-sitter/tree-sitter-html
   :hook ((html-mode . eglot-ensure)
