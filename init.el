@@ -716,6 +716,7 @@
 
 (use-package paredit
   :ensure t
+  :diminish paredit-mode
   :init
   (add-hook 'paredit-mode-hook (lambda () (smartparens-mode -1)))
   (add-hook 'lisp-mode-hook 'paredit-mode)
