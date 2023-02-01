@@ -77,7 +77,7 @@
 (set-face-attribute 'variable-pitch
                     nil
                     :family dotemacs:font-variable
-                    :height dotemacs:font-size)
+                    :height dotemacs:font-size-variable)
 
 ;; Load theme
 

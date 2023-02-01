@@ -39,6 +39,11 @@
   :group 'dotemacs
   :type 'integer)
 
+(defcustom dotemacs:font-size-variable 120
+  "Emacs font size (variable).  integer in units of 1/10 point (140 = 14pt)."
+  :group 'dotemacs
+  :type 'integer)
+
 (defcustom dotemacs:font-fixed "Monospace"
   "Emacs fixed font.  Mono or code variant."
   :group 'dotemacs
