@@ -719,14 +719,20 @@ Also bind `class' to ((class color) (min-colors 89))."
 
   ;; Just make org, web and sitter more pleasant while I'm not diving into it
   ;; ORG
-  `(org-block ((,class :foreground ,fg :background ,bg-alt)))
+  `(org-block ((,class :foreground ,fg :background ,bg-alt :extend t)))
+  `(org-quote ((,class :foreground ,fg-comment :background ,bg-alt :extend t)))
+  `(org-verse ((,class :inherit 'org-quote :extend t)))
   `(org-block-begin-line ((,class :foreground ,fg-comment
                                   :background ,bg-focus)))
   `(org-block-end-line ((,class :foreground ,fg-comment :background ,bg-focus)))
+  `(org-ellipsis ((,class :foreground ,fg-comment :underline nil)))
 
-  ;; Tree Sitter:
-  ;; `(tree-sitter-hl-face:function.call ((,class :foreground ,fg)))
-  ;; `(tree-sitter-hl-face:tag ((,class :foreground ,fg-markup)))
+  `(org-hide ((,class :foreground ,bg)))
+  `(org-date ((,class :foreground ,fg-alert :underline t)))
+  `(org-done ((,class :foreground ,fg-success :bold t)))
+  `(org-todo ((,class :foreground ,fg-error :bold t)))
+  `(org-latex-and-related ((,class :foreground ,fg-warning)))
+  `(org-table ((,class :foreground ,fg-constant)))
 
   ;; Web Mode
   `(web-mode-html-attr-name-face ((,class :inherit 'font-lock-constant-face)))

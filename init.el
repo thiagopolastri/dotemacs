@@ -843,6 +843,7 @@
   :config (setq-default TeX-master nil))
 
 (use-package pdf-tools :ensure t :defer t)
+(use-package htmlize :ensure t) ; for org html export
 
 ;; Terminal --------------------------------------------------------------------
 
@@ -875,9 +876,9 @@
 (use-package yasnippet-snippets :ensure t)
 
 ;; -----------------------------------------------------------------------------
-;; hacky stuff that I dont want to commit
-(when (file-exists-p (dotemacs:get-path "mess.el"))
-    (load (dotemacs:get-path "mess.el")))
+;; hacky and private stuff that I dont want to commit
+(when (file-exists-p (dotemacs:get-path "user.el"))
+    (load (dotemacs:get-path "user.el")))
 
 ;; Reset GC value and finish ---------------------------------------------------
 (setq gc-cons-threshold 2000000)
