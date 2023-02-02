@@ -347,19 +347,19 @@
                '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
   (ispell-set-spellchecker-params))
 
-(defun dotemacs:consult-hunspell-dict ()
-  "Consult interface for dictionary selection."
-  (interactive)
-  (dotemacs:hunspell-set-local-dict
-   (consult--read
-    dotemacs:hunspell-dict-list
-    :prompt "Change dictionary:"
-    :require-match t
-    :history t
-    :sort nil)))
-
 (use-package flyspell
   :hook (dotemacs:text-mode . flyspell-mode)
+  :preface
+  (defun dotemacs:consult-hunspell-dict ()
+    "Consult interface for dictionary selection."
+    (interactive)
+    (dotemacs:hunspell-set-local-dict
+     (consult--read
+      dotemacs:hunspell-dict-list
+      :prompt "Change dictionary:"
+      :require-match t
+      :history t
+      :sort nil)))
   :bind (:map dotemacs:text-mode-map ("C-z c" . flyspell-buffer)
               :map flyspell-mode-map
               ("C-z h" . dotemacs:consult-hunspell-dict)))
@@ -445,6 +445,7 @@
               ("C-c <C-tab>" . format-all-buffer)))
 
 (use-package realgud :ensure t :defer t)
+(use-package npm-mode :ensure t :diminish npm-mode)
 
 ;; Languages -------------------------------------------------------------------
 ;; Run `treesit-install-language-grammar' if its unavailable
@@ -481,8 +482,10 @@
    :remap '(javascript-mode . js-ts-mode))
   :hook ((javascript-mode . eglot-ensure)
          (javascript-mode . subword-mode)
+         (javascript-mode . npm-mode)
          (js-ts-mode . eglot-ensure)
-         (js-ts-mode . subword-mode)))
+         (js-ts-mode . subword-mode)
+         (js-ts-mode . npm-mode)))
 
 (use-package typescript-mode
   ;; language server: typescript-language-server
@@ -500,10 +503,13 @@
    :mode '("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-mode . eglot-ensure)
          (typescript-mode . subword-mode)
+         (typescript-mode . npm-mode)
          (typescript-ts-mode . eglot-ensure)
          (typescript-ts-mode . subword-mode)
+         (typescript-ts-mode . npm-mode)
          (tsx-ts-mode . eglot-ensure)
-         (tsx-ts-mode . subword-mode)))
+         (tsx-ts-mode . subword-mode)
+         (typescript-ts-mode . npm-mode)))
 
 (use-package json-mode
   ;; language server: vscode-langservers-extracted

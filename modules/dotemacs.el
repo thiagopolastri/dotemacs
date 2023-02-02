@@ -102,29 +102,6 @@ The default dictionary will be the first item."
   (flyspell-mode +1)
   (flyspell-buffer))
 
-;; Interactive
-
-(defun dotemacs:toggle-line-numbers-type ()
-  "Toggle between normal and relative line-numbers."
-  (interactive)
-  (display-line-numbers-mode -1)
-  (if (eq display-line-numbers-type 'relative)
-      (setq-local display-line-numbers-type t)
-    (setq-local display-line-numbers-type 'relative))
-  (display-line-numbers-mode +1))
-
-(defvar dotemacs:fullscreen-p nil
-  "Indicate if Emacs is in fullscreen.")
-
-(defun dotemacs:toggle-fullscreen ()
-  "Toggle frame fullscreen and display time."
-  (interactive)
-  (setq dotemacs:fullscreen-p (not dotemacs:fullscreen-p))
-  (toggle-frame-fullscreen)
-  (if dotemacs:fullscreen-p
-      (display-time-mode +1)
-    (display-time-mode -1)))
-
 (defun dotemacs:use-treesit (&rest args)
   "Setup treesiter with ARGS for a given language.
 :lang - language to setup (symbol)
@@ -167,6 +144,29 @@ The default dictionary will be the first item."
   "Verify if APPNAME is installed for a npm project."
   (when-let ((bin-path (dotemacs:project-npm-bin-path)))
     (file-exists-p (file-name-concat bin-path appname))))
+
+;; Interactive
+
+(defun dotemacs:toggle-line-numbers-type ()
+  "Toggle between normal and relative line-numbers."
+  (interactive)
+  (display-line-numbers-mode -1)
+  (if (eq display-line-numbers-type 'relative)
+      (setq-local display-line-numbers-type t)
+    (setq-local display-line-numbers-type 'relative))
+  (display-line-numbers-mode +1))
+
+(defvar dotemacs:fullscreen-p nil
+  "Indicate if Emacs is in fullscreen.")
+
+(defun dotemacs:toggle-fullscreen ()
+  "Toggle frame fullscreen and display time."
+  (interactive)
+  (setq dotemacs:fullscreen-p (not dotemacs:fullscreen-p))
+  (toggle-frame-fullscreen)
+  (if dotemacs:fullscreen-p
+      (display-time-mode +1)
+    (display-time-mode -1)))
 
 ;; Modes
 
