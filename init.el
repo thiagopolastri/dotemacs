@@ -361,8 +361,7 @@
       :history t
       :sort nil)))
   :bind (:map dotemacs:text-mode-map ("C-z c" . flyspell-buffer)
-              :map flyspell-mode-map
-              ("C-z h" . dotemacs:consult-hunspell-dict)))
+         :map flyspell-mode-map ("C-z h" . dotemacs:consult-hunspell-dict)))
 
 (use-package flyspell-correct
   :ensure t
@@ -377,7 +376,7 @@
 
 (use-package diff-hl
   :ensure t
-  :hook (dired-mode . diff-hl-dired-mode-unless-remote)
+  :hook (dired-mode . diff-hl-dired-mode) ; diff-hl-dired-mode-unless-remote
   :hook (magit-post-refresh . diff-hl-magit-post-refresh)
   :hook (magit-pre-refresh  . diff-hl-magit-pre-refresh)
   :init (global-diff-hl-mode) ; or diff-hl-flydiff-mode
