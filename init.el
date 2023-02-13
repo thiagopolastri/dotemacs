@@ -142,7 +142,7 @@
   :hook ((dotemacs:prog-mode . hl-line-mode)
          (dired-mode . hl-line-mode)))
 
-(use-package fill-column
+(use-package display-fill-column-indicator
   :custom (display-fill-column-indicator-character ?\u258F)
   :hook (dotemacs:prog-mode . display-fill-column-indicator-mode))
 
