@@ -50,29 +50,28 @@
 (global-unset-key (kbd "C-z")) ; C-x C-z still `suspend-frame' if needed
 (global-set-key (kbd "<f11>") 'dotemacs:toggle-fullscreen)
 
-(setq-default cursor-type 'bar
-              indent-tabs-mode nil
-              tab-width 4
-              word-wrap t
-              truncate-lines t
-              truncate-partial-width-windows nil
-              fill-column 80
-              find-file-visit-truename t ; follow symlinks
-              vc-follow-symlinks t
-              vc-handled-backends '(Git) ; only git, read the docs before change
-              kill-buffer-query-functions nil ; kill process when kill a buffer
-              revert-without-query t ; revert buffer without asking
-              bidi-paragraph-direction 'left-to-right
-              bidi-inhibit-bpa t)
-
 (use-package emacs
   :custom
+  (cursor-type 'bar)
   (use-short-answers t) ; yes-or-no-p becomes y-or-n-p
   (confirm-kill-emacs 'yes-or-no-p)
   (visible-bell 1)
   (use-dialog-box nil) ; use minibuffer instead
-  (create-lockfiles nil)
+  (fill-column 80)
+  (indent-tabs-mode nil)
+  (tab-width 4)
   (require-final-newline t)
+  (word-wrap t)
+  (truncate-lines t)
+  (truncate-partial-width-windows nil)
+  (find-file-visit-truename t) ; follow symlinks
+  (vc-follow-symlinks t)
+  (vc-handled-backends '(Git)) ; only git, read the docs before change
+  (kill-buffer-query-functions nil) ; kill process when kill a buffer
+  (revert-without-query t) ; revert buffer without asking
+  (bidi-paragraph-direction 'left-to-right)
+  (bidi-inhibit-bpa t)
+  (create-lockfiles nil)
   (uniquify-buffer-name-style 'forward)
   (large-file-warning-threshold 100000000) ; 100MB
   (line-move-visual t)
