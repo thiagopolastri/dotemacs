@@ -225,6 +225,16 @@
   :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;; Completion ------------------------------------------------------------------
+;; If for some reason you prefer a vanilla completion instead vertico and corfu
+;; do the following settings:
+;; (setq completion-auto-help 'always)
+;; (setq completion-auto-select 'second-tab)
+;; (setq completions-max-height 10)
+;; (fido-vertical-mode)
+;; (setq icomplete-delay-completions-threshold 4000)
+;; (define-key minibuffer-mode-map (kbd "TAB") 'minibuffer-complete)
+;; https://robbmann.io/posts/emacs-29-completions/
+;; https://www.masteringemacs.org/article/understanding-minibuffer-completion
 
 (use-package orderless
   :ensure t
@@ -527,6 +537,16 @@
    :github "tree-sitter/tree-sitter-toml"
    :remap '(conf-toml-mode . toml-ts-mode))
   :hook (conf-mode . dotemacs:prog-mode))
+
+(use-package sh-mode
+  ;; language server: bash-language-server
+  :init
+  (dotemacs:use-treesit
+   :lang 'bash
+   :github "tree-sitter/tree-sitter-bash"
+   :remap '(sh-mode . bash-ts-mode))
+  :hook ((sh-mode . eglot-ensure)
+         (bash-ts-mode . eglot-ensure)))
 
 (use-package c-mode
   ;; language server: clangd
