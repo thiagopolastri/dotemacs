@@ -76,18 +76,19 @@
   (large-file-warning-threshold 100000000) ; 100MB
   (line-move-visual t)
   (mouse-yank-at-point t)
-  ;; Hide commands in M-x which do not work in the current mode.
-  (read-extended-command-predicate #'command-completion-default-include-p)
   (auto-window-vscroll nil)
   (fast-but-imprecise-scrolling t)
   (scroll-conservatively 101)
   (scroll-margin 0)
   (scroll-preserve-screen-position t)
+  (scroll-bar-adjust-thumb-portion nil)
+  (scroll-error-top-bottom t)
   (enable-recursive-minibuffers t) ; use the minibuffer whilst in the minibuffer
   (completion-cycle-threshold 1) ; TAB cycles candidates
   (completions-detailed t) ; show annotations
   (tab-always-indent 'complete) ; try to complete, otherwise, indent
   (completion-styles '(basic initials substring))
+  (read-extended-command-predicate #'command-completion-default-include-p)
   (inferior-lisp-program "sbcl")
   :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p)
   :init
@@ -772,47 +773,32 @@
 
 (use-package org
   :commands (org-capture org-agenda)
-  :hook ((org-mode . dotemacs:text-mode)
-         (org-mode . variable-pitch-mode))
+  :hook (org-mode . dotemacs:text-mode)
   :custom
-  (org-return-follows-link t) ; Follow links when press enter
-  (org-edit-src-content-indentation 0) ; Disable the extra indentation on code
-  (org-catch-invisible-edits 'show-and-error) ; prevent accidental edits
   (org-ellipsis " ⤵")
+  (org-catch-invisible-edits 'show-and-error) ; prevent accidental edits
   (org-hide-emphasis-markers t) ; hide markers (`org-appear' will show then)
-  (org-auto-align-tags nil)
-  (org-tags-column 0)
   (org-pretty-entities t) ; show entities as UTF-8 character
-  (org-special-ctrl-a/e t)
+  (org-special-ctrl-a/e t) ; make C-a/e behave different in titles
   (org-insert-heading-respect-content t)
-  ;; dont close a TODO with open subtasks
-  (org-enforce-todo-dependencies t)
-  (org-enforce-todo-checkbox-dependencies t)
-  ;; Images
-  (org-startup-with-inline-images t)
-  (org-image-actual-width '(300))
-  ;; Agenda
-  (org-agenda-start-with-log-mode t)
-  (org-log-done 'time)
-  (org-log-reschedule 'time)
-  (org-log-redeadline 'time)
-  (org-log-into-drawer t)
-  ;; testing stuff
-  (org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
   (org-adapt-indentation nil)
+  :init
+  (when dotemacs:use-variable-pitch-in-org
+    (customize-set-variable 'org-auto-align-tags nil)
+    (customize-set-variable 'org-tags-column 0)
+    (add-hook 'org-mode-hook 'variable-pitch-mode))
   :custom-face
   (org-block ((t (:inherit 'fixed-pitch))))
   (org-block-begin-line ((t (:inherit 'fixed-pitch))))
   (org-block-end-line ((t (:inherit 'fixed-pitch))))
-  (org-table ((t (:inherit 'fixed-pitch))))
-  (org-formula ((t (:inherit 'fixed-pitch))))
   (org-code ((t (:inherit 'fixed-pitch))))
-  (org-verbatim ((t (:inherit 'fixed-pitch))))
-  (org-special-keyword ((t (:inherit 'fixed-pitch))))
+  (org-document-info-keyword ((t (:inherit 'fixed-pitch))))
   (org-meta-line ((t (:inherit 'fixed-pitch))))
-  (org-checkbox ((t (:inherit 'fixed-pitch))))
-  :config
-  (plist-put org-format-latex-options :scale 2))
+  (org-table ((t (:inherit 'fixed-pitch))))
+  (org-verbatim ((t (:inherit 'fixed-pitch))))
+  (org-formula ((t (:inherit 'fixed-pitch))))
+  (org-special-keyword ((t (:inherit 'fixed-pitch))))
+  (org-checkbox ((t (:inherit 'fixed-pitch)))))
 
 (use-package org-appear
   :ensure t
@@ -854,7 +840,23 @@
   (markdown-asymmetric-header t)
   (markdown-fontify-code-blocks-natively t)
   (markdown-gfm-additional-languages '("sh"))
-  (markdown-make-gfm-checkboxes-buttons t))
+  (markdown-make-gfm-checkboxes-buttons t)
+  :init
+  (when dotemacs:use-variable-pitch-in-md
+    (add-hook 'markdown-mode-hook 'variable-pitch-mode)
+    (add-hook 'gfm-mode-hook 'variable-pitch-mode))
+  :custom-face
+  (markdown-code-face ((t (:inherit 'fixed-pitch))))
+  (markdown-html-attr-name-face ((t (:inherit 'fixed-pitch))))
+  (markdown-html-attr-value-face ((t (:inherit 'fixed-pitch))))
+  (markdown-html-entity-face ((t (:inherit 'fixed-pitch))))
+  (markdown-html-tag-delimiter-face ((t (:inherit 'fixed-pitch))))
+  (markdown-html-tag-name-face ((t (:inherit 'fixed-pitch))))
+  (markdown-inline-code-face ((t (:inherit 'fixed-pitch))))
+  (markdown-language-info-face ((t (:inherit 'fixed-pitch))))
+  (markdown-language-keyword-face ((t (:inherit 'fixed-pitch))))
+  (markdown-pre-face ((t (:inherit 'fixed-pitch))))
+  (markdown-table-face ((t (:inherit 'fixed-pitch)))))
 
 (use-package tex
   :ensure auctex

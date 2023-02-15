@@ -68,6 +68,16 @@ The default dictionary will be the first item."
   :type '(choice (directory :tag "Roam directory")
                  (const :tag "None" nil)))
 
+(defcustom dotemacs:use-variable-pitch-in-org t
+  "Use variable pitch in org mode."
+  :group 'dotemacs
+  :type 'boolean)
+
+(defcustom dotemacs:use-variable-pitch-in-md t
+  "Use variable pitch in markdown mode."
+  :group 'dotemacs
+  :type 'boolean)
+
 ;; functions
 
 (defun dotemacs:get-path (file)
