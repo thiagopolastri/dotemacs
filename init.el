@@ -226,8 +226,7 @@
   :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;; Completion ------------------------------------------------------------------
-;; If for some reason you prefer a vanilla completion instead vertico and corfu
-;; do the following settings:
+;; Default completion settings without vertico/corfu:
 ;; (setq completion-auto-help 'always)
 ;; (setq completion-auto-select 'second-tab)
 ;; (setq completions-max-height 10)
