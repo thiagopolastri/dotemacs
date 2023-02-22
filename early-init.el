@@ -23,7 +23,7 @@
 ;; - Load (or create and load) custom file.
 
 (setq gc-cons-threshold 100000000)
-(customize-set-variable 'load-prefer-newer noninteractive)
+(setq load-prefer-newer t)
 (customize-set-variable 'package-enable-at-startup nil)
 (customize-set-variable 'byte-compile-warnings '(not obsolete))
 (customize-set-variable 'warning-suppress-log-types '((comp) (bytecomp)))
