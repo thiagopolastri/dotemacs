@@ -137,7 +137,7 @@ The default dictionary will be the first item."
       (add-to-list 'auto-mode-alist mode))))
 
 (defun dotemacs:treesit-available-p (lang)
-  "Verify is treesitter is avalable and ready for LANG."
+  "Verify if treesitter is avalable and ready for LANG."
   (if (fboundp 'treesit-available-p)
       (and (treesit-available-p) (treesit-ready-p lang t))
     nil))
