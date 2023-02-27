@@ -98,7 +98,18 @@
   (save-place-mode 1)
   (global-so-long-mode 1)
   (when (fboundp 'pixel-scroll-precision-mode) ; only on emacs 29
-    (pixel-scroll-precision-mode 1)))
+    (pixel-scroll-precision-mode 1))
+  ;; From vertico
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator))
 
 (use-package autorevert ; revert buffers when changed
   :custom
@@ -239,7 +250,7 @@
 (use-package orderless
   :ensure t
   :custom
-  (completion-styles '(orderless))
+  (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles . (partial-completion)))))
   (completion-category-defaults nil))
 
