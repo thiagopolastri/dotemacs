@@ -237,15 +237,6 @@
   :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;; Completion ------------------------------------------------------------------
-;; Default completion settings without vertico/corfu:
-;; (setq completion-auto-help 'always)
-;; (setq completion-auto-select 'second-tab)
-;; (setq completions-max-height 10)
-;; (fido-vertical-mode)
-;; (setq icomplete-delay-completions-threshold 4000)
-;; (define-key minibuffer-mode-map (kbd "TAB") 'minibuffer-complete)
-;; https://robbmann.io/posts/emacs-29-completions/
-;; https://www.masteringemacs.org/article/understanding-minibuffer-completion
 
 (use-package orderless
   :ensure t
