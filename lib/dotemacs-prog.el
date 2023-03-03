@@ -36,8 +36,12 @@
 (use-package cider)
 (use-package sly)
 (use-package sicp)
-;; (use-package geiser-guile
-;;   :commands (geiser-activate-implementation)) ; fail on autoload
+
+(when dotemacs-use-elpaca
+  (elpaca geiser)
+  (elpaca-wait))
+
+(use-package geiser-guile)
 
 (use-package rustic
   ;; language server: rust-analyzer
