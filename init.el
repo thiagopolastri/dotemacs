@@ -8,7 +8,7 @@
 
 ;;; Code:
 
-(defvar dotemacs-use-elpaca t)
+(defvar dotemacs-use-elpaca t) ; Just for testing
 
 (add-hook
  'emacs-startup-hook
@@ -21,8 +21,8 @@
     gcs-done)))
 
 (if dotemacs-use-elpaca
-    (require 'dotemacs-elpaca)
-  (require 'dotemacs-package))
+    (require 'dotemacs-elpaca) ; 1.49s with 2 gc (first run 215.13s with 2 gc)
+  (require 'dotemacs-package)) ; 2.03s with 2 gc (first run 152.80s with 4 gc)
 
 (require 'dotemacs-defaults)
 (require 'dotemacs-editor)
@@ -32,6 +32,9 @@
 (require 'dotemacs-text)
 (require 'dotemacs-terminal)
 (require 'dotemacs-keybinds)
+
+(when (file-exists-p (dotemacs-get-path "user.el"))
+    (load (dotemacs-get-path "user.el")))
 
 (setq gc-cons-threshold (expt 2 24) ;; 16777216
       gc-cons-percentage 0.1)

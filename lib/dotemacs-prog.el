@@ -36,7 +36,8 @@
 (use-package cider)
 (use-package sly)
 (use-package sicp)
-;; (use-package geiser-guile) ; fail on autoload
+;; (use-package geiser-guile
+;;   :commands (geiser-activate-implementation)) ; fail on autoload
 
 (use-package rustic
   ;; language server: rust-analyzer
