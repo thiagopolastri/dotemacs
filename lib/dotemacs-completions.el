@@ -55,9 +55,9 @@
                 (_ (file-exists-p ce)))
       (message "Building corfu extensions...")
       (add-to-list 'load-path ce)
+      (require 'corfu-popupinfo)
       (when (fboundp 'byte-recompile-directory)
         (byte-recompile-directory ce 0))))
-  (require 'corfu-popupinfo)
   (customize-set-variable 'corfu-popupinfo-delay 0.2)
   (corfu-popupinfo-mode))
 

@@ -19,7 +19,7 @@
     gcs-done)))
 
 ;; elpaca works better on Emacs >=29.
-;; elpaca will stuck on multi-vterm building task but everything works.
+;; elpaca will get stuck on multi-vterm building task, but everything works.
 ;; package first run  - 155.02 seconds with 5 garbage collections
 ;; package normal run - 2.64 seconds with 2 garbage collections
 ;; elpaca first run   - 13.69 seconds with 2 garbage collections
@@ -32,13 +32,12 @@
 (require 'dotemacs-editor)
 (require 'dotemacs-completions)
 (require 'dotemacs-checkers)
-(require 'dotemacs-prog) ; geiser is commented
+(require 'dotemacs-prog) ; geiser is disabled
 (require 'dotemacs-text)
 (require 'dotemacs-terminal)
 (require 'dotemacs-keybinds)
 
-(when (file-exists-p (dotemacs-get-path "user.el"))
-    (load (dotemacs-get-path "user.el"))) ; +0.07s
+(load (dotemacs-get-path "user.el") :no-error) ; 0.07s
 
 (setq gc-cons-threshold (expt 2 24) ;; 16777216
       gc-cons-percentage 0.1)
