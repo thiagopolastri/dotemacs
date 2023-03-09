@@ -21,7 +21,8 @@
    "C->" 'mc/mark-next-like-this
    "C-<" 'mc/mark-previous-like-this
    "C-S-<mouse-1>" 'mc/add-cursor-on-click
-   "C-=" 'er/expand-region)
+   "C-=" 'er/expand-region
+   "C-:" 'avy-goto-char)
 
   (general-define-key
    :prefix "C-z"
@@ -42,7 +43,9 @@
    "t" 'multi-vterm
    "C-e" 'crux-eval-and-replace
    "C-s" 'crux-sudo-edit
-   "C-/" 'crux-duplicate-and-comment-current-line-or-region)
+   "C-/" 'crux-duplicate-and-comment-current-line-or-region
+   ">" 'avy-goto-char-2
+   "l" 'avy-goto-line)
 
   (general-define-key
    :keymaps 'minibuffer-local-map

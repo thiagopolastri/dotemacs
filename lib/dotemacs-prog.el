@@ -33,15 +33,15 @@
   :hook ((clojure-mode . eglot-ensure)
          (clojure-mode . paredit-mode)))
 
-(use-package cider)
-(use-package sly)
+(use-package cider :defer t)
+(use-package sly :defer t)
 (use-package sicp)
 
-(when dotemacs-use-elpaca
-  (elpaca geiser)
-  (elpaca-wait))
-
-(use-package geiser-guile)
+;; This will add 0.64s on init. Enable when necessary
+;; (when (fboundp 'elpaca-wait)
+;;   (use-package geiser :defer t)
+;;   (elpaca-wait))
+;; (use-package geiser-guile :defer t)
 
 (use-package rustic
   ;; language server: rust-analyzer

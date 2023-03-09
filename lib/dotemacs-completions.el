@@ -49,9 +49,11 @@
   (corfu-preselect-first nil)
   :init
   (global-corfu-mode)
-  (when dotemacs-use-elpaca
+  (unless (fboundp 'corfu-popupinfo-mode)
     ;; Work around. Extensions become unavailable with elpaca.
-    (let ((ce (dotemacs-get-path "elpaca/repos/corfu/extensions")))
+    (when-let* ((ce (dotemacs-get-path "elpaca/repos/corfu/extensions"))
+                (_ (file-exists-p ce)))
+      (message "Building corfu extensions...")
       (add-to-list 'load-path ce)
       (when (fboundp 'byte-recompile-directory)
         (byte-recompile-directory ce 0))))

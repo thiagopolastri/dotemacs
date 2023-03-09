@@ -8,8 +8,6 @@
 
 ;;; Code:
 
-(defvar dotemacs-use-elpaca t) ; Just for testing
-
 (add-hook
  'emacs-startup-hook
  (lambda ()
@@ -20,21 +18,27 @@
      (float-time (time-subtract after-init-time before-init-time)))
     gcs-done)))
 
-(if dotemacs-use-elpaca
-    (require 'dotemacs-elpaca) ; 1.49s with 2 gc (first run 215.13s with 2 gc)
-  (require 'dotemacs-package)) ; 2.03s with 2 gc (first run 152.80s with 4 gc)
+;; elpaca works better on Emacs >=29.
+;; elpaca will stuck on multi-vterm building task but everything works.
+;; package first run  - 155.02 seconds with 5 garbage collections
+;; package normal run - 2.64 seconds with 2 garbage collections
+;; elpaca first run   - 13.69 seconds with 2 garbage collections
+;; elpaca normal run  - 0.32 seconds with 7 garbage collections
+
+;; (require 'dotemacs-package) ; Replace :elpaca nil to :ensure nil
+(require 'dotemacs-elpaca) ; Replace :ensure nil to :elpaca nil
 
 (require 'dotemacs-defaults)
 (require 'dotemacs-editor)
 (require 'dotemacs-completions)
 (require 'dotemacs-checkers)
-(require 'dotemacs-prog)
+(require 'dotemacs-prog) ; geiser is commented
 (require 'dotemacs-text)
 (require 'dotemacs-terminal)
 (require 'dotemacs-keybinds)
 
 (when (file-exists-p (dotemacs-get-path "user.el"))
-    (load (dotemacs-get-path "user.el")))
+    (load (dotemacs-get-path "user.el"))) ; +0.07s
 
 (setq gc-cons-threshold (expt 2 24) ;; 16777216
       gc-cons-percentage 0.1)

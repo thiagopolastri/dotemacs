@@ -54,6 +54,9 @@
 (use-package magit
   :custom (magit-diff-refine-hunk t))
 
+(use-package magit-todos
+  :hook (magit-mode . magit-todos-mode))
+
 (use-package diff-hl
   :after magit
   :hook ((dired-mode . diff-hl-dired-mode)
@@ -95,14 +98,16 @@
   (visual-fill-column-center-text t)
   (visual-fill-column-width 80))
 
+(use-package crux)
+(use-package multiple-cursors)
+(use-package expand-region)
+(use-package avy)
+
 (use-package yasnippet
   :diminish yas-minor-mode
   :init (yas-global-mode))
 
 (use-package yasnippet-snippets)
-(use-package crux)
-(use-package multiple-cursors)
-(use-package expand-region)
 
 
 (provide 'dotemacs-editor)
