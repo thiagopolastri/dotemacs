@@ -246,6 +246,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(woman-italic ((,class :inherit 'italic)))
   `(woman-addition ((,class :inherit 'font-lock-builtin-face)))
   `(woman-unknown ((,class :inherit 'font-lock-warning-face)))
+  ;; defaults for man are fine
 
 ;;;;; dired
   `(dired-broken-symlink ((,class :foreground ,fg-warning :background ,bg-red)))
@@ -315,6 +316,9 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(diff-refine-changed ((,class :background ,bg-green-max :extend t)))
   `(diff-refine-removed ((,class :background ,bg-red :extend t)))
   `(diff-nonexistent ((,class :background ,bg-min)))
+  `(diff-indicator-changed ((,class :inherit 'diff-changed)))
+  `(diff-indicator-added ((,class :inherit 'diff-added)))
+  `(diff-indicator-removed ((,class :inherit 'diff-removed)))
   `(ediff-current-diff-Ancestor ((,class :background ,bg-green-min :extend t)))
   `(ediff-current-diff-A ((,class :background ,bg-red-max :extend t)))
   `(ediff-current-diff-B ((,class :background ,bg-green-max :extend t)))
@@ -411,6 +415,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(eshell-ls-symlink ((,class :foreground ,fg-purple)))
   `(eshell-ls-unreadable ((,class :foreground ,fg-disabled)))
   `(eshell-prompt ((,class :foreground ,fg-cyan :weight bold)))
+  ;; term will inherit ansi-colors and vterm inherit term
 
 ;;;; message
   `(message-cited-text-1 ((,class :foreground ,fg-pink-bright)))
@@ -426,6 +431,25 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(message-header-xheader ((,class :foreground ,fg-comment :slant italic)))
   `(message-mml ((,class :foreground ,fg-green :slant italic)))
   `(message-separator ((,class :foreground ,fg-comment)))
+
+;;;; erc
+  `(erc-action-face  ((,class :weight bold)))
+  `(erc-button ((,class :weight bold :underline t)))
+  `(erc-command-indicator-face ((,class :weight bold)))
+  `(erc-current-nick-face ((,class :foreground ,fg-green :weight bold)))
+  `(erc-default-face ((,class :background ,bg :foreground ,fg)))
+  `(erc-direct-msg-face ((,class :foreground ,fg-coral)))
+  `(erc-error-face ((,class :foreground ,fg-red)))
+  `(erc-header-line ((,class :background ,bg-hl :foreground ,fg)))
+  `(erc-input-face ((,class :foreground ,fg-string)))
+  `(erc-my-nick-face ((,class :foreground ,fg-green :weight bold)))
+  `(erc-my-nick-prefix-face ((,class :foreground ,fg-green :weight bold)))
+  `(erc-nick-default-face ((,class :weight bold)))
+  `(erc-nick-msg-face ((,class :foreground ,fg-coral)))
+  `(erc-nick-prefix-face ((,class :background ,bg :foreground ,fg)))
+  `(erc-notice-face ((,class :foreground ,fg-purple)))
+  `(erc-prompt-face ((,class :foreground ,fg-blue-bright :background ,bg-blue-max :weight bold)))
+  `(erc-timestamp-face ((,class :foreground ,fg-cyan :weight bold)))
 
 ;;;;; ansi
   `(ansi-color-black ((,class :foreground ,fg-black :background ,fg-black)))
@@ -445,20 +469,19 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(ansi-color-bright-magenta ((,class :foreground ,fg-purple-bright :background ,fg-purple-bright)))
   `(ansi-color-bright-cyan ((,class :foreground ,fg-cyan-bright :background ,fg-cyan-bright)))
 
-
-
-
 ;;;; External
 
-  ;; diff-hl & indicator
-  `(diff-indicator-changed ((,class :inherit 'diff-changed)))
-  `(diff-indicator-added ((,class :inherit 'diff-added)))
-  `(diff-indicator-removed ((,class :inherit 'diff-removed)))
-  `(diff-hl-change ((,class :foreground ,bg-blue :background ,bg-blue)))
-  `(diff-hl-delete ((,class :foreground ,bg-red :background ,bg-red)))
-  `(diff-hl-insert ((,class :foreground ,bg-green :background ,bg-green)))
+;;;;; avy - dark
+  `(avy-background-face ((,class :foreground ,fg-disabled)))
+  `(avy-lead-face ((,class :background ,bg-coral :foreground ,fg)))
+  `(avy-lead-face-0 ((,class :background ,bg-purple :foreground ,fg)))
+  `(avy-lead-face-1 ((,class :background ,bg-orange :foreground ,fg)))
+  `(avy-lead-face-2 ((,class :background ,bg-pink :foreground ,fg)))
 
-  ;; corfu
+;;;; consult
+  `(consult-file ((,class :foreground ,fg-constant)))
+
+;;;;; corfu
   `(corfu-default ((,class :background ,bg-max)))
   `(corfu-border ((,class :inherit 'border)))
   `(corfu-current ((,class :inherit 'highlight)))
@@ -467,15 +490,49 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(corfu-deprecated ((,class :inherit 'shadow :strike-through t)))
   `(corfu-echo ((,class :inherit 'completions-annotations)))
 
-  ;; multiple-cursor
+;;;;; diff-hl
+  `(diff-hl-change ((,class :foreground ,bg-blue :background ,bg-blue)))
+  `(diff-hl-delete ((,class :foreground ,bg-red :background ,bg-red)))
+  `(diff-hl-insert ((,class :foreground ,bg-green :background ,bg-green)))
+
+;;;;; elfeed
+  `(elfeed-log-debug-level-face ((,class :foreground ,fg-pink)))
+  `(elfeed-log-error-level-face ((,class :foreground ,fg-error)))
+  `(elfeed-log-info-level-face ((,class :foreground ,fg-constant)))
+  `(elfeed-log-warn-level-face ((,class :foreground ,fg-warning)))
+  `(elfeed-search-date-face ((,class :foreground ,fg-function)))
+  `(elfeed-search-feed-face ((,class :foreground ,fg-cyan)))
+  `(elfeed-search-tag-face ((,class :foreground ,fg-green)))
+  `(elfeed-search-title-face ((,class :foreground ,fg)))
+  `(elfeed-search-unread-count-face ((,class :foreground ,fg)))
+  `(elfeed-search-unread-title-face ((,class :inherit 'bold)))
+
+;;;;; elpaca
+  `(elpaca-blocked ((,class :foreground ,fg-warning :weight bold)))
+  `(elpaca-busy ((,class :foreground ,fg-orange :weight bold)))
+  `(elpaca-failed ((,class :foreground ,fg-error :weight bold)))
+  `(elpaca-finished ((,class :foreground ,fg-success :weight bold)))
+
+;;;;; embark (defaults are fine)
+
+;;;;; highlight numbers
+  `(highlight-numbers-number ((,class :foreground ,fg-string :bold nil)))
+
+;;;;; marginalia (defaults are fine, just fix wrong italic)
+  `(marginalia-file-priv-read ((,class :inherit 'font-lock-type-face :italic nil)))
+
+;;;;; multiple-cursor
   `(mc/cursor-bar-face ((,class :background ,fg-coral :height 1)))
   `(mc/cursor-face ((,class :inverse-video t)))
   `(mc/region-face ((,class :inherit 'region)))
 
-  ;; highlight numbers
-  `(highlight-numbers-number ((,class :foreground ,fg-string :bold nil)))
+;;;;; orderless
+  `(orderless-match-face-0 ((,class :foreground ,fg-constant :weight bold)))
+  `(orderless-match-face-1 ((,class :foreground ,fg-pink-bright :weight bold)))
+  `(orderless-match-face-2 ((,class :foreground ,fg-success :weight bold)))
+  `(orderless-match-face-3 ((,class :foreground ,fg-warning :weight bold)))
 
-  ;; rainbow-delimiters
+;;;;; rainbow-delimiters
   `(rainbow-delimiters-depth-1-face ((,class :foreground ,fg-rainbow-1)))
   `(rainbow-delimiters-depth-2-face ((,class :foreground ,fg-rainbow-2)))
   `(rainbow-delimiters-depth-3-face ((,class :foreground ,fg-rainbow-3)))
@@ -488,30 +545,17 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(rainbow-delimiters-depth-10-face ((,class :foreground ,fg-rainbow-2)))
   `(rainbow-delimiters-depth-11-face ((,class :foreground ,fg-rainbow-3)))
   `(rainbow-delimiters-depth-12-face ((,class :foreground ,fg-rainbow-4)))
-  `(rainbow-delimiters-base-error-face ((,class :foreground ,fg-error
-                                                :background unspecified)))
-  `(rainbow-delimiters-unmatched-face
-    ((,class :inherit 'rainbow-delimiters-base-error-face)))
-  `(rainbow-delimiters-mismatched-face
-    ((,class :inherit 'rainbow-delimiters-base-error-face)))
+  `(rainbow-delimiters-base-error-face ((,class :foreground ,fg-error :background unspecified)))
+  `(rainbow-delimiters-unmatched-face ((,class :inherit 'rainbow-delimiters-base-error-face)))
+  `(rainbow-delimiters-mismatched-face ((,class :inherit 'rainbow-delimiters-base-error-face)))
 
-  ;; marginalia (just fix the wrong italic)
-  `(marginalia-file-priv-read ((,class :inherit 'font-lock-type-face
-                                       :italic nil)))
+;;;;; which func
+  `(which-func ((,class :foreground ,fg-function)))
 
-  ;; elfeed
-  `(elfeed-log-debug-level-face ((,class :foreground ,fg-pink)))
-  `(elfeed-log-error-level-face ((,class :foreground ,fg-error)))
-  `(elfeed-log-info-level-face ((,class :foreground ,fg-constant)))
-  `(elfeed-log-warn-level-face ((,class :foreground ,fg-warning)))
-  `(elfeed-search-date-face ((,class :foreground ,fg-function)))
-  `(elfeed-search-feed-face ((,class :foreground ,fg-cyan)))
-  `(elfeed-search-tag-face ((,class :foreground ,fg-green)))
-  `(elfeed-search-title-face ((,class :foreground ,fg)))
-  `(elfeed-search-unread-count-face ((,class :foreground ,fg)))
-  `(elfeed-search-unread-title-face ((,class :inherit 'bold)))
+;;;;; which key (defaults are fine)
 
-  ;; Just make org, web and sitter more pleasant while I'm not diving into it
+;;;; WIP
+  ;; Just make org and web more pleasant while I'm not diving into it
   ;; ORG
   `(org-block ((,class :foreground ,fg :background ,bg-max :extend t)))
   `(org-quote ((,class :foreground ,fg-comment :background ,bg-max :extend t)))
@@ -536,21 +580,13 @@ Also bind `class' to ((class color) (min-colors 89))."
   ;; This theme is still incomplete
   ;; TODO:
   ;; - Info-mode
-  ;; - customize (custom)
   ;; - eww
   ;; - grep
   ;; - c-annotation-face
-  ;; - man
-  ;; - woman
   ;; - newsticker
-  ;; - avy
   ;; - auctex
   ;; - org (org-ref)
   ;; - vc and better diff (magit ediff)
-  ;; - eshell (term)
-  ;; - gnus
-  ;; - message
-  ;; - orderless
   ;; - racket-mode
   ;; - realgud
   ;; - speedbar

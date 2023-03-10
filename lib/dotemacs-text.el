@@ -35,6 +35,7 @@
   (org-document-info-keyword ((t (:inherit 'fixed-pitch))))
   (org-meta-line ((t (:inherit 'fixed-pitch))))
   (org-table ((t (:inherit 'fixed-pitch))))
+  ;; (org-table-header ((t (:inherit 'fixed-pitch))))
   (org-verbatim ((t (:inherit 'fixed-pitch))))
   (org-formula ((t (:inherit 'fixed-pitch))))
   (org-special-keyword ((t (:inherit 'fixed-pitch))))
