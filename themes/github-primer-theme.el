@@ -471,7 +471,7 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;; External
 
-;;;;; avy - dark
+;;;;; avy
   `(avy-background-face ((,class :foreground ,fg-disabled)))
   `(avy-lead-face ((,class :background ,bg-coral :foreground ,fg)))
   `(avy-lead-face-0 ((,class :background ,bg-purple :foreground ,fg)))
@@ -515,8 +515,14 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; embark (defaults are fine)
 
+;;;;; helpful
+  `(helpful-heading ((,class :foreground ,fg :weight bold :height 1.2)))
+
 ;;;;; highlight numbers
   `(highlight-numbers-number ((,class :foreground ,fg-string :bold nil)))
+
+;;;;; hl-todo
+  `(hl-todo ((,class :foreground ,fg-coral :weight bold)))
 
 ;;;;; marginalia (defaults are fine, just fix wrong italic)
   `(marginalia-file-priv-read ((,class :inherit 'font-lock-type-face :italic nil)))
