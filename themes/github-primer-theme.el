@@ -58,12 +58,32 @@ and dark-dimmed (default)."
                  (const :tag "Dark (Tritanopia)" "dark-tritanopia")
                  (const :tag "Dark (Dimmed)" "dark-dimmed")))
 
+(defcustom github-primer-cycle-list '("light" "dark" "dark-dimmed")
+  "List of theme variant to cycle through."
+  :group 'github-primer-theme
+  :type '(repeat string))
+
 (defcustom github-primer-override-colors-alist '()
   "Place to override default theme colors.
 You can override a subset of the theme's default colors by
 defining them in this alist before loading the theme."
   :group 'github-primer-theme
   :type '(alist :key-type string :value-type string))
+
+;;;###autoload
+(defun github-primer-cycle ()
+  "Cycle through themes."
+  (interactive)
+  (when-let* ((max (- (length github-primer-cycle-list) 1))
+              (pos (seq-position github-primer-cycle-list github-primer-color-theme))
+              (next (+ pos 1)))
+    (if (> next max)
+        (customize-set-variable 'github-primer-color-theme
+                                (nth 0 github-primer-cycle-list))
+      (customize-set-variable 'github-primer-color-theme
+                              (nth next github-primer-cycle-list)))
+    (message "%s" github-primer-color-theme)
+    (load-theme 'github-primer t)))
 
 (defun github-primer-colors-alist ()
   "Get the color palette based on `github-primer-color-theme' value.

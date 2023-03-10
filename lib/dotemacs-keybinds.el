@@ -22,7 +22,8 @@
    "C-<" 'mc/mark-previous-like-this
    "C-S-<mouse-1>" 'mc/add-cursor-on-click
    "C-=" 'er/expand-region
-   "C-:" 'avy-goto-char)
+   "C-:" 'avy-goto-char
+   "<f5>" 'github-primer-cycle)
 
   (general-define-key
    :prefix "C-z"
