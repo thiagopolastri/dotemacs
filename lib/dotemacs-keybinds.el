@@ -23,7 +23,8 @@
    "C-S-<mouse-1>" 'mc/add-cursor-on-click
    "C-=" 'er/expand-region
    "C-:" 'avy-goto-char
-   "<f5>" 'github-primer-cycle)
+   "<f5>" 'github-primer-cycle
+   "<f6>" 'display-time-mode)
 
   (general-define-key
    :prefix "C-z"

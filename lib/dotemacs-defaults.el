@@ -37,6 +37,7 @@
   (switch-to-buffer-obey-display-actions t)
   (enable-recursive-minibuffers t)
   (tab-always-indent 'complete)
+  (display-time-format "%d/%m/%Y %H:%M")
   :init
   (global-unset-key (kbd "C-z"))
   (delete-selection-mode 1)

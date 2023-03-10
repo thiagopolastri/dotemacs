@@ -82,7 +82,6 @@ defining them in this alist before loading the theme."
                                 (nth 0 github-primer-cycle-list))
       (customize-set-variable 'github-primer-color-theme
                               (nth next github-primer-cycle-list)))
-    (message "%s" github-primer-color-theme)
     (load-theme 'github-primer t)))
 
 (defun github-primer-colors-alist ()
