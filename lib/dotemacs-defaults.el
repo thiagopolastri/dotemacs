@@ -121,6 +121,7 @@
 
 (use-package hideshow
   :elpaca nil
+  :diminish hs-minor-mode
   :hook (dotemacs-prog-mode . hs-minor-mode))
 
 (use-package visual-line-mode
