@@ -36,7 +36,6 @@
 
 (use-package flyspell
   :elpaca nil
-  :after (ispell consult)
   :hook (dotemacs-text-mode . flyspell-mode)
   :preface
   (defun dotemacs-hunspell-set-local-dict (dict)
@@ -56,7 +55,7 @@
       :history t
       :sort nil))))
 
-(use-package flyspell-correct :after flyspell)
+(use-package flyspell-correct)
 
 (use-package flymake-eslint
   :preface

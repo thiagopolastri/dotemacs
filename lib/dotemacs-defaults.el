@@ -119,6 +119,10 @@
   :custom (display-fill-column-indicator-character ?\u258F)
   :hook (dotemacs-prog-mode . display-fill-column-indicator-mode))
 
+(use-package hideshow
+  :elpaca nil
+  :hook (dotemacs-prog-mode . hs-minor-mode))
+
 (use-package visual-line-mode
   :elpaca nil
   :hook (dotemacs-text-mode . visual-line-mode))
