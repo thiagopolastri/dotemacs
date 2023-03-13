@@ -37,6 +37,7 @@
   (switch-to-buffer-obey-display-actions t)
   (enable-recursive-minibuffers t)
   (tab-always-indent 'complete)
+  (display-time-default-load-average nil)
   (display-time-format "%d/%m/%Y %H:%M")
   :init
   (global-unset-key (kbd "C-z"))
@@ -48,6 +49,9 @@
   (global-so-long-mode 1)
   (when (fboundp 'pixel-scroll-precision-mode)
     (pixel-scroll-precision-mode 1))
+  (when (display-graphic-p)
+    (customize-set-variable 'x-select-request-type
+                            '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
   (add-hook 'prog-mode-hook 'dotemacs-prog-mode)
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p))

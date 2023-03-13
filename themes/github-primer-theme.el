@@ -611,7 +611,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   ;; - newsticker
   ;; - auctex
   ;; - org (org-ref)
-  ;; - vc and better diff (magit ediff)
+  ;; - magit
   ;; - racket-mode
   ;; - realgud
   ;; - speedbar
