@@ -25,8 +25,8 @@
 ;; elpaca first run   - 13.69 seconds with 2 garbage collections
 ;; elpaca normal run  - 0.32 seconds with 7 garbage collections
 
-;; (require 'dotemacs-package) ; Replace :elpaca nil to :ensure nil
-(require 'dotemacs-elpaca) ; Replace :ensure nil to :elpaca nil
+;; (require 'dotemacs-package) ; Replace :elpaca nil with :ensure nil
+(require 'dotemacs-elpaca) ; Replace :ensure nil with :elpaca nil
 
 (require 'dotemacs-defaults)
 (require 'dotemacs-editor)
