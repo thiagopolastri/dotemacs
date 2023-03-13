@@ -28,6 +28,7 @@
 
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
+(set-charset-priority 'unicode)
 
 (customize-set-variable 'custom-file (dotemacs-get-path "custom.el"))
 (unless (file-exists-p custom-file)

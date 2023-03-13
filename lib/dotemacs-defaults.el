@@ -31,6 +31,8 @@
   (vc-handled-backends '(Git))
   (kill-buffer-query-functions nil)
   (revert-without-query t)
+  (make-backup-files nil)
+  (auto-save-default nil)
   (create-lockfiles nil)
   (uniquify-buffer-name-style 'forward)
   (large-file-warning-threshold 100000000) ; 100MB
@@ -47,6 +49,8 @@
   (show-paren-mode 1)
   (save-place-mode 1)
   (global-so-long-mode 1)
+  (when (fboundp 'async-bytecomp-package-mode)
+    (async-bytecomp-package-mode 1))
   (when (fboundp 'pixel-scroll-precision-mode)
     (pixel-scroll-precision-mode 1))
   (when (display-graphic-p)
