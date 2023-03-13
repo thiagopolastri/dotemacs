@@ -38,8 +38,8 @@
 (use-package sicp)
 
 ;; This will add 0.64s on init. Enable when necessary
-;; (when (fboundp 'elpaca-wait)
-;;   (use-package geiser :defer t)
+;; (when (fboundp 'elpaca)
+;;   (elpaca geiser)
 ;;   (elpaca-wait))
 ;; (use-package geiser-guile :defer t)
 
