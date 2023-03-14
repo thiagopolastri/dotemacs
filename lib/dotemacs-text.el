@@ -9,6 +9,7 @@
 ;;; Code:
 
 (require 'dotemacs)
+(require 'dotemacs-modes)
 
 (use-package org
   :elpaca nil
@@ -93,8 +94,7 @@
 
 (use-package auctex
   :hook ((LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . reftex-mode)
-         (LaTeX-mode . eglot-ensure))
+         (LaTeX-mode . reftex-mode))
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)

@@ -60,19 +60,6 @@ The default dictionary will be the first item."
   "Convert and get a FILE path relative to `user-emacs-directory'."
   (convert-standard-filename (expand-file-name file user-emacs-directory)))
 
-;; Some modes that I want to treat as `prog-mode' actually are derived from
-;; `text-mode' (like XML and others data files).
-;; I'll create two modes to hook stuff on it and leave `text-mode' alone.
-(define-minor-mode dotemacs-prog-mode
-  "Stub mode with modes that should be hooked in `prog-mode'."
-  :init-value nil
-  :keymap (make-sparse-keymap))
-
-(define-minor-mode dotemacs-text-mode
-  "Stub mode with modes that should be hooked in `text-mode'."
-  :init-value nil
-  :keymap (make-sparse-keymap))
-
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
   (require 'treesit))
 

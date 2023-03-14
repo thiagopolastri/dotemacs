@@ -8,7 +8,7 @@
 
 ;;; Code:
 
-(require 'dotemacs)
+(require 'dotemacs-modes)
 
 (use-package emacs
   :elpaca nil

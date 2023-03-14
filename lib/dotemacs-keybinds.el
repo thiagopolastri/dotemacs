@@ -8,6 +8,8 @@
 
 ;;; Code:
 
+(require 'dotemacs-modes)
+
 (use-package general
   :init
   (general-define-key

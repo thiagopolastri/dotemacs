@@ -9,6 +9,7 @@
 ;;; Code:
 
 (require 'dotemacs)
+(require 'dotemacs-modes)
 
 (use-package flymake
   :elpaca nil
