@@ -11,10 +11,34 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
+(use-package visual-fill-column
+  ;; `visual-line-mode' are already hooked on `dotemacs-text-mode'.
+  :hook (visual-line-mode . visual-fill-column-mode)
+  :custom
+  (visual-fill-column-center-text t)
+  (visual-fill-column-width 80))
+
+(use-package htmlize)
+(use-package pdf-tools :defer t)
+(use-package org-appear)
+
+(use-package org-modern
+  :custom
+  (org-modern-block-fringe nil) ; my theme already do this
+  (org-modern-table nil) ; valign do this better with variable-pitch
+  (org-modern-star ["❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽"]))
+
+(use-package valign
+  :custom (valign-fancy-bar t)
+  :diminish valign-mode)
+
 (use-package org
   :elpaca nil
   :commands (org-capture org-agenda)
-  :hook (org-mode . dotemacs-text-mode)
+  :hook ((org-mode . dotemacs-text-mode)
+         (org-mode . org-appear-mode)
+         (org-mode . org-modern-mode)
+         (org-mode . valign-mode))
   :custom
   (org-ellipsis " ⤵")
   (org-catch-invisible-edits 'show-and-error)
@@ -23,6 +47,25 @@
   (org-special-ctrl-a/e t)
   (org-insert-heading-respect-content t)
   (org-adapt-indentation nil)
+  ;; Opinionated stuff
+  (org-return-follows-link t)
+  (org-edit-src-content-indentation 0)
+  (org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
+  (org-fontify-quote-and-verse-blocks t)
+  (org-enforce-todo-dependencies t)
+  (org-enforce-todo-checkbox-dependencies t)
+  (org-agenda-start-with-log-mode t)
+  (org-log-done 'time)
+  (org-log-reschedule 'time)
+  (org-log-redeadline 'time)
+  (org-log-into-drawer t)
+  ;; Latex
+  (org-latex-compiler "xelatex") ; or luatex
+  (org-latex-listings t) ; TODO: add package "listings" on preamble
+  (org-latex-pdf-process
+   (list (concat "latexmk -"
+                 org-latex-compiler
+                 " -recorder -synctex=1 -bibtex-cond %b")))
   :init
   (when dotemacs-use-variable-pitch-in-org
     (customize-set-variable 'org-auto-align-tags nil)
@@ -42,15 +85,6 @@
   (org-special-keyword ((t (:inherit 'fixed-pitch))))
   (org-checkbox ((t (:inherit 'fixed-pitch)))))
 
-(use-package org-appear
-  :hook (org-mode . org-appear-mode))
-
-(use-package org-modern
-  :custom
-  (org-modern-star ["❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽"])
-  (org-modern-block-fringe nil)
-  :hook (org-mode . org-modern-mode))
-
 (use-package org-roam
   :when (and (bound-and-true-p dotemacs-roam-dir)
              (file-exists-p dotemacs-roam-dir))
@@ -64,7 +98,9 @@
 
 (use-package markdown-mode
   :hook ((markdown-mode . dotemacs-text-mode)
-         (gfm-mode . dotemacs-text-mode))
+         (gfm-mode . dotemacs-text-mode)
+         (markdown-mode . valign-mode)
+         (gfm-mode . valign-mode))
   :mode ("/README\\(?:\\.md\\)?\\'" . gfm-mode)
   :custom
   (markdown-command "pandoc") ; or multimarkdown
@@ -98,14 +134,13 @@
 
 (use-package auctex
   :hook ((LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . reftex-mode))
+         (LaTeX-mode . reftex-mode)
+         (LaTeX-mode . dotemacs-text-mode))
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)
   :config (setq-default TeX-master nil))
 
-(use-package htmlize)
-(use-package pdf-tools :defer t)
 
 (provide 'dotemacs-text)
 ;;; dotemacs-text.el ends here

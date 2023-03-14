@@ -38,9 +38,6 @@
 (require 'dotemacs-keybinds)
 
 ;; hacky and private stuff that I dont want to commit.
-;; This file is mostly user information (`user-full-name', `user-mail-address',
-;; etc), feeds, mail, org (agenda, journal, etc) and some very opinionated latex
-;; and faces configuration.
 (load (dotemacs-get-path "user.el") :no-error) ; 0.07s
 
 (setq gc-cons-threshold (expt 2 24) ;; 16777216

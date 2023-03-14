@@ -94,12 +94,6 @@
   (highlight-indent-guides-auto-even-face-perc 1.5)
   (highlight-indent-guides-auto-character-face-perc 35))
 
-(use-package visual-fill-column
-  :hook (visual-line-mode . visual-fill-column-mode)
-  :custom
-  (visual-fill-column-center-text t)
-  (visual-fill-column-width 80))
-
 (use-package crux)
 (use-package multiple-cursors)
 (use-package expand-region)
@@ -110,6 +104,8 @@
   :init (yas-global-mode))
 
 (use-package yasnippet-snippets)
+
+(use-package elpher :defer t) ; TODO: define a better keybind for elpher
 
 
 (provide 'dotemacs-editor)
