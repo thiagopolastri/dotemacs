@@ -54,6 +54,7 @@
 
 (elpaca no-littering)
 (elpaca diminish)
+(elpaca geiser) ; work around
 (elpaca-wait) ; block this queue to ensure use-package statements will work
 
 (require 'recentf)
