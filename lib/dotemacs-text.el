@@ -92,6 +92,10 @@
   (markdown-pre-face ((t (:inherit 'fixed-pitch))))
   (markdown-table-face ((t (:inherit 'fixed-pitch)))))
 
+(use-package rst-mode
+  :elpaca nil
+  :hook (rst-mode . dotemacs-text-mode))
+
 (use-package auctex
   :hook ((LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . reftex-mode))

@@ -35,6 +35,7 @@
 (use-package sicp)
 
 ;; This will add 0.64s on init. Enable when necessary
+;; TODO: find a better way to install/start Geiser
 ;; (when (fboundp 'elpaca)
 ;;   (elpaca geiser)
 ;;   (elpaca-wait))
@@ -186,7 +187,6 @@
    :lang 'go-mod
    :github "camdencheek/tree-sitter-go-mod"
    :remap '(go-dot-mod-mode . go-mod-ts-mode)))
-
 
 (use-package sgml-mode
   :elpaca nil

@@ -32,8 +32,10 @@
    :prefix "C-z"
    "." 'embark-dwim
    "/" 'crux-duplicate-current-line-or-region
+   ">" 'avy-goto-char-2
    "b" 'blamer-mode
    "e" 'embark-export
+   "l" 'avy-goto-line
    "m" 'consult-minor-mode-menu
    "n" 'dotemacs-toggle-line-numbers-type
    "o" 'crux-open-with
@@ -47,9 +49,7 @@
    "t" 'multi-vterm
    "C-e" 'crux-eval-and-replace
    "C-s" 'crux-sudo-edit
-   "C-/" 'crux-duplicate-and-comment-current-line-or-region
-   ">" 'avy-goto-char-2
-   "l" 'avy-goto-line)
+   "C-/" 'crux-duplicate-and-comment-current-line-or-region)
 
   (general-define-key
    :keymaps 'minibuffer-local-map
