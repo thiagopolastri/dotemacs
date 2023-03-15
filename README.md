@@ -1,7 +1,5 @@
-# Dotemacs
+# dotemacs
 
-Clone in `~/.config/emacs` and use `M-x customize-group` to change `dotemacs`, `github-primer-theme` and `dotemacs-modeline`.
+Clone in `~/.config/emacs` and use `customize-group` to change `dotemacs`.
 
-Modeline needs Font Awesome to work. Theme is a work in progress.
-
-Install tree-sitter parsers manually or use `M-x treesit-install-language-grammar`.
+Install tree-sitter parsers with `treesit-install-language-grammar`.
