@@ -18,7 +18,6 @@
      (float-time (time-subtract after-init-time before-init-time)))
     gcs-done)))
 
-;; elpaca works better on Emacs >=29.
 ;; elpaca will get stuck on multi-vterm building task, but everything works.
 ;; package first run  - 155.02 seconds with 5 garbage collections
 ;; package normal run - 2.64 seconds with 2 garbage collections
@@ -32,7 +31,7 @@
 (require 'dotemacs-editor)
 (require 'dotemacs-completions)
 (require 'dotemacs-checkers)
-(require 'dotemacs-prog) ; geiser is disabled
+(require 'dotemacs-prog)
 (require 'dotemacs-text)
 (require 'dotemacs-terminal)
 (require 'dotemacs-keybinds)
