@@ -23,11 +23,33 @@
   (add-hook 'scheme-mode-hook 'paredit-mode))
 
 (customize-set-variable 'inferior-lisp-program "sbcl")
+
+;; Install quicklisp on sbcl and create the .sbclrc
+;; sbcl --load quicklisp.lisp
+;; (quicklisp-quickstart:install)
+;; (ql:add-to-init-file)
+;; (ql:quickload "quicklisp-slime-helper")
+
+;; (use-package slime ; disabled to test Sly
+;;   :defer t
+;;   :custom
+;;   (slime-net-coding-system 'utf-8-unix)
+;;   (slime-complete-symbol*-fancy t)
+;;   (slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+;;   :init
+;;   (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;;   (slime-setup '(slime-fancy
+;;                  slime-indentation
+;;                  slime-banner
+;;                  slime-highlight-edits
+;;                  slime-company)))
+
 (use-package sly
   :defer t
   :hook (lisp-mode . sly-editing-mode))
+
 (use-package sly-asdf :after sly)
-;; (use-package sly-quicklisp :after sly) ; TODO: fix quicklisp load
+(use-package sly-quicklisp :after sly)
 
 (customize-set-variable 'scheme-program-name "guile")
 (use-package geiser-guile :defer t)
@@ -37,7 +59,11 @@
 
 (use-package clojure-mode
   :hook ((clojure-mode . paredit-mode)))
-(use-package cider :defer t :after clojure-mode)
+
+(use-package cider
+  :defer t
+  :after clojure-mode
+  :hook (cider-mode . cider-turn-on-eldoc-mode))
 
 (use-package rustic
   :custom (rustic-lsp-client 'eglot)

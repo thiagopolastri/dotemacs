@@ -60,6 +60,7 @@
   (org-log-redeadline 'time)
   (org-log-into-drawer t)
   ;; Latex
+  (org-highlight-latex-and-related '(native))
   (org-latex-compiler "xelatex") ; or luatex
   (org-latex-listings t) ; TODO: add package "listings" on preamble
   (org-latex-pdf-process
