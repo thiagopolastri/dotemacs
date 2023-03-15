@@ -12,8 +12,6 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
-(customize-set-variable 'inferior-lisp-program "sbcl")
-
 (use-package paredit
   :after smartparens
   :diminish paredit-mode
@@ -24,16 +22,22 @@
   (add-hook 'common-lisp-mode-hook 'paredit-mode)
   (add-hook 'scheme-mode-hook 'paredit-mode))
 
+(customize-set-variable 'inferior-lisp-program "sbcl")
+(use-package sly
+  :defer t
+  :hook (lisp-mode . sly-editing-mode))
+(use-package sly-asdf :after sly)
+;; (use-package sly-quicklisp :after sly) ; TODO: fix quicklisp load
+
+(customize-set-variable 'scheme-program-name "guile")
+(use-package geiser-guile :defer t)
+
 (use-package racket-mode
   :hook (racket-mode . paredit-mode))
 
 (use-package clojure-mode
   :hook ((clojure-mode . paredit-mode)))
-
-(use-package cider :defer t)
-(use-package sly :defer t)
-(use-package sicp)
-(use-package geiser-guile :defer t)
+(use-package cider :defer t :after clojure-mode)
 
 (use-package rustic
   :custom (rustic-lsp-client 'eglot)
@@ -234,6 +238,7 @@
 (use-package restclient)
 (use-package format-all)
 (use-package devdocs)
+(use-package sicp)
 (use-package realgud :defer t)
 
 (provide 'dotemacs-prog)
