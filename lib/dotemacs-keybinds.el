@@ -10,7 +10,7 @@
 
 (require 'dotemacs-modes)
 
-(use-package hydra) ; TODO: create some hydras
+(use-package hydra)
 
 (use-package general
   :init

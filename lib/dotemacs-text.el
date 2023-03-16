@@ -47,7 +47,6 @@
   (org-special-ctrl-a/e t)
   (org-insert-heading-respect-content t)
   (org-adapt-indentation nil)
-  ;; Opinionated stuff
   (org-return-follows-link t)
   (org-edit-src-content-indentation 0)
   (org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
