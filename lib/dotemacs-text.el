@@ -32,7 +32,7 @@
   :custom (valign-fancy-bar t)
   :diminish valign-mode)
 
-(use-package org
+(use-package org ; TODO: finish org config
   :elpaca nil
   :commands (org-capture org-agenda)
   :hook ((org-mode . dotemacs-text-mode)
@@ -128,6 +128,10 @@
   (markdown-language-keyword-face ((t (:inherit 'fixed-pitch))))
   (markdown-pre-face ((t (:inherit 'fixed-pitch))))
   (markdown-table-face ((t (:inherit 'fixed-pitch)))))
+
+(use-package pandoc-mode
+  :after (markdown-mode hydra)
+  :hook (markdown-mode . pandoc-mode))
 
 (use-package rst-mode
   :elpaca nil
