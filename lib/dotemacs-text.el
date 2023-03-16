@@ -18,8 +18,12 @@
   (visual-fill-column-center-text t)
   (visual-fill-column-width 80))
 
+(use-package pdf-tools
+  :magic ("%PDF" . pdf-view-mode)
+  :custom (pdf-view-display-size 'fit-page)
+  :config (pdf-tools-install))
+
 (use-package htmlize)
-(use-package pdf-tools :defer t)
 (use-package org-appear)
 
 (use-package org-modern
@@ -136,7 +140,8 @@
   :elpaca nil
   :hook (rst-mode . dotemacs-text-mode))
 
-(use-package auctex
+(use-package latex
+  :elpaca auctex
   :hook ((LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . reftex-mode)
          (LaTeX-mode . dotemacs-text-mode))
