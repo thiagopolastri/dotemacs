@@ -46,6 +46,7 @@
 
 (use-package sly
   :defer t
+  :custom (sly-symbol-completion-mode nil)
   :hook (lisp-mode . sly-editing-mode))
 
 (use-package sly-asdf :after sly)

@@ -51,6 +51,7 @@
   (global-corfu-mode)
   (unless (fboundp 'corfu-popupinfo-mode)
     ;; Work around. Extensions become unavailable with elpaca.
+    ;; TODO: Remove this when its fixed (corfu extensions)
     (when-let* ((ce (dotemacs-get-path "elpaca/repos/corfu/extensions"))
                 (_ (file-exists-p ce)))
       (message "Building corfu extensions...")
