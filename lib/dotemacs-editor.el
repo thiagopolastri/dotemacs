@@ -105,7 +105,7 @@
 
 (use-package yasnippet-snippets)
 
-(use-package elpher :defer t) ; TODO: define a better keybind for elpher
+(use-package elpher :defer t)
 
 
 (provide 'dotemacs-editor)

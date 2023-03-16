@@ -28,7 +28,7 @@
 
 (use-package org-modern
   :custom
-  (org-modern-block-fringe nil) ; my theme already do this
+  (org-modern-block-fringe nil)
   (org-modern-table nil) ; valign do this better with variable-pitch
   (org-modern-star ["❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽"]))
 
@@ -36,7 +36,7 @@
   :custom (valign-fancy-bar t)
   :diminish valign-mode)
 
-(use-package org ; TODO: finish org config
+(use-package org
   :elpaca nil
   :commands (org-capture org-agenda)
   :hook ((org-mode . dotemacs-text-mode)
@@ -64,8 +64,8 @@
   (org-log-into-drawer t)
   ;; Latex
   (org-highlight-latex-and-related '(native))
-  (org-latex-compiler "xelatex") ; or luatex
-  (org-latex-listings t) ; TODO: add package "listings" on preamble
+  (org-latex-compiler "xelatex")
+  (org-latex-listings t)
   (org-latex-pdf-process
    (list (concat "latexmk -"
                  org-latex-compiler
@@ -75,6 +75,8 @@
     (customize-set-variable 'org-auto-align-tags nil)
     (customize-set-variable 'org-tags-column 0)
     (add-hook 'org-mode-hook 'variable-pitch-mode))
+  :config
+  (add-to-list 'org-latex-packages-alist '("" "listings" t))
   :custom-face
   (org-block ((t (:inherit 'fixed-pitch))))
   (org-block-begin-line ((t (:inherit 'fixed-pitch))))
@@ -107,7 +109,7 @@
          (gfm-mode . valign-mode))
   :mode ("/README\\(?:\\.md\\)?\\'" . gfm-mode)
   :custom
-  (markdown-command "pandoc") ; or multimarkdown
+  (markdown-command "pandoc")
   (markdown-enable-math t)
   (markdown-enable-wiki-links t)
   (markdown-italic-underscore t)
