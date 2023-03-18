@@ -23,7 +23,7 @@
     (defhydra hydra-roam-menu (:exit t :hint nil)
       "
 ^Create/Open^             ^Actions on current file^          ^View^
-^^^^^^^^-----------------------------------------------------------------
+^^^^^^^^------------------------------------------------------------------
 _f_: Find roam node       _n_: Add to agenda                 _a_: Agenda
 _i_: Insert roam node     _r_: Remove from agenda
 _c_: Capture task/note    _s_: Schedule current TODO
