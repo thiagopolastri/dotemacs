@@ -13,11 +13,7 @@
 
 (use-package hydra
   :init
-  ;; My approach to note/task management is pretty simple (and naive).
-  ;; Each Project is a roam node, when its ongoing I add the node file to
-  ;; agenda, when its finished I remove from it.
-  ;; I always use `org-roam-capture' instead `org-capture'.
-  ;; I made this hydra to make this workflow more natural.
+  ;; My agenda files are org-roam files.
   (when (and (bound-and-true-p dotemacs-roam-dir)
              (file-exists-p dotemacs-roam-dir))
     (defhydra hydra-roam-menu (:exit t :hint nil)
