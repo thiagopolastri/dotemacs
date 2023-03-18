@@ -70,6 +70,13 @@
    (list (concat "latexmk -"
                  org-latex-compiler
                  " -recorder -synctex=1 -bibtex-cond %b")))
+  ;; TODOs
+  (org-todo-keywords '((sequence "TODO(t)"
+                                 "STARTED(s)"
+                                 "WAITING(w)"
+                                 "|"
+                                 "DONE(d)"
+                                 "CANCELLED(c)")))
   :init
   (when dotemacs-use-variable-pitch-in-org
     (customize-set-variable 'org-auto-align-tags nil)
@@ -95,11 +102,18 @@
   :when (and (bound-and-true-p dotemacs-roam-dir)
              (file-exists-p dotemacs-roam-dir))
   :after org
-  :init (setq org-roam-v2-ack t)
   :custom
   (org-roam-directory dotemacs-roam-dir)
   (org-roam-completion-everywhere t)
   (org-roam-completion-system 'default)
+  (org-roam-capture-templates
+   '(("t" "task" plain
+      "* %?\n %a"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n"))
+     ("d" "default" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)))
   :config (org-roam-setup))
 
 (use-package markdown-mode

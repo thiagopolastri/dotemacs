@@ -8,9 +8,38 @@
 
 ;;; Code:
 
+(require 'dotemacs)
 (require 'dotemacs-modes)
 
-(use-package hydra)
+(use-package hydra
+  :init
+  ;; My approach to note/task management is pretty simple (and naive).
+  ;; Each Project is a roam node, when its ongoing I add the node file to
+  ;; agenda, when its finished I remove from it.
+  ;; I always use `org-roam-capture' instead `org-capture'.
+  ;; I made this hydra to make this workflow more natural.
+  (when (and (bound-and-true-p dotemacs-roam-dir)
+             (file-exists-p dotemacs-roam-dir))
+    (defhydra hydra-roam-menu (:exit t :hint nil)
+      "
+^Create/Open^             ^Actions on current file^          ^View^
+^^^^^^^^-----------------------------------------------------------------
+_f_: Find roam node       _n_: Add to agenda                 _a_: Agenda
+_i_: Insert roam node     _r_: Remove from agenda
+_c_: Capture task/note    _s_: Schedule current TODO
+^ ^                       _m_: Refile current TODO
+"
+      ("f" org-roam-node-find)
+      ("i" org-roam-node-insert)
+      ("c" org-roam-capture)
+      ("n" org-agenda-file-to-front)
+      ("r" org-remove-file)
+      ("s" org-schedule)
+      ("m" org-roam-refile)
+      ("a" org-agenda)
+      ("q" nil "cancel"))
+
+    (global-set-key (kbd "<f12>") #'hydra-roam-menu/body)))
 
 (use-package general
   :init
@@ -43,10 +72,6 @@
    "o" 'crux-open-with
    "p f" 'consult-project-extra-find
    "p o" 'consult-project-extra-find-other-window
-   "r f" 'org-roam-node-find
-   "r i" 'org-roam-node-insert
-   "r c" 'org-roam-capture
-   "r t" 'org-roam-buffer-toggle
    "s" 'isearch-forward
    "t" 'multi-vterm
    "C-e" 'crux-eval-and-replace
