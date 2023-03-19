@@ -19,20 +19,22 @@
     (defhydra hydra-roam-menu (:exit t :hint nil)
       "
 ^Create/Open^             ^Actions on current file^          ^View^
-^^^^^^^^------------------------------------------------------------------
+^^^^^^^^------------------------------------------------------------------------
 _f_: Find roam node       _n_: Add to agenda                 _a_: Agenda
-_i_: Insert roam node     _r_: Remove from agenda
+_i_: Insert roam node     _r_: Remove from agenda            _t_: Today (daily)
 _c_: Capture task/note    _s_: Schedule current TODO
-^ ^                       _m_: Refile current TODO
+_d_: Capture daily        _m_: Refile current TODO
 "
       ("f" org-roam-node-find)
       ("i" org-roam-node-insert)
       ("c" org-roam-capture)
+      ("d" org-roam-dailies-capture-today)
       ("n" org-agenda-file-to-front)
       ("r" org-remove-file)
       ("s" org-schedule)
       ("m" org-roam-refile)
       ("a" org-agenda)
+      ("t" org-roam-dailies-goto-today)
       ("q" nil "cancel"))
 
     (global-set-key (kbd "<f12>") #'hydra-roam-menu/body)))

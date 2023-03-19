@@ -106,15 +106,19 @@
   (org-roam-directory dotemacs-roam-dir)
   (org-roam-completion-everywhere t)
   (org-roam-completion-system 'default)
-  (org-roam-capture-templates
-   '(("t" "task" plain
-      "* %?\n %a"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n"))
-     ("d" "default" plain
-      "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)))
-  :config (org-roam-setup))
+  :config
+  (org-roam-setup)
+  (add-to-list
+   'org-roam-capture-templates
+   '("t" "task" plain
+     "* %?\n %a"
+     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")))
+  (setq org-roam-dailies-directory "daily/")
+  (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry
+           "* %?"
+           :target (file+head "%<%Y-%m-%d>.org"
+                              "#+title: %<%Y-%m-%d>\n")))))
 
 (use-package markdown-mode
   :hook ((markdown-mode . dotemacs-text-mode)
