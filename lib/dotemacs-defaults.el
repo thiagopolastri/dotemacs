@@ -144,6 +144,20 @@
   (proced-auto-update-interval 1)
   (proced-enable-color-flag t))
 
+(use-package project
+  :elpaca nil
+  :custom
+  (project-vc-ignores '("target/"
+                        "bin/"
+                        "obj/"
+                        "node_modules/"
+                        ".vscode/"))
+  (project-vc-extra-root-markers '(".dir-locals.el"
+                                   "package.json"
+                                   "cargo.toml"
+                                   "pom.xml"
+                                   "*.csproj")))
+
 
 (provide 'dotemacs-defaults)
 ;;; dotemacs-defaults.el ends here
