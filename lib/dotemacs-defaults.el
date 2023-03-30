@@ -41,6 +41,9 @@
   (tab-always-indent 'complete)
   (display-time-default-load-average nil)
   (display-time-format "%d/%m/%Y %H:%M")
+  (scroll-step 1)
+  (scroll-conservatively 10000)
+  (auto-window-vscroll nil)
   :init
   (global-unset-key (kbd "C-z"))
   (delete-selection-mode 1)

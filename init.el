@@ -39,7 +39,10 @@
 ;; hacky and private stuff that I dont want to commit.
 (load (dotemacs-get-path "user.el") :no-error) ; 0.07s
 
-(setq gc-cons-threshold (expt 2 24) ;; 16777216
-      gc-cons-percentage 0.1)
+(run-with-idle-timer 4 nil
+                     (lambda ()
+                       (setq gc-cons-threshold  67108864) ; 64M
+                       (setq gc-cons-percentage 0.1)
+                       (garbage-collect)))
 
 ;;; init.el ends here

@@ -36,17 +36,7 @@
   :init (which-key-mode)
   :config (which-key-setup-side-window-bottom))
 
-(use-package helpful
-  :config
-  (define-key helpful-mode-map [remap revert-buffer] #'helpful-update)
-  (global-set-key [remap describe-function] #'helpful-callable)
-  (global-set-key [remap describe-symbol] #'helpful-symbol)
-  (global-set-key [remap describe-variable] #'helpful-variable)
-  (global-set-key [remap describe-command] #'helpful-command)
-  (global-set-key [remap describe-key] #'helpful-key)
-  ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-  ;; already links to the manual, if a function is referenced there.
-  (global-set-key (kbd "C-h F") #'helpful-function))
+(use-package helpful)
 
 (use-package elisp-demos
   :after helpful

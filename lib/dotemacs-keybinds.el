@@ -43,7 +43,6 @@ _d_: Capture daily        _m_: Refile current TODO
   :init
   (general-define-key
    "C-s" 'consult-line
-   "C-x b" 'consult-buffer
    "C-c k" 'consult-ripgrep
    "C-." 'embark-act
    "C-h B" 'embark-bindings
@@ -55,7 +54,26 @@ _d_: Capture daily        _m_: Refile current TODO
    "C-=" 'er/expand-region
    "C-:" 'avy-goto-char
    "<f5>" 'github-primer-cycle
-   "<f6>" 'display-time-mode)
+   "<f6>" 'display-time-mode
+   ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+   ;; already links to the manual, if a function is referenced there.
+   "C-h F" 'helpful-function
+   [remap describe-function] #'helpful-callable
+   [remap describe-symbol] #'helpful-symbol
+   [remap describe-variable] #'helpful-variable
+   [remap describe-command] #'helpful-command
+   [remap describe-key] #'helpful-key
+   [remap bookmark-jump] #'consult-bookmark
+   [remap goto-line] #'consult-goto-line
+   [remap imenu] #'consult-imenu
+   [remap locate] #'consult-locate
+   [remap load-theme] #'consult-theme
+   [remap man] #'consult-man
+   [remap recentf-open-files] #'consult-recent-file
+   [remap switch-to-buffer] #'consult-buffer
+   [remap switch-to-buffer-other-window] #'consult-buffer-other-window
+   [remap switch-to-buffer-other-frame] #'consult-buffer-other-frame
+   [remap yank-pop] #'consult-yank-pop)
 
   (general-define-key
    :prefix "C-z"
@@ -75,6 +93,10 @@ _d_: Capture daily        _m_: Refile current TODO
    "C-e" 'crux-eval-and-replace
    "C-s" 'crux-sudo-edit
    "C-/" 'crux-duplicate-and-comment-current-line-or-region)
+
+  (general-define-key
+   :keymaps 'helpful-mode-map
+   [remap revert-buffer] #'helpful-update)
 
   (general-define-key
    :keymaps 'minibuffer-local-map
