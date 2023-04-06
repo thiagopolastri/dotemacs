@@ -56,7 +56,7 @@
       :history t
       :sort nil))))
 
-(use-package flyspell-correct)
+(use-package flyspell-correct :after flyspell)
 
 (use-package flymake-eslint
   :preface

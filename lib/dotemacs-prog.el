@@ -83,8 +83,7 @@
    :lang 'css
    :github "tree-sitter/tree-sitter-css"
    :remap '(css-mode . css-ts-mode))
-  :hook ((css-mode . rainbow-mode)
-         (css-ts-mode . rainbow-mode)))
+  :hook ((css-mode css-ts-mode) . rainbow-mode))
 
 (use-package npm-mode :diminish npm-mode)
 
@@ -95,10 +94,8 @@
    :lang 'javascript
    :github "tree-sitter/tree-sitter-javascript"
    :remap '(javascript-mode . js-ts-mode))
-  :hook ((javascript-mode . subword-mode)
-         (javascript-mode . npm-mode)
-         (js-ts-mode . subword-mode)
-         (js-ts-mode . npm-mode)))
+  :hook (((javascript-mode js-ts-mode) . subword-mode)
+         ((javascript-mode js-ts-mode) . npm-mode)))
 
 (use-package typescript-mode
   :init
@@ -112,12 +109,8 @@
    :github "tree-sitter/tree-sitter-typescript"
    :path "tsx/src"
    :mode '("\\.tsx\\'" . tsx-ts-mode))
-  :hook ((typescript-mode . subword-mode)
-         (typescript-mode . npm-mode)
-         (typescript-ts-mode . subword-mode)
-         (typescript-ts-mode . npm-mode)
-         (tsx-ts-mode . subword-mode)
-         (typescript-ts-mode . npm-mode)))
+  :hook (((typescript-mode typescript-ts-mode tsx-ts-mode) . subword-mode)
+         ((typescript-mode typescript-ts-mode tsx-ts-mode) . npm-mode)))
 
 (use-package json-mode
   :init
@@ -175,8 +168,7 @@
    :lang 'python
    :github "tree-sitter/tree-sitter-python"
    :remap '(python-mode . python-ts-mode))
-  :hook ((python-mode . pyvenv-mode)
-         (python-ts-mode . pyvenv-mode)))
+  :hook ((python-mode python-ts-mode) . pyvenv-mode))
 
 (use-package ruby-mode
   :elpaca nil
@@ -192,8 +184,7 @@
    :lang 'yaml
    :github "ikatyang/tree-sitter-yaml"
    :remap '(yaml-mode . yaml-ts-mode))
-  :hook ((yaml-mode . dotemacs-prog-mode)
-         (yaml-ts-mode . dotemacs-prog-mode)))
+  :hook ((yaml-mode yaml-ts-mode) . dotemacs-prog-mode))
 
 (use-package dockerfile-mode
   :init
@@ -215,13 +206,11 @@
 
 (use-package sgml-mode
   :elpaca nil
-  :hook ((html-mode . dotemacs-prog-mode)
-         (mhtml-mode . dotemacs-prog-mode)))
+  :hook ((html-mode mhtml-mode) . dotemacs-prog-mode))
 
 (use-package xml-mode
   :elpaca nil
-  :hook ((xml-mode . dotemacs-prog-mode)
-         (nxml-mode . dotemacs-prog-mode)))
+  :hook ((xml-mode nxml-mode) . dotemacs-prog-mode))
 
 (use-package web-mode
   :mode "\\.[px]?html?\\'"

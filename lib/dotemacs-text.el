@@ -121,10 +121,8 @@
                               "#+title: %<%Y-%m-%d>\n")))))
 
 (use-package markdown-mode
-  :hook ((markdown-mode . dotemacs-text-mode)
-         (gfm-mode . dotemacs-text-mode)
-         (markdown-mode . valign-mode)
-         (gfm-mode . valign-mode))
+  :hook (((markdown-mode gfm-mode) . dotemacs-text-mode)
+         ((markdown-mode gfm-mode) . valign-mode))
   :mode ("/README\\(?:\\.md\\)?\\'" . gfm-mode)
   :custom
   (markdown-command "pandoc")

@@ -15,6 +15,7 @@
   :custom
   (cursor-type 'bar)
   (use-short-answers t)
+  (y-or-n-p-use-read-key t)
   (confirm-kill-emacs 'yes-or-no-p)
   (visible-bell 1)
   (use-dialog-box nil)
@@ -44,6 +45,8 @@
   (scroll-step 1)
   (scroll-conservatively 10000)
   (auto-window-vscroll nil)
+  (bidi-paragraph-direction 'left-to-right)
+  (bidi-inhibit-bpa t)
   :init
   (global-unset-key (kbd "C-z"))
   (delete-selection-mode 1)
@@ -60,6 +63,7 @@
   ;;   (customize-set-variable 'x-select-request-type
   ;;                           '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
   (add-hook 'prog-mode-hook 'dotemacs-prog-mode)
+  (add-hook 'prog-mode-hook 'glyphless-display-mode)
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p))
 
@@ -118,8 +122,7 @@
 
 (use-package hl-line
   :elpaca nil
-  :hook ((dotemacs-prog-mode . hl-line-mode)
-         (dired-mode . hl-line-mode)))
+  :hook ((dotemacs-prog-mode dired-mode) . hl-line-mode))
 
 (use-package display-fill-column-indicator
   :elpaca nil
