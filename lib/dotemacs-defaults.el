@@ -63,9 +63,13 @@
   ;;   (customize-set-variable 'x-select-request-type
   ;;                           '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
   (add-hook 'prog-mode-hook 'dotemacs-prog-mode)
-  (add-hook 'prog-mode-hook 'glyphless-display-mode)
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p))
+
+(use-package glyphless-mode
+  :elpaca nil
+  :diminish glyphless-display-mode
+  :hook (prog-mode . glyphless-display-mode))
 
 (use-package autorevert
   :elpaca nil
