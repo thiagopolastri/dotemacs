@@ -624,7 +624,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(web-mode-html-tag-custom-face ((,class :inherit 'web-mode-html-tag-face)))
   `(web-mode-html-tag-namespaced-face ((,class :inherit 'web-mode-html-tag-face)))
   `(web-mode-html-tag-unclosed-face ((,class :inherit 'web-mode-html-tag-face :underline t)))
-  `(web-mode-html-tag-bracket-face ((,class :foreground ,fg)))
+  `(web-mode-html-tag-bracket-face ((,class :foreground ,fg-green)))
   `(web-mode-html-attr-name-face ((,class :inherit 'font-lock-constant-face)))
   `(web-mode-html-attr-value-face ((,class :inherit 'font-lock-string-face)))
   `(web-mode-html-entity-face ((,class :foreground ,fg :slant italic)))
