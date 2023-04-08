@@ -6,3 +6,4 @@ var
 tree-sitter
 custom.el
 user.el
+functions.el

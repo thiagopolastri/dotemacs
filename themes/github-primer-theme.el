@@ -490,6 +490,31 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;; External
 
+;;;;; artbollocks
+  `(artbollocks-face ((,class :foreground unspecified :background unspecified :underline (:style wave :color ,fg-purple))))
+  `(artbollocks-lexical-illusions-face ((,class :foreground unspecified :background unspecified :underline (:style wave :color ,fg-pink))))
+  `(artbollocks-passive-voice-face ((,class :foreground unspecified :background unspecified :underline (:style wave :color ,fg-comment))))
+  `(artbollocks-weasel-words-face ((,class :foreground unspecified :background unspecified :underline (:style wave :color ,fg-coral))))
+
+;;;;; auctex
+  `(TeX-error-description-error ((,class :foreground ,fg-coral :weight bold)))
+  `(TeX-error-description-tex-said ((,class :foreground ,fg-string :weight bold)))
+  `(TeX-error-description-warning ((,class :foreground ,fg-warning :weight bold)))
+  `(font-latex-bold-face ((,class :inherit 'bold :foreground unspecified)))
+  `(font-latex-italic-face ((,class :inherit 'italic :foreground unspecified)))
+  `(font-latex-math-face ((,class :foreground ,fg-string)))
+  `(font-latex-script-char-face ((,class :foreground ,fg-builtin)))
+  `(font-latex-sedate-face ((,class :foreground ,fg-comment)))
+  `(font-latex-sectioning-0-face ((,class :foreground ,fg-variable :weight ultra-bold :height unspecified)))
+  `(font-latex-sectioning-1-face ((,class :foreground ,fg-cyan :weight semi-bold :height unspecified)))
+  `(font-latex-sectioning-2-face ((,class :foreground ,fg-purple :weight semi-bold :height unspecified)))
+  `(font-latex-sectioning-3-face ((,class :foreground ,fg-variable :weight semi-bold :height unspecified)))
+  `(font-latex-sectioning-4-face ((,class :foreground ,fg-cyan :weight semi-bold :height unspecified)))
+  `(font-latex-sectioning-5-face ((,class :foreground ,fg-purple :weight semi-bold :height unspecified)))
+  `(font-latex-string-face ((,class :inherit 'font-lock-string-face)))
+  `(font-latex-verbatim-face ((,class :foreground ,fg-cyan :slant italic)))
+  `(font-latex-warning-face ((,class :inherit 'font-lock-warning-face)))
+
 ;;;;; avy
   `(avy-background-face ((,class :foreground ,fg-disabled)))
   `(avy-lead-face ((,class :background ,bg-coral :foreground ,fg)))
@@ -574,13 +599,98 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(rainbow-delimiters-unmatched-face ((,class :inherit 'rainbow-delimiters-base-error-face)))
   `(rainbow-delimiters-mismatched-face ((,class :inherit 'rainbow-delimiters-base-error-face)))
 
+;;;;; Web Mode
+  `(web-mode-bold-face ((,class :inherit 'bold)))
+  `(web-mode-italic-face ((,class :inherit 'italic)))
+  `(web-mode-underline-face ((,class :inherit 'underline)))
+  `(web-mode-comment-face ((,class :inherit 'font-lock-comment-face :italic nil)))
+  `(web-mode-comment-keyword-face ((,class :weight bold :box nil)))
+  `(web-mode-doctype-face ((,class :inherit 'web-mode-comment-face)))
+  `(web-mode-string-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-keyword-face ((,class :inherit 'font-lock-keyword-face)))
+  `(web-mode-constant-face ((,class :inherit 'font-lock-constant-face)))
+  `(web-mode-type-face ((,class :inherit 'font-lock-type-face)))
+  `(web-mode-variable-name-face ((,class :inherit 'font-lock-variable-name-face)))
+  `(web-mode-builtin-face ((,class :inherit 'font-lock-builtin-face)))
+  `(web-mode-function-name-face ((,class :inherit 'font-lock-function-name-face)))
+  `(web-mode-function-call-face ((,class :inherit 'font-lock-function-name-face)))
+  `(web-mode-filter-face ((,class :inherit 'font-lock-function-name-face)))
+  `(web-mode-preprocessor-face ((,class :inherit 'font-lock-preprocessor-face)))
+  `(web-mode-param-name-face ((,class :foreground ,fg)))
+  `(web-mode-symbol-face ((,class :inherit 'font-lock-variable-name-face)))
+  `(web-mode-warning-face ((,class :inherit 'warning)))
+  `(web-mode-error-face ((,class :inherit 'error)))
+  `(web-mode-html-tag-face ((,class :foreground ,fg-green)))
+  `(web-mode-html-tag-custom-face ((,class :inherit 'web-mode-html-tag-face)))
+  `(web-mode-html-tag-namespaced-face ((,class :inherit 'web-mode-html-tag-face)))
+  `(web-mode-html-tag-unclosed-face ((,class :inherit 'web-mode-html-tag-face :underline t)))
+  `(web-mode-html-tag-bracket-face ((,class :foreground ,fg)))
+  `(web-mode-html-attr-name-face ((,class :inherit 'font-lock-constant-face)))
+  `(web-mode-html-attr-value-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-html-entity-face ((,class :foreground ,fg :slant italic)))
+  `(web-mode-html-attr-custom-face ((,class :inherit 'web-mode-html-attr-name-face)))
+  `(web-mode-html-attr-engine-face ((,class :inherit 'web-mode-html-attr-name-face)))
+  `(web-mode-html-attr-equal-face ((,class :inherit 'web-mode-html-attr-name-face)))
+  `(web-mode-annotation-face ((,class :inherit 'web-mode-comment-face)))
+  `(web-mode-annotation-html-face ((,class :inherit 'web-mode-annotation-face :slant italic)))
+  `(web-mode-annotation-tag-face ((,class :inherit 'web-mode-annotation-face :underline t)))
+  `(web-mode-annotation-type-face ((,class :inherit 'web-mode-annotation-face :weight bold)))
+  `(web-mode-annotation-value-face ((,class :inherit 'web-mode-annotation-html-face)))
+  `(web-mode-block-face ((,class :background ,bg-max)))
+  `(web-mode-block-comment-face ((,class :inherit 'web-mode-comment-face)))
+  `(web-mode-block-control-face ((,class :inherit 'font-lock-preprocessor-face)))
+  `(web-mode-block-delimiter-face ((,class :inherit 'font-lock-preprocessor-face)))
+  `(web-mode-block-string-face ((,class :inherit 'web-mode-string-face)))
+  `(web-mode-block-attr-name-face ((,class :inherit 'web-mode-html-attr-name-face)))
+  `(web-mode-block-attr-value-face ((,class :inherit 'web-mode-html-attr-value-face)))
+  `(web-mode-part-face ((,class :inherit 'default)))
+  `(web-mode-part-comment-face ((,class :inherit 'font-lock-comment-face)))
+  `(web-mode-part-string-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-style-face ((,class :inherit 'web-mode-part-face)))
+  `(web-mode-script-face ((,class :inherit 'web-mode-part-face)))
+  `(web-mode-javascript-comment-face ((,class :inherit 'font-lock-comment-face)))
+  `(web-mode-javascript-string-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-css-property-name-face ((,class :inherit 'font-lock-keyword-face)))
+  `(web-mode-css-selector-face ((,class :inherit 'font-lock-function-name-face)))
+  `(web-mode-css-selector-class-face ((,class :inherit 'web-mode-css-selector-face)))
+  `(web-mode-css-selector-tag-face ((,class :inherit 'web-mode-css-selector-face)))
+  `(web-mode-css-comment-face ((,class :inherit 'font-lock-comment-face)))
+  `(web-mode-css-string-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-css-variable-face ((,class :inherit 'font-lock-variable-name-face)))
+  `(web-mode-css-color-face ((,class :inherit 'font-lock-builtin-face)))
+  `(web-mode-css-function-face ((,class :inherit 'font-lock-builtin-face)))
+  `(web-mode-css-priority-face ((,class :inherit 'font-lock-builtin-face)))
+  `(web-mode-css-pseudo-class-face ((,class :inherit 'font-lock-builtin-face)))
+  `(web-mode-css-at-rule-face ((,class :inherit 'font-lock-constant-face)))
+  `(web-mode-json-context-face ((,class :foreground ,fg-pink)))
+  `(web-mode-json-key-face ((,class :foreground ,fg-pink-bright)))
+  `(web-mode-json-comment-face ((,class :inherit 'font-lock-comment-face)))
+  `(web-mode-json-string-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-sql-keyword-face ((,class :weight bold :slant italic)))
+  `(web-mode-whitespace-face ((,class :inherit 'trailing-whitespace)))
+  `(web-mode-folded-face ((,class :underline t)))
+  `(web-mode-inlay-face ((,class :background ,bg-max)))
+  `(web-mode-current-column-highlight-face ((,class :background ,bg-min)))
+  `(web-mode-current-element-highlight-face ((,class :foreground ,fg :background ,bg-max)))
+  `(web-mode-interpolate-color1-face ((,class :inherit 'web-mode-string-face)))
+  `(web-mode-interpolate-color2-face ((,class :inherit 'web-mode-string-face)))
+  `(web-mode-interpolate-color3-face ((,class :inherit 'web-mode-string-face)))
+  `(web-mode-interpolate-color4-face ((,class :inherit 'web-mode-string-face)))
+
+  ;; Documentation on these faces are not clear. Keeping the defaults.
+  ;; web-mode-jsx-depth-1-face
+  ;; web-mode-jsx-depth-2-face
+  ;; web-mode-jsx-depth-3-face
+  ;; web-mode-jsx-depth-4-face
+  ;; web-mode-jsx-depth-5-face
+
 ;;;;; which func
   `(which-func ((,class :foreground ,fg-function)))
 
 ;;;;; which key (defaults are fine)
 
 ;;;; WIP
-  ;; Just make org and web more pleasant while I'm not diving into it
+  ;; Just make org more pleasant while I'm not diving into it
   ;; ORG
   `(org-block ((,class :foreground ,fg :background ,bg-max :extend t)))
   `(org-quote ((,class :foreground ,fg-comment :background ,bg-max :extend t)))
@@ -597,11 +707,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-latex-and-related ((,class :foreground ,fg-warning)))
   `(org-table ((,class :foreground ,fg-constant)))
 
-  ;; Web Mode
-  `(web-mode-html-attr-name-face ((,class :inherit 'font-lock-constant-face)))
-  `(web-mode-html-tag-face ((,class :foreground ,fg-green)))
-
-
   ;; This theme is still incomplete
   ;; TODO:
   ;; - Info-mode
@@ -609,7 +714,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   ;; - grep
   ;; - c-annotation-face
   ;; - newsticker
-  ;; - auctex
   ;; - org (org-ref)
   ;; - magit
   ;; - racket-mode
