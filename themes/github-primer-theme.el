@@ -588,7 +588,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(markdown-link-title-face ((,class :inherit 'font-lock-comment-face :italic nil)))
   `(markdown-missing-link-face ((,class :foreground ,fg-error)))
   `(markdown-blockquote-face ((,class :inherit 'font-lock-doc-face)))
-  `(markdown-code-face ((,class :inherit 'fixed-pitch :background ,bg-max)))
+  `(markdown-code-face ((,class :inherit 'fixed-pitch :background ,bg-max :extend t)))
   `(markdown-inline-code-face ((,class :inherit 'fixed-pitch)))
   `(markdown-pre-face ((,class :inherit 'fixed-pitch)))
   `(markdown-html-tag-delimiter-face ((,class :inherit 'fixed-pitch :foreground ,fg-green)))
