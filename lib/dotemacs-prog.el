@@ -24,26 +24,6 @@
 
 (customize-set-variable 'inferior-lisp-program "sbcl")
 
-;; Install quicklisp on sbcl and create the .sbclrc
-;; sbcl --load quicklisp.lisp
-;; (quicklisp-quickstart:install)
-;; (ql:add-to-init-file)
-;; (ql:quickload "quicklisp-slime-helper")
-
-;; (use-package slime ; disabled to test Sly
-;;   :defer t
-;;   :custom
-;;   (slime-net-coding-system 'utf-8-unix)
-;;   (slime-complete-symbol*-fancy t)
-;;   (slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-;;   :init
-;;   (load (expand-file-name "~/quicklisp/slime-helper.el"))
-;;   (slime-setup '(slime-fancy
-;;                  slime-indentation
-;;                  slime-banner
-;;                  slime-highlight-edits
-;;                  slime-company)))
-
 (use-package sly
   :defer t
   :custom (sly-symbol-completion-mode nil)

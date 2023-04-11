@@ -136,19 +136,7 @@
   :init
   (when dotemacs-use-variable-pitch-in-md
     (add-hook 'markdown-mode-hook 'variable-pitch-mode)
-    (add-hook 'gfm-mode-hook 'variable-pitch-mode))
-  :custom-face
-  (markdown-code-face ((t (:inherit 'fixed-pitch))))
-  (markdown-html-attr-name-face ((t (:inherit 'fixed-pitch))))
-  (markdown-html-attr-value-face ((t (:inherit 'fixed-pitch))))
-  (markdown-html-entity-face ((t (:inherit 'fixed-pitch))))
-  (markdown-html-tag-delimiter-face ((t (:inherit 'fixed-pitch))))
-  (markdown-html-tag-name-face ((t (:inherit 'fixed-pitch))))
-  (markdown-inline-code-face ((t (:inherit 'fixed-pitch))))
-  (markdown-language-info-face ((t (:inherit 'fixed-pitch))))
-  (markdown-language-keyword-face ((t (:inherit 'fixed-pitch))))
-  (markdown-pre-face ((t (:inherit 'fixed-pitch))))
-  (markdown-table-face ((t (:inherit 'fixed-pitch)))))
+    (add-hook 'gfm-mode-hook 'variable-pitch-mode)))
 
 (use-package pandoc-mode
   :after (markdown-mode hydra)
