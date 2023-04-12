@@ -65,8 +65,6 @@
    :remap '(css-mode . css-ts-mode))
   :hook ((css-mode css-ts-mode) . rainbow-mode))
 
-(use-package npm-mode :diminish npm-mode)
-
 (use-package javascript-mode
   :elpaca nil
   :init
@@ -74,8 +72,7 @@
    :lang 'javascript
    :github "tree-sitter/tree-sitter-javascript"
    :remap '(javascript-mode . js-ts-mode))
-  :hook (((javascript-mode js-ts-mode) . subword-mode)
-         ((javascript-mode js-ts-mode) . npm-mode)))
+  :hook ((javascript-mode js-ts-mode) . subword-mode))
 
 (use-package typescript-mode
   :init
@@ -89,8 +86,11 @@
    :github "tree-sitter/tree-sitter-typescript"
    :path "tsx/src"
    :mode '("\\.tsx\\'" . tsx-ts-mode))
-  :hook (((typescript-mode typescript-ts-mode tsx-ts-mode) . subword-mode)
-         ((typescript-mode typescript-ts-mode tsx-ts-mode) . npm-mode)))
+  :hook ((typescript-mode typescript-ts-mode tsx-ts-mode) . subword-mode))
+
+(use-package npm-mode
+  :diminish npm-mode
+  :hook ((javascript-mode js-ts-mode typescript-mode typescript-ts-mode tsx-ts-mode) . npm-mode))
 
 (use-package json-mode
   :init
@@ -133,30 +133,25 @@
  :github "tree-sitter/tree-sitter-java"
  :remap '(java-mode . java-ts-mode))
 
+(dotemacs-use-treesit
+ :lang 'ruby
+ :github "tree-sitter/tree-sitter-ruby"
+ :remap '(ruby-mode . ruby-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'python
+ :github "tree-sitter/tree-sitter-python"
+ :remap '(python-mode . python-ts-mode))
+
+(use-package pyvenv
+  :hook ((python-mode python-ts-mode) . pyvenv-mode))
+
 (use-package cmake-mode
   :init
   (dotemacs-use-treesit
    :lang 'cmake
    :github "uyha/tree-sitter-cmake"
    :remap '(cmake-mode . cmake-ts-mode)))
-
-(use-package pyvenv)
-(use-package python-mode
-  :elpaca nil
-  :init
-  (dotemacs-use-treesit
-   :lang 'python
-   :github "tree-sitter/tree-sitter-python"
-   :remap '(python-mode . python-ts-mode))
-  :hook ((python-mode python-ts-mode) . pyvenv-mode))
-
-(use-package ruby-mode
-  :elpaca nil
-  :init
-  (dotemacs-use-treesit
-   :lang 'ruby
-   :github "tree-sitter/tree-sitter-ruby"
-   :remap '(ruby-mode . ruby-ts-mode)))
 
 (use-package yaml-mode
   :init
@@ -225,13 +220,13 @@
 ;; TODO: fix lsp for svelte
 (add-to-list 'eglot-server-programs '(dotemacs-svelte-mode . "svelteserver"))
 
-(use-package php-mode)
-(use-package haskell-mode)
-(use-package elixir-mode)
-(use-package lua-mode)
-(use-package zig-mode)
-(use-package julia-mode)
-(use-package restclient)
+(use-package php-mode :defer t)
+(use-package haskell-mode :defer t)
+(use-package elixir-mode :defer t)
+(use-package lua-mode :defer t)
+(use-package zig-mode :defer t)
+(use-package julia-mode :defer t)
+(use-package restclient :defer t)
 (use-package format-all)
 (use-package devdocs)
 (use-package sicp)
