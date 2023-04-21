@@ -52,27 +52,27 @@
    :github "tree-sitter/tree-sitter-css"
    :remap '(css-mode . css-ts-mode))
 
-(add-hook 'css-mode 'rainbow-mode)
-(add-hook 'css-ts-mode 'rainbow-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
+(add-hook 'css-ts-mode-hook 'rainbow-mode)
 
 (dotemacs-use-treesit
  :lang 'javascript
  :github "tree-sitter/tree-sitter-javascript"
  :remap '(javascript-mode . js-ts-mode))
 
-(add-hook 'javascript-mode 'subword-mode)
-(add-hook 'js-ts-mode 'subword-mode)
+(add-hook 'javascript-mode-hook 'subword-mode)
+(add-hook 'js-ts-mode-hook 'subword-mode)
 
 (dotemacs-use-treesit
    :lang 'toml
    :github "tree-sitter/tree-sitter-toml"
    :remap '(conf-toml-mode . toml-ts-mode))
 
-(add-hook 'conf-mode 'dotemacs-prog-mode)
-(add-hook 'html-mode 'dotemacs-prog-mode) ; sgml-mode
-(add-hook 'mhtml-mode 'dotemacs-prog-mode) ; sgml-mode
-(add-hook 'xml-mode 'dotemacs-prog-mode)
-(add-hook 'nxml-mode 'dotemacs-prog-mode)
+(add-hook 'conf-mode-hook 'dotemacs-prog-mode)
+(add-hook 'html-mode-hook 'dotemacs-prog-mode) ; sgml-mode
+(add-hook 'mhtml-mode-hook 'dotemacs-prog-mode) ; sgml-mode
+(add-hook 'xml-mode-hook 'dotemacs-prog-mode)
+(add-hook 'nxml-mode-hook 'dotemacs-prog-mode)
 
 
 (use-package paredit
