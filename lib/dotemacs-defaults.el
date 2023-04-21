@@ -110,11 +110,14 @@
 (add-hook 'dotemacs-prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'dotemacs-prog-mode-hook 'hl-line-mode)
 (add-hook 'dotemacs-prog-mode-hook 'display-fill-column-indicator-mode)
-(add-hook 'dotemacs-prog-mode-hook 'hs-minor-mode) ; hideshow
+(add-hook 'dotemacs-prog-mode-hook 'hs-minor-mode)
 
 (add-hook 'dotemacs-text-mode-hook 'visual-line-mode)
 
-(diminish 'hs-minor-mode)
+(with-eval-after-load 'glyphless-mode (diminish 'glyphless-display-mode))
+(with-eval-after-load 'eldoc (diminish 'eldoc-mode))
+(with-eval-after-load 'hideshow (diminish 'hs-minor-mode))
+(with-eval-after-load 'whitespace (diminish 'whitespace-mode))
 
 (defun dotemacs-toggle-line-numbers-type ()
   "Toggle between normal and relative line-numbers."
