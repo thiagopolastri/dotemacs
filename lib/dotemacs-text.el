@@ -11,7 +11,7 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
-(add-hook 'rst-mode 'dotemacs-text-mode)
+(add-hook 'rst-mode-hook 'dotemacs-text-mode)
 
 (use-package visual-fill-column
   ;; `visual-line-mode' are already hooked on `dotemacs-text-mode'.
