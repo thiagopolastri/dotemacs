@@ -11,9 +11,7 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
-(use-package flymake
-  :elpaca nil
-  :hook (dotemacs-prog-mode . flymake-mode))
+(add-hook 'dotemacs-prog-mode 'flymake-mode)
 
 (use-package ispell
   :elpaca nil

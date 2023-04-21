@@ -12,6 +12,69 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
+(dotemacs-use-treesit
+ :lang 'bash
+ :github "tree-sitter/tree-sitter-bash"
+ :remap '(sh-mode . bash-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'c
+ :github "tree-sitter/tree-sitter-c"
+ :remap '(c-mode . c-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'cpp
+ :github "tree-sitter/tree-sitter-cpp"
+ :remap '(c++-mode . c++-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'csharp
+ :github "tree-sitter/tree-sitter-c-sharp"
+ :remap '(csharp-mode . csharp-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'java
+ :github "tree-sitter/tree-sitter-java"
+ :remap '(java-mode . java-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'ruby
+ :github "tree-sitter/tree-sitter-ruby"
+ :remap '(ruby-mode . ruby-ts-mode))
+
+(dotemacs-use-treesit
+ :lang 'python
+ :github "tree-sitter/tree-sitter-python"
+ :remap '(python-mode . python-ts-mode))
+
+(dotemacs-use-treesit
+   :lang 'css
+   :github "tree-sitter/tree-sitter-css"
+   :remap '(css-mode . css-ts-mode))
+
+(add-hook 'css-mode 'rainbow-mode)
+(add-hook 'css-ts-mode 'rainbow-mode)
+
+(dotemacs-use-treesit
+ :lang 'javascript
+ :github "tree-sitter/tree-sitter-javascript"
+ :remap '(javascript-mode . js-ts-mode))
+
+(add-hook 'javascript-mode 'subword-mode)
+(add-hook 'js-ts-mode 'subword-mode)
+
+(dotemacs-use-treesit
+   :lang 'toml
+   :github "tree-sitter/tree-sitter-toml"
+   :remap '(conf-toml-mode . toml-ts-mode))
+
+(add-hook 'conf-mode 'dotemacs-prog-mode)
+(add-hook 'html-mode 'dotemacs-prog-mode) ; sgml-mode
+(add-hook 'mhtml-mode 'dotemacs-prog-mode) ; sgml-mode
+(add-hook 'xml-mode 'dotemacs-prog-mode)
+(add-hook 'nxml-mode 'dotemacs-prog-mode)
+
+
 (use-package paredit
   :after smartparens
   :diminish paredit-mode
@@ -56,24 +119,6 @@
    :lang 'rust
    :github "tree-sitter/tree-sitter-rust"))
 
-(use-package css-mode
-  :elpaca nil
-  :init
-  (dotemacs-use-treesit
-   :lang 'css
-   :github "tree-sitter/tree-sitter-css"
-   :remap '(css-mode . css-ts-mode))
-  :hook ((css-mode css-ts-mode) . rainbow-mode))
-
-(use-package javascript-mode
-  :elpaca nil
-  :init
-  (dotemacs-use-treesit
-   :lang 'javascript
-   :github "tree-sitter/tree-sitter-javascript"
-   :remap '(javascript-mode . js-ts-mode))
-  :hook ((javascript-mode js-ts-mode) . subword-mode))
-
 (use-package typescript-mode
   :init
   (dotemacs-use-treesit
@@ -98,50 +143,6 @@
    :lang 'json
    :github "tree-sitter/tree-sitter-json"
    :remap '(json-mode . json-ts-mode)))
-
-(use-package conf-mode
-  :elpaca nil
-  :init
-  (dotemacs-use-treesit
-   :lang 'toml
-   :github "tree-sitter/tree-sitter-toml"
-   :remap '(conf-toml-mode . toml-ts-mode))
-  :hook (conf-mode . dotemacs-prog-mode))
-
-(dotemacs-use-treesit
- :lang 'bash
- :github "tree-sitter/tree-sitter-bash"
- :remap '(sh-mode . bash-ts-mode))
-
-(dotemacs-use-treesit
- :lang 'c
- :github "tree-sitter/tree-sitter-c"
- :remap '(c-mode . c-ts-mode))
-
-(dotemacs-use-treesit
- :lang 'cpp
- :github "tree-sitter/tree-sitter-cpp"
- :remap '(c++-mode . c++-ts-mode))
-
-(dotemacs-use-treesit
- :lang 'csharp
- :github "tree-sitter/tree-sitter-c-sharp"
- :remap '(csharp-mode . csharp-ts-mode))
-
-(dotemacs-use-treesit
- :lang 'java
- :github "tree-sitter/tree-sitter-java"
- :remap '(java-mode . java-ts-mode))
-
-(dotemacs-use-treesit
- :lang 'ruby
- :github "tree-sitter/tree-sitter-ruby"
- :remap '(ruby-mode . ruby-ts-mode))
-
-(dotemacs-use-treesit
- :lang 'python
- :github "tree-sitter/tree-sitter-python"
- :remap '(python-mode . python-ts-mode))
 
 (use-package pyvenv
   :hook ((python-mode python-ts-mode) . pyvenv-mode))
@@ -178,14 +179,6 @@
    :lang 'go-mod
    :github "camdencheek/tree-sitter-go-mod"
    :remap '(go-dot-mod-mode . go-mod-ts-mode)))
-
-(use-package sgml-mode
-  :elpaca nil
-  :hook ((html-mode mhtml-mode) . dotemacs-prog-mode))
-
-(use-package xml-mode
-  :elpaca nil
-  :hook ((xml-mode nxml-mode) . dotemacs-prog-mode))
 
 (use-package web-mode
   :mode "\\.[px]?html?\\'"

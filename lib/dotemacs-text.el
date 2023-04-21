@@ -11,6 +11,8 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
+(add-hook 'rst-mode 'dotemacs-text-mode)
+
 (use-package visual-fill-column
   ;; `visual-line-mode' are already hooked on `dotemacs-text-mode'.
   :hook (visual-line-mode . visual-fill-column-mode)
@@ -141,10 +143,6 @@
 (use-package pandoc-mode
   :after (markdown-mode hydra)
   :hook (markdown-mode . pandoc-mode))
-
-(use-package rst-mode
-  :elpaca nil
-  :hook (rst-mode . dotemacs-text-mode))
 
 (use-package latex
   :elpaca auctex
