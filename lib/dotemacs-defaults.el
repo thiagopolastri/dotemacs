@@ -63,7 +63,7 @@
  '(eldoc-echo-area-prefer-doc-buffer t)
  ;; whitespace
  '(whitespace-style '(face tabs empty trailing tab-mark indentation::space))
- '(whitespace-action '(auto-cleanup)) ; clean on save
+ '(whitespace-action '(auto-cleanup))   ; clean on save
  ;; display-fill-column-indicator
  '(display-fill-column-indicator-character ?\u258F)
  ;; eglot
@@ -74,15 +74,15 @@
  '(proced-enable-color-flag t)
  ;; project
  '(project-vc-ignores '("target/"
-                       "bin/"
-                       "obj/"
-                       "node_modules/"
-                       ".vscode/"))
+                        "bin/"
+                        "obj/"
+                        "node_modules/"
+                        ".vscode/"))
  '(project-vc-extra-root-markers '(".dir-locals.el"
-                                  "package.json"
-                                  "cargo.toml"
-                                  "pom.xml"
-                                  "*.csproj")))
+                                   "package.json"
+                                   "cargo.toml"
+                                   "pom.xml"
+                                   "*.csproj")))
 
 (global-unset-key (kbd "C-z"))
 (delete-selection-mode 1)

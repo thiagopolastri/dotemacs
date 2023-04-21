@@ -730,12 +730,11 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;; WIP
   ;; Just make org more pleasant while I'm not diving into it
   ;; ORG
-  `(org-block ((,class :foreground ,fg :background ,bg-max :extend t)))
+  `(org-block ((,class :inherit 'fixed-pitch :foreground ,fg :background ,bg-max :extend t)))
   `(org-quote ((,class :foreground ,fg-comment :background ,bg-max :extend t)))
   `(org-verse ((,class :inherit 'org-quote :extend t)))
-  `(org-block-begin-line ((,class :foreground ,fg-comment
-                                  :background ,bg-hl)))
-  `(org-block-end-line ((,class :foreground ,fg-comment :background ,bg-hl)))
+  `(org-block-begin-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
+  `(org-block-end-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
   `(org-ellipsis ((,class :foreground ,fg-comment :underline nil)))
 
   `(org-hide ((,class :foreground ,bg)))
@@ -744,6 +743,17 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-todo ((,class :foreground ,fg-error :weight bold)))
   `(org-latex-and-related ((,class :foreground ,fg-warning)))
   `(org-table ((,class :foreground ,fg-constant)))
+
+  `(org-code ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
+  `(org-meta-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; comment-face
+  `(org-document-info-keyword ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
+  `(org-table ((,class :inherit 'fixed-pitch :foreground ,fg-string)))
+
+  ;; (org-table-header ((t (:inherit 'fixed-pitch))))
+  `(org-verbatim ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
+  `(org-formula ((,class :inherit 'fixed-pitch :foreground ,fg-variable)))
+  `(org-special-keyword ((,class :inherit 'fixed-pitch :foreground ,fg-keyword)))
+  `(org-checkbox ((,class :inherit 'fixed-pitch :bold t))) ; bold
 
   ;; This theme is still incomplete
   ;; TODO:
