@@ -97,6 +97,9 @@
   (async-bytecomp-package-mode 1))
 (when (fboundp 'pixel-scroll-precision-mode)
   (pixel-scroll-precision-mode 1))
+(when (fboundp 'glyphless-display-mode)
+  (add-hook 'dotemacs-prog-mode-hook 'glyphless-display-mode)
+  (with-eval-after-load 'glyphless-mode (diminish 'glyphless-display-mode)))
 
 (add-hook 'prog-mode-hook 'dotemacs-prog-mode)
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
@@ -104,7 +107,6 @@
 (add-hook 'dired-mode-hook 'dired-hide-details-mode) ; use ( to show details
 (add-hook 'dired-mode-hook 'hl-line-mode)
 
-(add-hook 'dotemacs-prog-mode-hook 'glyphless-display-mode)
 (add-hook 'dotemacs-prog-mode-hook 'whitespace-mode)
 (add-hook 'dotemacs-prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'dotemacs-prog-mode-hook 'hl-line-mode)
@@ -113,7 +115,6 @@
 
 (add-hook 'dotemacs-text-mode-hook 'visual-line-mode)
 
-(with-eval-after-load 'glyphless-mode (diminish 'glyphless-display-mode))
 (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
 (with-eval-after-load 'hideshow (diminish 'hs-minor-mode))
 (with-eval-after-load 'whitespace (diminish 'whitespace-mode))
