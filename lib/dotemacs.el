@@ -70,16 +70,16 @@ GITHUB - github path to grammar (only user/repo)
 PATH - path to src inside github repository
 REMAP - list to add to `major-mode-remap-alist'
 MODE - list to add to `auto-mode-alist'"
-  (let ((cond (and (fboundp 'treesit-available-p) (treesit-available-p))))
-    (when (and cond lang github)
+  (let ((tsp (and (fboundp 'treesit-available-p) (treesit-available-p))))
+    (when (and tsp lang github)
       (unless (boundp 'treesit-language-source-alist)
         (setq treesit-language-source-alist '()))
       (add-to-list
        'treesit-language-source-alist
        `(,lang . (,(concat "https://github.com/" github) nil ,path))))
-    (when (and cond lang remap (treesit-ready-p lang t))
+    (when (and tsp lang remap (treesit-ready-p lang t))
       (add-to-list 'major-mode-remap-alist remap))
-    (when (and cond lang mode (treesit-ready-p lang t))
+    (when (and tsp lang mode (treesit-ready-p lang t))
       (add-to-list 'auto-mode-alist mode))))
 
 (provide 'dotemacs)
