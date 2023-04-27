@@ -12,7 +12,7 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
-(when (fboundp 'elpaca-manager)
+(when (fboundp 'elpaca)
   (use-package eglot-x
     :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
     :config (with-eval-after-load 'eglot (require 'eglot-x))))
@@ -115,7 +115,9 @@
   :hook (cider-mode . cider-turn-on-eldoc-mode))
 
 (use-package rustic
-  :custom (rustic-lsp-client 'eglot)
+  :custom
+  (rustic-lsp-client 'eglot)
+  ;; (rustic-treesitter-derive t)
   :hook (rustic-mode . superword-mode)
   :init
   ;; treesitter integration not ready yet
