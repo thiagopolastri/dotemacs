@@ -114,6 +114,21 @@
   :after clojure-mode
   :hook (cider-mode . cider-turn-on-eldoc-mode))
 
+(use-package haskell-mode
+  :custom
+  (haskell-process-type 'cabal-repl)
+  (haskell-process-suggest-remove-import-lines t)
+  (haskell-process-auto-import-loaded-modules t)
+  (haskell-process-log t)
+  :init
+  (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+    (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
+    (add-to-list 'exec-path my-cabal-path))
+  (custom-set-variables '(haskell-tags-on-save t)))
+
+(use-package hindent
+  :hook (haskell-mode . hindent-mode))
+
 (use-package rustic
   :custom
   (rustic-lsp-client 'eglot)
@@ -221,7 +236,6 @@
 (add-to-list 'eglot-server-programs '(dotemacs-svelte-mode . "svelteserver"))
 
 (use-package php-mode :defer t)
-(use-package haskell-mode :defer t)
 (use-package elixir-mode :defer t)
 (use-package lua-mode :defer t)
 (use-package zig-mode :defer t)

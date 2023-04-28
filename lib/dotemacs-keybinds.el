@@ -119,6 +119,10 @@ _d_: Capture daily        _m_: Refile current TODO
    "C-;" 'flyspell-correct-wrapper)
 
   (general-define-key
+   :keymaps 'haskell-mode-map
+   "<f8>" 'haskell-navigate-imports)
+
+  (general-define-key
    :keymaps 'vterm-mode-map
    "C-n" 'multi-vterm
    "C->" 'multi-vterm-next
