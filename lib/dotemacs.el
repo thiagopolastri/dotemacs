@@ -8,6 +8,8 @@
 
 ;;; Code:
 
+(require 'cl-macs)
+
 (defgroup dotemacs nil
   "Init Emacs settings (You must restart Emacs to apply these changes)."
   :group 'local)
