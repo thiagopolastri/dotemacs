@@ -32,6 +32,7 @@
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
+  :elpaca (vertico :files (:defaults "extensions/*"))
   :custom (vertico-cycle t)
   :init (vertico-mode))
 
@@ -42,24 +43,15 @@
   :init (marginalia-mode))
 
 (use-package corfu
+  :elpaca (corfu :files (:defaults "extensions/*"))
   :custom
   (corfu-cycle t)
   (corfu-auto nil) ; call with C-M-i
   (corfu-quit-no-match 'separator)
   (corfu-preselect-first nil)
+  (corfu-popupinfo-delay 0.2)
   :init
   (global-corfu-mode)
-  (unless (fboundp 'corfu-popupinfo-mode)
-    ;; Work around. Extensions become unavailable with elpaca.
-    ;; TODO: Remove this when its fixed (corfu extensions)
-    (when-let* ((ce (dotemacs-get-path "elpaca/repos/corfu/extensions"))
-                (_ (file-exists-p ce)))
-      (message "Building corfu extensions...")
-      (add-to-list 'load-path ce)
-      (require 'corfu-popupinfo)
-      (when (fboundp 'byte-recompile-directory)
-        (byte-recompile-directory ce 0))))
-  (customize-set-variable 'corfu-popupinfo-delay 0.2)
   (corfu-popupinfo-mode))
 
 (use-package cape
