@@ -34,14 +34,6 @@
   :group 'dotemacs
   :type 'string)
 
-(defcustom dotemacs-hunspell-dict-list '()
-  "List of installed hunspell dictionaries.
-You can list available dictionaries with the command `hunspell -D' in
-your terminal.  Use only the locale name as a value (Eg.  en_US).
-The default dictionary will be the first item."
-  :group 'dotemacs
-  :type '(repeat string))
-
 (defcustom dotemacs-roam-dir nil
   "Org Roam directory (where your org files will live)."
   :group 'dotemacs
@@ -83,6 +75,7 @@ MODE - list to add to `auto-mode-alist'"
       (add-to-list 'major-mode-remap-alist remap))
     (when (and tsp lang mode (treesit-ready-p lang t))
       (add-to-list 'auto-mode-alist mode))))
+
 
 (provide 'dotemacs)
 ;;; dotemacs.el ends here

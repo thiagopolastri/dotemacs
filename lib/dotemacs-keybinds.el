@@ -113,10 +113,9 @@ _d_: Capture daily        _m_: Refile current TODO
    "C-z c" 'consult-flymake)
 
   (general-define-key
-   :keymaps 'flyspell-mode-map
-   "C-z c" 'flyspell-buffer
-   "C-z h" 'dotemacs-consult-hunspell-dict
-   "C-;" 'flyspell-correct-wrapper)
+   :keymaps 'jinx-mode-map
+   "C-z h" 'jinx-languages ; just to keep my old dict keybind (h for hunspell)
+   "C-;" 'jinx-correct)
 
   (general-define-key
    :keymaps 'haskell-mode-map

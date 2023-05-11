@@ -34,7 +34,11 @@
 (use-package vertico
   :elpaca (vertico :files (:defaults "extensions/*"))
   :custom (vertico-cycle t)
-  :init (vertico-mode))
+  :init (vertico-mode)
+  :config
+  (vertico-multiform-mode)
+  (add-to-list 'vertico-multiform-categories
+               '(jinx grid (vertico-grid-annotate . 20))))
 
 (use-package marginalia
   :custom

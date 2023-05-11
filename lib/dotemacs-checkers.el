@@ -10,49 +10,9 @@
 
 (require 'dotemacs)
 (require 'dotemacs-modes)
-(require 'ispell)
-(require 'flyspell)
 
-(add-hook 'dotemacs-prog-mode-hook 'flymake-mode)
-(add-hook 'dotemacs-text-mode-hook 'flyspell-mode)
-
-(when (> (length dotemacs-hunspell-dict-list) 0)
-  (customize-set-variable 'ispell-program-name "hunspell")
-  (customize-set-variable 'ispell-dictionary (car dotemacs-hunspell-dict-list))
-
-  (dolist (dict dotemacs-hunspell-dict-list)
-    (add-to-list
-     'ispell-local-dictionary-alist
-     `(,dict "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" ,dict) nil utf-8)))
-
-  (add-to-list 'ispell-skip-region-alist
-               '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-  (add-to-list 'ispell-skip-region-alist
-               '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-  (add-to-list 'ispell-skip-region-alist
-               '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
-
-  (ispell-set-spellchecker-params))
-
-(defun dotemacs-hunspell-set-local-dict (dict)
-  "Set ispell DICT for current buffer."
-  (flyspell-mode -1)
-  (setq-local ispell-local-dictionary dict)
-  (flyspell-mode +1)
-  (flyspell-buffer))
-
-(defun dotemacs-consult-hunspell-dict ()
-  "Consult interface for dictionary selection."
-  (interactive)
-  (dotemacs-hunspell-set-local-dict
-   (consult--read
-    dotemacs-hunspell-dict-list
-    :prompt "Change dictionary:"
-    :require-match t
-    :history t
-    :sort nil)))
-
-(use-package flyspell-correct :defer t)
+(use-package jinx
+  :hook (dotemacs-text-mode . jinx-mode))
 
 (use-package flymake-eslint
   :defer t
