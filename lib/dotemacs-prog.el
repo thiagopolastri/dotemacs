@@ -12,9 +12,9 @@
 (require 'dotemacs)
 (require 'dotemacs-modes)
 
-(when (fboundp 'elpaca)
-  (elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x"))
-  (elpaca nil (with-eval-after-load 'eglot (require 'eglot-x))))
+(use-package eglot-x
+  :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
+  :config (with-eval-after-load 'eglot (require 'eglot-x)))
 
 (dotemacs-use-treesit
  :lang 'bash
