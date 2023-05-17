@@ -1,4 +1,4 @@
-;;; early-init.el --- Emacs early init file -*- no-byte-compile: t -*-
+;;; early-init.el --- Emacs early init file -*- lexical-binding: t -*-
 
 ;; Author: Thiago Polastri
 
