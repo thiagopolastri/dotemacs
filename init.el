@@ -45,6 +45,7 @@
 (elpaca diminish)
 (unless (fboundp 'eglot) (elpaca eglot))
 (elpaca geiser)
+(elpaca vterm)
 (elpaca-wait)
 
 (require 'recentf)
@@ -940,14 +941,12 @@ _d_: Capture daily        _m_: Refile current TODO
 (use-package realgud :defer t)
 
 (use-package vterm
-  :defer t
+  :elpaca nil
   :custom
   (vterm-always-compile-module t)
   (vterm-max-scrollback 100000))
 
 (use-package multi-vterm
-  :defer t
-  ;; :after vterm
   :bind (("C-z t" . multi-vterm)
          :map vterm-mode-map
          ("C-n" . multi-vterm)
