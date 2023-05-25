@@ -170,7 +170,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package eglot-x
   :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
-  :config (with-eval-after-load 'eglot (require 'eglot-x) (eglot-x-setup)))
+  :config (eglot-x-setup))
 
 (use-package emacs
   :elpaca nil
