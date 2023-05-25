@@ -53,6 +53,69 @@
 (add-to-list 'recentf-exclude no-littering-var-directory)
 (add-to-list 'recentf-exclude no-littering-etc-directory)
 
+(defgroup dotemacs nil
+  "Init Emacs settings (You must restart Emacs to apply these changes)."
+  :group 'local)
+
+(defcustom dotemacs-font-fixed "Monospace"
+  "Emacs fixed font.  Mono or code variant."
+  :group 'dotemacs
+  :type 'string)
+
+(defcustom dotemacs-font-size-fixed 120
+  "Emacs font size.  integer in units of 1/10 point (140 = 14pt)."
+  :group 'dotemacs
+  :type 'integer)
+
+(defcustom dotemacs-font-variable "Sans Serif"
+  "Emacs variable font.  Sans or Serif."
+  :group 'dotemacs
+  :type 'string)
+
+(defcustom dotemacs-font-size-variable 120
+  "Emacs font size (variable).  integer in units of 1/10 point (140 = 14pt)."
+  :group 'dotemacs
+  :type 'integer)
+
+(defcustom dotemacs-font-org-title "Sans Serif"
+  "Font to use in Org titles."
+  :group 'dotemacs
+  :type 'string)
+
+(defcustom dotemacs-font-size-org-title 140
+  "Font size to use in Org titles.  integer in units of 1/10 point (140 = 14pt)."
+  :group 'dotemacs
+  :type 'integer)
+
+(defcustom dotemacs-openai-key nil
+  "Api key for OpenAI (chatgpt)."
+  :group 'dotemacs
+  :type '(choice (string :tag "OpenAI API key")
+                 (const :tag "None" nil)))
+
+(defcustom dotemacs-roam-dir nil
+  "Org Roam directory (where your org files will live)."
+  :group 'dotemacs
+  :type '(choice (directory :tag "Roam directory")
+                 (const :tag "None" nil)))
+
+(set-face-attribute 'default
+                    nil
+                    :family dotemacs-font-fixed
+                    :height dotemacs-font-size-fixed)
+(set-face-attribute 'fixed-pitch
+                    nil
+                    :family dotemacs-font-fixed
+                    :height dotemacs-font-size-fixed)
+(set-face-attribute 'fixed-pitch-serif
+                    nil
+                    :family dotemacs-font-fixed
+                    :height dotemacs-font-size-fixed)
+(set-face-attribute 'variable-pitch
+                    nil
+                    :family dotemacs-font-variable
+                    :height dotemacs-font-size-variable)
+
 (require 'cl-macs)
 
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
@@ -104,15 +167,6 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
   :config (with-eval-after-load 'eglot (require 'eglot-x) (eglot-x-setup)))
 
-(delete-selection-mode 1) ; delsel
-(show-paren-mode 1) ; paren
-(save-place-mode 1) ; saveplace
-(global-so-long-mode 1) ; so-long
-(when (fboundp 'async-bytecomp-package-mode)
-  (async-bytecomp-package-mode 1))
-(when (fboundp 'pixel-scroll-precision-mode)
-  (pixel-scroll-precision-mode 1))
-
 (use-package emacs
   :elpaca nil
   :custom
@@ -137,7 +191,15 @@ MODE - list to add to `auto-mode-alist'"
   (bidi-paragraph-direction 'left-to-right)
   (bidi-inhibit-bpa t)
   :init
-  (global-unset-key (kbd "C-z")))
+  (global-unset-key (kbd "C-z"))
+  (delete-selection-mode 1)
+  (show-paren-mode 1)
+  (save-place-mode 1)
+  (global-so-long-mode 1)
+  (when (fboundp 'async-bytecomp-package-mode)
+    (async-bytecomp-package-mode 1))
+  (when (fboundp 'pixel-scroll-precision-mode)
+    (pixel-scroll-precision-mode 1)))
 
 (use-package mule ; mule-cmds
   :elpaca nil
@@ -188,7 +250,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package glyphless-mode
   :elpaca nil
-  ;; :if (fboundp 'glyphless-display-mode)
+  :if (fboundp 'glyphless-display-mode)
   :diminish glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
 
@@ -237,13 +299,13 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-prog-mode . display-line-numbers-mode)
   :preface
   (defun dotemacs-toggle-line-numbers-type ()
-  "Toggle between normal and relative line-numbers."
-  (interactive)
-  (display-line-numbers-mode -1)
-  (if (eq display-line-numbers-type 'relative)
-      (setq-local display-line-numbers-type t)
-    (setq-local display-line-numbers-type 'relative))
-  (display-line-numbers-mode +1))
+    "Toggle between normal and relative line-numbers."
+    (interactive)
+    (display-line-numbers-mode -1)
+    (if (eq display-line-numbers-type 'relative)
+        (setq-local display-line-numbers-type t)
+      (setq-local display-line-numbers-type 'relative))
+    (display-line-numbers-mode +1))
   :bind (:map dotemacs-prog-mode-map
               ("C-z n" . dotemacs-toggle-line-numbers-type)))
 
@@ -272,10 +334,10 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :custom
   (project-vc-ignores '("target/"
-                         "bin/"
-                         "obj/"
-                         "node_modules/"
-                         ".vscode/"))
+                        "bin/"
+                        "obj/"
+                        "node_modules/"
+                        ".vscode/"))
   (project-vc-extra-root-markers '(".dir-locals.el"
                                    "package.json"
                                    "cargo.toml"
