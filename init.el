@@ -99,6 +99,11 @@
   :type '(choice (directory :tag "Roam directory")
                  (const :tag "None" nil)))
 
+(defcustom dotemacs-elfeed-org-file nil
+  "Org file with feed urls (elfeed)."
+  :group 'dotemacs
+  :type '(repeat (file :must-match t)))
+
 (set-face-attribute 'default
                     nil
                     :family dotemacs-font-fixed
@@ -1001,6 +1006,15 @@ _d_: Capture daily        _m_: Refile current TODO
 (use-package devdocs)
 (use-package sicp)
 (use-package realgud :defer t)
+
+(use-package elfeed
+  :defer t
+  :if (bound-and-true-p dotemacs-elfeed-org-file))
+
+(use-package elfeed-org
+  :defer t
+  :if (bound-and-true-p dotemacs-elfeed-org-file)
+  :custom (rmh-elfeed-org-files dotemacs-elfeed-org-file))
 
 (use-package vterm
   :elpaca nil
