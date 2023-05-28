@@ -43,7 +43,9 @@
 
 (elpaca no-littering)
 (elpaca diminish)
-(unless (fboundp 'eglot) (elpaca eglot))
+(unless (fboundp 'eglot)
+  (elpaca project)
+  (elpaca eglot))
 (elpaca geiser)
 (elpaca vterm)
 (elpaca-wait)
@@ -120,57 +122,6 @@
                     nil
                     :family dotemacs-font-variable
                     :height dotemacs-font-size-variable)
-
-(require 'cl-macs)
-
-(when (and (fboundp 'treesit-available-p) (treesit-available-p))
-  (require 'treesit))
-
-(cl-defun dotemacs-use-treesit (&key lang github path remap mode)
-  "Setup treesiter for a given language.
-LANG - language to setup (symbol)
-GITHUB - github path to grammar (only user/repo)
-PATH - path to src inside github repository
-REMAP - list to add to `major-mode-remap-alist'
-MODE - list to add to `auto-mode-alist'"
-  (let ((tsp (and (fboundp 'treesit-available-p) (treesit-available-p))))
-    (when (and tsp lang github)
-      (unless (boundp 'treesit-language-source-alist)
-        (setq treesit-language-source-alist '()))
-      (add-to-list
-       'treesit-language-source-alist
-       `(,lang . (,(concat "https://github.com/" github) nil ,path))))
-    (when (and tsp lang remap (treesit-ready-p lang t))
-      (add-to-list 'major-mode-remap-alist remap))
-    (when (and tsp lang mode (treesit-ready-p lang t))
-      (add-to-list 'auto-mode-alist mode))))
-
-(use-package eglot
-  :elpaca nil
-  :custom (eglot-autoshutdown t)
-  :commands (eglot-ensure)
-  :preface
-  (require 'eglot)
-  (define-minor-mode dotemacs-prog-mode
-    "Stub mode with modes that should be hooked in `prog-mode'."
-    :init-value nil
-    :keymap (make-sparse-keymap)
-    (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
-               (not (eq major-mode 'lisp-mode)) ; use Sly
-               (not (eq major-mode 'scheme-mode)) ; use Geiser
-               (eglot--lookup-mode major-mode))
-      (eglot-ensure))))
-
-(define-minor-mode dotemacs-text-mode
-  "Stub mode with modes that should be hooked in `text-mode'."
-  :init-value nil
-  :keymap (make-sparse-keymap))
-
-(add-hook 'prog-mode-hook 'dotemacs-prog-mode)
-
-(use-package eglot-x
-  :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
-  :config (eglot-x-setup))
 
 (use-package emacs
   :elpaca nil
@@ -335,8 +286,37 @@ MODE - list to add to `auto-mode-alist'"
   (proced-auto-update-interval 1)
   (proced-enable-color-flag t))
 
+(use-package isearch
+  :elpaca nil
+  :bind ("C-z s" . isearch-forward))
+
+(require 'cl-macs)
+
+(when (and (fboundp 'treesit-available-p) (treesit-available-p))
+  (require 'treesit))
+
+(cl-defun dotemacs-use-treesit (&key lang github path remap mode)
+  "Setup treesiter for a given language.
+LANG - language to setup (symbol)
+GITHUB - github path to grammar (only user/repo)
+PATH - path to src inside github repository
+REMAP - list to add to `major-mode-remap-alist'
+MODE - list to add to `auto-mode-alist'"
+  (let ((tsp (and (fboundp 'treesit-available-p) (treesit-available-p))))
+    (when (and tsp lang github)
+      (unless (boundp 'treesit-language-source-alist)
+        (setq treesit-language-source-alist '()))
+      (add-to-list
+       'treesit-language-source-alist
+       `(,lang . (,(concat "https://github.com/" github) nil ,path))))
+    (when (and tsp lang remap (treesit-ready-p lang t))
+      (add-to-list 'major-mode-remap-alist remap))
+    (when (and tsp lang mode (treesit-ready-p lang t))
+      (add-to-list 'auto-mode-alist mode))))
+
 (use-package project
   :elpaca nil
+  :demand t
   :custom
   (project-vc-ignores '("target/"
                         "bin/"
@@ -349,9 +329,38 @@ MODE - list to add to `auto-mode-alist'"
                                    "pom.xml"
                                    "*.csproj")))
 
-(use-package isearch
+(use-package eglot
   :elpaca nil
-  :bind ("C-z s" . isearch-forward))
+  :custom (eglot-autoshutdown t)
+  :commands (eglot-ensure)
+  :preface
+  (require 'eglot)
+  (define-minor-mode dotemacs-prog-mode
+    "Stub mode with modes that should be hooked in `prog-mode'."
+    :init-value nil
+    :keymap (make-sparse-keymap)
+    (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
+               (not (eq major-mode 'lisp-mode)) ; use Sly
+               (not (eq major-mode 'scheme-mode)) ; use Geiser
+               (eglot--lookup-mode major-mode))
+      (eglot-ensure))))
+
+(define-minor-mode dotemacs-text-mode
+  "Stub mode with modes that should be hooked in `text-mode'."
+  :init-value nil
+  :keymap (make-sparse-keymap))
+
+(add-hook 'prog-mode-hook 'dotemacs-prog-mode)
+
+(use-package eglot-x
+  :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
+  :config (eglot-x-setup))
+
+(use-package realgud :defer t) ; TODO: Test and Document this
+
+(use-package format-all
+  :bind (:map dotemacs-prog-mode-map
+              ("C-c <C-tab>" . format-all-buffer)))
 
 (use-package github-primer-theme
   :elpaca nil
@@ -398,6 +407,9 @@ MODE - list to add to `auto-mode-alist'"
   :after helpful
   :config
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+
+(use-package devdocs)
+(use-package sicp)
 
 (use-package magit
   :custom (magit-diff-refine-hunk t))
@@ -481,10 +493,6 @@ MODE - list to add to `auto-mode-alist'"
   :bind (("C-:"   . avy-goto-char)
          ("C-z >" . avy-goto-char-2)
          ("C-z l" . avy-goto-line)))
-
-(use-package format-all
-  :bind (:map dotemacs-prog-mode-map
-              ("C-c <C-tab>" . format-all-buffer)))
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -1003,9 +1011,6 @@ _d_: Capture daily        _m_: Refile current TODO
 
 (use-package elpher :defer t)
 (use-package restclient :defer t)
-(use-package devdocs)
-(use-package sicp)
-(use-package realgud :defer t)
 
 (use-package elfeed
   :defer t
