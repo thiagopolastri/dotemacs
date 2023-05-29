@@ -151,17 +151,23 @@
   (delete-selection-mode 1)
   (show-paren-mode 1)
   (save-place-mode 1)
-  (global-so-long-mode 1)
-  (when (fboundp 'async-bytecomp-package-mode)
-    (async-bytecomp-package-mode 1))
-  (when (fboundp 'pixel-scroll-precision-mode)
-    (pixel-scroll-precision-mode 1)))
+  (global-so-long-mode 1))
 
-(use-package mule ; mule-cmds
+(use-package mule
   :elpaca nil
   :init
   (prefer-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8))
+
+(use-package async ; maybe unecessary
+  :elpaca nil
+  :if (fboundp 'async-bytecomp-package-mode)
+  :init (async-bytecomp-package-mode 1))
+
+(use-package pixel-scroll
+  :elpaca nil
+  :if (fboundp 'pixel-scroll-precision-mode)
+  :init (pixel-scroll-precision-mode 1))
 
 (use-package simple
   :elpaca nil
@@ -1038,9 +1044,3 @@ _d_: Capture daily        _m_: Refile current TODO
   :defer t
   :if (bound-and-true-p dotemacs-openai-key)
   :custom (gptel-api-key dotemacs-openai-key))
-
-(run-with-idle-timer 4 nil
-                     (lambda ()
-                       (setq gc-cons-threshold  67108864) ; 64M
-                       (setq gc-cons-percentage 0.1)
-                       (garbage-collect)))

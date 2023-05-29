@@ -3,6 +3,19 @@
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
 
+(add-hook
+ 'emacs-startup-hook
+ (lambda ()
+   (setq gc-cons-threshold 67108864
+         gc-cons-percentage 0.1)
+   (garbage-collect)
+   (message
+    "Emacs loaded in %s with %d garbage collections."
+    (format
+     "%.2f seconds"
+     (float-time (time-subtract after-init-time before-init-time)))
+    gcs-done)))
+
 (setq package-quickstart nil
       package-enable-at-startup nil
       load-prefer-newer t)
