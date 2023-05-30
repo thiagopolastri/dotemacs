@@ -339,8 +339,8 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :custom (eglot-autoshutdown t)
   :commands (eglot-ensure)
+  :demand t
   :preface
-  (require 'eglot)
   (define-minor-mode dotemacs-prog-mode
     "Stub mode with modes that should be hooked in `prog-mode'."
     :init-value nil
@@ -362,11 +362,11 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
   :config (eglot-x-setup))
 
-(use-package realgud :defer t) ; TODO: Test and Document this
-
 (use-package format-all
   :bind (:map dotemacs-prog-mode-map
               ("C-c <C-tab>" . format-all-buffer)))
+
+(use-package realgud :defer t)
 
 (use-package github-primer-theme
   :elpaca nil
