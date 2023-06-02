@@ -621,6 +621,30 @@ MODE - list to add to `auto-mode-alist'"
       (push (dotemacs-project-npm-bin-path) exec-path)
       (flymake-eslint-enable))))
 
+(use-package combobulate
+  :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
+  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :custom (combobulate-key-prefix "C-c o")
+  :hook ((bash-ts-mode
+          c-ts-mode
+          c++-ts-mode
+          csharp-ts-mode
+          java-ts-mode
+          ruby-ts-mode
+          python-ts-mode
+          css-ts-mode
+          js-ts-mode
+          toml-ts-mode
+          typescript-ts-mode
+          tsx-ts-mode
+          json-ts-mode
+          python-ts-mode
+          cmake-ts-mode
+          yaml-ts-mode
+          dockerfile-ts-mode
+          go-ts-mode
+          go-mod-ts-mode) . combobulate-mode))
+
 (dotemacs-use-treesit
  :lang 'bash
  :github "tree-sitter/tree-sitter-bash"
@@ -657,9 +681,9 @@ MODE - list to add to `auto-mode-alist'"
  :remap '(python-mode . python-ts-mode))
 
 (dotemacs-use-treesit
-   :lang 'css
-   :github "tree-sitter/tree-sitter-css"
-   :remap '(css-mode . css-ts-mode))
+ :lang 'css
+ :github "tree-sitter/tree-sitter-css"
+ :remap '(css-mode . css-ts-mode))
 
 (add-hook 'css-mode-hook 'rainbow-mode)
 (add-hook 'css-ts-mode-hook 'rainbow-mode)
@@ -673,9 +697,9 @@ MODE - list to add to `auto-mode-alist'"
 (add-hook 'js-ts-mode-hook 'subword-mode)
 
 (dotemacs-use-treesit
-   :lang 'toml
-   :github "tree-sitter/tree-sitter-toml"
-   :remap '(conf-toml-mode . toml-ts-mode))
+ :lang 'toml
+ :github "tree-sitter/tree-sitter-toml"
+ :remap '(conf-toml-mode . toml-ts-mode))
 
 (add-hook 'conf-mode-hook 'dotemacs-prog-mode)
 (add-hook 'html-mode-hook 'dotemacs-prog-mode) ; sgml-mode
