@@ -643,7 +643,9 @@ MODE - list to add to `auto-mode-alist'"
           yaml-ts-mode
           dockerfile-ts-mode
           go-ts-mode
-          go-mod-ts-mode) . combobulate-mode))
+          go-mod-ts-mode) . combobulate-mode)
+  :init
+  (add-hook 'combobulate-mode-hook (lambda () (drag-stuff-mode -1))))
 
 (dotemacs-use-treesit
  :lang 'bash
