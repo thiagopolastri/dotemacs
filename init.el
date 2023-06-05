@@ -878,8 +878,18 @@ MODE - list to add to `auto-mode-alist'"
 ;; TODO: fix lsp for svelte
 (add-to-list 'eglot-server-programs '(dotemacs-svelte-mode . "svelteserver"))
 
+(use-package elixir-mode
+  :init
+  (dotemacs-use-treesit
+   :lang 'elixir
+   :github "elixir-lang/tree-sitter-elixir"
+   :remap '(elixir-mode . elixir-ts-mode))
+  (dotemacs-use-treesit
+   :lang 'heex
+   :github "phoenixframework/tree-sitter-heex"
+   :mode '("\\.(l|h)?eex\\'" . heex-ts-mode)))
+
 (use-package php-mode :defer t)
-(use-package elixir-mode :defer t)
 (use-package lua-mode :defer t)
 (use-package zig-mode :defer t)
 (use-package julia-mode :defer t)
