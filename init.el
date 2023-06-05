@@ -243,6 +243,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package simple
   :elpaca nil
+  :delight visual-line-mode
   :custom (indent-tabs-mode nil)
   :hook (dotemacs-text-mode . visual-line-mode)
   :init
@@ -380,6 +381,11 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package sr-speedbar
   :custom (sr-speedbar-right-side nil))
+
+(use-package face-remap
+  :elpaca nil
+  :if (fboundp 'buffer-face-mode)
+  :delight buffer-face-mode)
 
 (use-package github-primer-theme
   :elpaca nil
