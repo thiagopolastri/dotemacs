@@ -368,6 +368,12 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :bind ("C-z s" . isearch-forward))
 
+(use-package gdb-mi
+  :elpaca nil
+  :custom
+  (gdb-many-windows t)
+  (gdb-show-main t))
+
 (use-package speedbar
   :elpaca nil
   :custom (speedbar-show-unknown-files t))
