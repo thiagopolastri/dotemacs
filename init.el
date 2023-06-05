@@ -384,7 +384,6 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package face-remap
   :elpaca nil
-  :if (fboundp 'buffer-face-mode)
   :delight buffer-face-mode)
 
 (use-package github-primer-theme
