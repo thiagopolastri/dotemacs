@@ -368,6 +368,13 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :bind ("C-z s" . isearch-forward))
 
+(use-package speedbar
+  :elpaca nil
+  :custom (speedbar-show-unknown-files t))
+
+(use-package sr-speedbar
+  :custom (sr-speedbar-right-side nil))
+
 (use-package github-primer-theme
   :elpaca nil
   :load-path "themes"
