@@ -42,7 +42,7 @@
   (setq elpaca-use-package-by-default t))
 
 (elpaca no-littering)
-(elpaca diminish)
+(elpaca delight)
 (unless (fboundp 'eglot)
   (elpaca project)
   (elpaca eglot))
@@ -122,6 +122,78 @@
                     nil
                     :family dotemacs-font-variable
                     :height dotemacs-font-size-variable)
+
+(require 'cl-macs)
+
+(when (and (fboundp 'treesit-available-p) (treesit-available-p))
+  (require 'treesit))
+
+(cl-defun dotemacs-use-treesit (&key lang github path remap mode)
+  "Setup treesiter for a given language.
+LANG - language to setup (symbol)
+GITHUB - github path to grammar (only user/repo)
+PATH - path to src inside github repository
+REMAP - list to add to `major-mode-remap-alist'
+MODE - list to add to `auto-mode-alist'"
+  (let ((tsp (and (fboundp 'treesit-available-p) (treesit-available-p))))
+    (when (and tsp lang github)
+      (unless (boundp 'treesit-language-source-alist)
+        (setq treesit-language-source-alist '()))
+      (add-to-list
+       'treesit-language-source-alist
+       `(,lang . (,(concat "https://github.com/" github) nil ,path))))
+    (when (and tsp lang remap (treesit-ready-p lang t))
+      (add-to-list 'major-mode-remap-alist remap))
+    (when (and tsp lang mode (treesit-ready-p lang t))
+      (add-to-list 'auto-mode-alist mode))))
+
+(use-package project
+  :elpaca nil
+  :demand t
+  :custom
+  (project-vc-ignores '("target/"
+                        "bin/"
+                        "obj/"
+                        "node_modules/"
+                        ".vscode/"))
+  (project-vc-extra-root-markers '(".dir-locals.el"
+                                   "package.json"
+                                   "cargo.toml"
+                                   "pom.xml"
+                                   "*.csproj")))
+
+(use-package eglot
+  :elpaca nil
+  :custom (eglot-autoshutdown t)
+  :commands (eglot-ensure)
+  :demand t
+  :preface
+  (define-minor-mode dotemacs-prog-mode
+    "Stub mode with modes that should be hooked in `prog-mode'."
+    :init-value nil
+    :keymap (make-sparse-keymap)
+    (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
+               (not (eq major-mode 'lisp-mode)) ; use Sly
+               (not (eq major-mode 'scheme-mode)) ; use Geiser
+               (eglot--lookup-mode major-mode))
+      (eglot-ensure))))
+
+(define-minor-mode dotemacs-text-mode
+  "Stub mode with modes that should be hooked in `text-mode'."
+  :init-value nil
+  :keymap (make-sparse-keymap))
+
+(add-hook 'prog-mode-hook 'dotemacs-prog-mode)
+
+(use-package eglot-x
+  :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
+  :config (eglot-x-setup))
+
+(use-package format-all
+  :bind (:map dotemacs-prog-mode-map
+              ("C-c <C-tab>" . format-all-buffer)))
+
+(use-package realgud :defer t)
 
 (use-package emacs
   :elpaca nil
@@ -213,7 +285,7 @@
 (use-package glyphless-mode
   :elpaca nil
   :if (fboundp 'glyphless-display-mode)
-  :diminish glyphless-display-mode
+  :delight glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
 
 (use-package autorevert
@@ -242,7 +314,7 @@
 
 (use-package eldoc
   :elpaca nil
-  :diminish eldoc-mode
+  :delight eldoc-mode
   :custom
   ;; Prevent echo area resize and always prefer buffer (C-h .)
   (eldoc-echo-area-use-multiline-p nil)
@@ -250,7 +322,7 @@
 
 (use-package whitespace
   :elpaca nil
-  :diminish whitespace-mode
+  :delight whitespace-mode
   :custom
   (whitespace-style '(face tabs empty trailing tab-mark indentation::space))
   (whitespace-action '(auto-cleanup)) ; clean on save
@@ -282,7 +354,7 @@
 
 (use-package hideshow
   :elpaca nil
-  :diminish hs-minor-mode
+  :delight hs-minor-mode
   :hook (dotemacs-prog-mode . hs-minor-mode))
 
 (use-package proced
@@ -295,78 +367,6 @@
 (use-package isearch
   :elpaca nil
   :bind ("C-z s" . isearch-forward))
-
-(require 'cl-macs)
-
-(when (and (fboundp 'treesit-available-p) (treesit-available-p))
-  (require 'treesit))
-
-(cl-defun dotemacs-use-treesit (&key lang github path remap mode)
-  "Setup treesiter for a given language.
-LANG - language to setup (symbol)
-GITHUB - github path to grammar (only user/repo)
-PATH - path to src inside github repository
-REMAP - list to add to `major-mode-remap-alist'
-MODE - list to add to `auto-mode-alist'"
-  (let ((tsp (and (fboundp 'treesit-available-p) (treesit-available-p))))
-    (when (and tsp lang github)
-      (unless (boundp 'treesit-language-source-alist)
-        (setq treesit-language-source-alist '()))
-      (add-to-list
-       'treesit-language-source-alist
-       `(,lang . (,(concat "https://github.com/" github) nil ,path))))
-    (when (and tsp lang remap (treesit-ready-p lang t))
-      (add-to-list 'major-mode-remap-alist remap))
-    (when (and tsp lang mode (treesit-ready-p lang t))
-      (add-to-list 'auto-mode-alist mode))))
-
-(use-package project
-  :elpaca nil
-  :demand t
-  :custom
-  (project-vc-ignores '("target/"
-                        "bin/"
-                        "obj/"
-                        "node_modules/"
-                        ".vscode/"))
-  (project-vc-extra-root-markers '(".dir-locals.el"
-                                   "package.json"
-                                   "cargo.toml"
-                                   "pom.xml"
-                                   "*.csproj")))
-
-(use-package eglot
-  :elpaca nil
-  :custom (eglot-autoshutdown t)
-  :commands (eglot-ensure)
-  :demand t
-  :preface
-  (define-minor-mode dotemacs-prog-mode
-    "Stub mode with modes that should be hooked in `prog-mode'."
-    :init-value nil
-    :keymap (make-sparse-keymap)
-    (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
-               (not (eq major-mode 'lisp-mode)) ; use Sly
-               (not (eq major-mode 'scheme-mode)) ; use Geiser
-               (eglot--lookup-mode major-mode))
-      (eglot-ensure))))
-
-(define-minor-mode dotemacs-text-mode
-  "Stub mode with modes that should be hooked in `text-mode'."
-  :init-value nil
-  :keymap (make-sparse-keymap))
-
-(add-hook 'prog-mode-hook 'dotemacs-prog-mode)
-
-(use-package eglot-x
-  :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
-  :config (eglot-x-setup))
-
-(use-package format-all
-  :bind (:map dotemacs-prog-mode-map
-              ("C-c <C-tab>" . format-all-buffer)))
-
-(use-package realgud :defer t)
 
 (use-package github-primer-theme
   :elpaca nil
@@ -385,7 +385,7 @@ MODE - list to add to `auto-mode-alist'"
   :config (dotemacs-modeline-mode 1))
 
 (use-package which-key
-  :diminish which-key-mode
+  :delight which-key-mode
   :custom
   (which-key-sort-order 'which-key-key-order-alpha)
   (which-key-sort-uppercase-first nil)
@@ -438,11 +438,11 @@ MODE - list to add to `auto-mode-alist'"
   :bind ("C-z b" . blamer-mode))
 
 (use-package editorconfig
-  :diminish editorconfig-mode
+  :delight editorconfig-mode
   :config (editorconfig-mode 1))
 
 (use-package smartparens
-  :diminish smartparens-mode
+  :delight smartparens-mode
   :custom
   (sp-highlight-pair-overlay nil)
   (sp-highlight-wrap-overlay nil)
@@ -452,12 +452,11 @@ MODE - list to add to `auto-mode-alist'"
   :config (smartparens-global-mode))
 
 (use-package drag-stuff
-  :diminish drag-stuff-mode
+  :delight drag-stuff-mode
   :hook (dotemacs-prog-mode . drag-stuff-mode)
   :config (drag-stuff-define-keys))
 
-(use-package rainbow-mode
-  :diminish rainbow-mode)
+(use-package rainbow-mode :defer t :delight)
 
 (use-package rainbow-delimiters
   :hook (dotemacs-prog-mode . rainbow-delimiters-mode))
@@ -466,7 +465,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-prog-mode . highlight-numbers-mode))
 
 (use-package highlight-indent-guides
-  :diminish highlight-indent-guides-mode
+  :delight highlight-indent-guides-mode
   :custom
   (highlight-indent-guides-method 'character) ; or 'bitmap or 'column
   (highlight-indent-guides-suppress-auto-error t)
@@ -501,7 +500,7 @@ MODE - list to add to `auto-mode-alist'"
          ("C-z l" . avy-goto-line)))
 
 (use-package yasnippet
-  :diminish yas-minor-mode
+  :delight yas-minor-mode
   :init (yas-global-mode))
 
 (use-package yasnippet-snippets)
@@ -711,7 +710,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package paredit
   :after smartparens
-  :diminish paredit-mode
+  :delight paredit-mode
   :init
   (add-hook 'paredit-mode-hook (lambda () (smartparens-mode -1)))
   (add-hook 'lisp-mode-hook 'paredit-mode)
@@ -787,7 +786,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook ((typescript-mode typescript-ts-mode tsx-ts-mode) . subword-mode))
 
 (use-package npm-mode
-  :diminish npm-mode
+  :delight
   :hook ((javascript-mode js-ts-mode typescript-mode typescript-ts-mode tsx-ts-mode) . npm-mode))
 
 (use-package json-mode
@@ -956,7 +955,7 @@ MODE - list to add to `auto-mode-alist'"
 (use-package valign
   :hook (org-mode . valign-mode)
   :custom (valign-fancy-bar t)
-  :diminish valign-mode)
+  :delight valign-mode)
 
 (use-package org-roam
   :when (and (bound-and-true-p dotemacs-roam-dir)
