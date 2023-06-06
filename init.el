@@ -659,6 +659,8 @@ MODE - list to add to `auto-mode-alist'"
           cmake-ts-mode
           yaml-ts-mode
           dockerfile-ts-mode
+          elixir-ts-mode
+          heex-ts-mode
           go-ts-mode
           go-mod-ts-mode) . combobulate-mode)
   :init
