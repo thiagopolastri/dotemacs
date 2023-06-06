@@ -661,6 +661,7 @@ MODE - list to add to `auto-mode-alist'"
           dockerfile-ts-mode
           elixir-ts-mode
           heex-ts-mode
+          html-ts-mode
           go-ts-mode
           go-mod-ts-mode) . combobulate-mode)
   :init
@@ -722,7 +723,13 @@ MODE - list to add to `auto-mode-alist'"
  :github "tree-sitter/tree-sitter-toml"
  :remap '(conf-toml-mode . toml-ts-mode))
 
+(dotemacs-use-treesit
+ :lang 'html
+ :github "tree-sitter/tree-sitter-html"
+ :remap '(html-mode . html-ts-mode))
+
 (add-hook 'conf-mode-hook 'dotemacs-prog-mode)
+(add-hook 'html-ts-mode-hook 'dotemacs-prog-mode)
 (add-hook 'html-mode-hook 'dotemacs-prog-mode) ; sgml-mode
 (add-hook 'mhtml-mode-hook 'dotemacs-prog-mode) ; sgml-mode
 (add-hook 'xml-mode-hook 'dotemacs-prog-mode)
