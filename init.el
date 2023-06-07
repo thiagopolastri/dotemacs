@@ -164,19 +164,33 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package eglot
   :elpaca nil
-  :custom (eglot-autoshutdown t)
-  :commands (eglot-ensure)
   :demand t
-  :preface
-  (define-minor-mode dotemacs-prog-mode
-    "Stub mode with modes that should be hooked in `prog-mode'."
-    :init-value nil
-    :keymap (make-sparse-keymap)
-    (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
-               (not (eq major-mode 'lisp-mode)) ; use Sly
-               (not (eq major-mode 'scheme-mode)) ; use Geiser
-               (eglot--lookup-mode major-mode))
-      (eglot-ensure))))
+  :custom (eglot-autoshutdown t)
+  :commands (eglot-ensure))
+
+(use-package drag-stuff
+  :delight drag-stuff-mode
+  :config (drag-stuff-define-keys))
+
+(use-package combobulate
+  :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
+  :delight combobulate-mode
+  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :custom (combobulate-key-prefix "C-c o"))
+
+(define-minor-mode dotemacs-prog-mode
+  "Stub mode with modes that should be hooked in `prog-mode'."
+  :init-value nil
+  :keymap (make-sparse-keymap)
+  (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
+             (not (eq major-mode 'lisp-mode)) ; use Sly
+             (not (eq major-mode 'scheme-mode)) ; use Geiser
+             (eglot--lookup-mode major-mode))
+    (eglot-ensure))
+  (if (and (fboundp 'combobulate-mode)
+           (string-match "-ts-mode" (symbol-name major-mode)))
+      (combobulate-mode)
+    (drag-stuff-mode)))
 
 (define-minor-mode dotemacs-text-mode
   "Stub mode with modes that should be hooked in `text-mode'."
@@ -469,11 +483,6 @@ MODE - list to add to `auto-mode-alist'"
   (sp-max-pair-length 4)
   :config (smartparens-global-mode))
 
-(use-package drag-stuff
-  :delight drag-stuff-mode
-  :hook (dotemacs-prog-mode . drag-stuff-mode)
-  :config (drag-stuff-define-keys))
-
 (use-package rainbow-mode :defer t :delight)
 
 (use-package rainbow-delimiters
@@ -638,35 +647,6 @@ MODE - list to add to `auto-mode-alist'"
       (push (dotemacs-project-npm-bin-path) exec-path)
       (flymake-eslint-enable))))
 
-(use-package combobulate
-  :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
-  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
-  :custom (combobulate-key-prefix "C-c o")
-  :hook ((bash-ts-mode
-          c-ts-mode
-          c++-ts-mode
-          csharp-ts-mode
-          java-ts-mode
-          ruby-ts-mode
-          python-ts-mode
-          css-ts-mode
-          js-ts-mode
-          toml-ts-mode
-          typescript-ts-mode
-          tsx-ts-mode
-          json-ts-mode
-          python-ts-mode
-          cmake-ts-mode
-          yaml-ts-mode
-          dockerfile-ts-mode
-          elixir-ts-mode
-          heex-ts-mode
-          html-ts-mode
-          go-ts-mode
-          go-mod-ts-mode) . combobulate-mode)
-  :init
-  (add-hook 'combobulate-mode-hook (lambda () (drag-stuff-mode -1))))
-
 (dotemacs-use-treesit
  :lang 'bash
  :github "tree-sitter/tree-sitter-bash"
@@ -739,7 +719,9 @@ MODE - list to add to `auto-mode-alist'"
   :after smartparens
   :delight paredit-mode
   :init
-  (add-hook 'paredit-mode-hook (lambda () (smartparens-mode -1)))
+  (add-hook 'paredit-mode-hook (lambda ()
+                                 (smartparens-mode -1)
+                                 (drag-stuff-mode -1)))
   (add-hook 'lisp-mode-hook 'paredit-mode)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'common-lisp-mode-hook 'paredit-mode)
