@@ -170,6 +170,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package drag-stuff
   :delight drag-stuff-mode
+  :demand t
   :config (drag-stuff-define-keys))
 
 (use-package combobulate
@@ -411,10 +412,10 @@ MODE - list to add to `auto-mode-alist'"
                (expand-file-name "themes" user-emacs-directory))
   (load-theme 'github-primer t))
 
-(use-package dotemacs-modeline
+(use-package dotemacs-mode-line
   :elpaca nil
   :load-path "lisp"
-  :config (dotemacs-modeline-mode 1))
+  :config (dotemacs-mode-line-mode 1))
 
 (use-package which-key
   :delight which-key-mode
@@ -726,6 +727,8 @@ MODE - list to add to `auto-mode-alist'"
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'common-lisp-mode-hook 'paredit-mode)
   (add-hook 'scheme-mode-hook 'paredit-mode))
+
+(add-hook 'emacs-lisp-mode-hook 'flymake-mode)
 
 (customize-set-variable 'inferior-lisp-program "sbcl")
 
