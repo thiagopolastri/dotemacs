@@ -238,9 +238,9 @@ Displays `nyan-mode' if enabled."
                " %e"))
             (format-mode-line
              '((:eval (dotemacs-mode-line-process))
-               (:eval (dotemacs-mode-line-misc-info))
                (:eval (dotemacs-mode-line-major-mode))
                (:eval (dotemacs-mode-line-minor-modes))
+               (:eval (dotemacs-mode-line-misc-info))
                (:propertize " " display (raise -0.15))))))))
     (progn
       (remove-function pre-redisplay-function

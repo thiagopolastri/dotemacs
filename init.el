@@ -291,7 +291,7 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :custom
   (display-time-default-load-average nil)
-  (display-time-format "%d/%m/%Y %H:%M")
+  (display-time-format "%H:%M")
   :bind ("<f6>" . display-time-mode))
 
 (use-package uniquify
