@@ -207,8 +207,8 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; borders & lines
   `(vertical-border ((,class :foreground ,bd-light)))
-  `(border ((,class :background ,bd-light)))
-  `(internal-border ((,class :inherit 'border)))
+  `(border ((,class :background ,bg))) ; bd-light
+  `(internal-border ((,class :inherit 'vertical-border)))
   `(window-divider ((,class :inherit 'vertical-border)))
   `(window-divider-first-pixel ((,class :inherit 'vertical-border)))
   `(window-divider-last-pixel ((,class :inherit 'vertical-border)))
@@ -528,7 +528,7 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; corfu
   `(corfu-default ((,class :background ,bg-max)))
-  `(corfu-border ((,class :inherit 'border)))
+  `(corfu-border ((,class :inherit 'vertical-border)))
   `(corfu-current ((,class :inherit 'highlight)))
   `(corfu-bar ((,class :background ,bg-min)))
   `(corfu-annotations ((,class :inherit 'completions-annotations)))
@@ -742,32 +742,18 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-done ((,class :foreground ,fg-success :weight bold)))
   `(org-todo ((,class :foreground ,fg-error :weight bold)))
   `(org-latex-and-related ((,class :foreground ,fg-warning)))
-  `(org-table ((,class :foreground ,fg-constant)))
 
   `(org-code ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
   `(org-meta-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; comment-face
   `(org-document-info-keyword ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
   `(org-table ((,class :inherit 'fixed-pitch :foreground ,fg-string)))
+  `(org-table-header ((t (:inherit 'org-table :foreground ,bg :background ,fg))))
 
-  ;; (org-table-header ((t (:inherit 'fixed-pitch))))
   `(org-verbatim ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
   `(org-formula ((,class :inherit 'fixed-pitch :foreground ,fg-variable)))
   `(org-special-keyword ((,class :inherit 'fixed-pitch :foreground ,fg-keyword)))
   `(org-checkbox ((,class :inherit 'fixed-pitch :bold t))) ; bold
 
-  ;; This theme is still incomplete
-  ;; TODO:
-  ;; - Info-mode
-  ;; - eww
-  ;; - grep
-  ;; - c-annotation-face
-  ;; - newsticker
-  ;; - org (org-ref)
-  ;; - magit
-  ;; - racket-mode
-  ;; - realgud
-  ;; - speedbar
-  ;; - vertico
   ))
 
 (github-primer-with-color-variables
