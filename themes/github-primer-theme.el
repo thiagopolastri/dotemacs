@@ -176,7 +176,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(error ((,class :foreground ,fg-error :weight bold)))
   `(bookmark-face ((,class :foreground ,fg-variable)))
 
-;;;;; font-lock
+;;;;; font-lock & outline
   `(font-lock-builtin-face ((,class :foreground ,fg-builtin)))
   `(font-lock-constant-face ((,class :foreground ,fg-constant)))
   `(font-lock-function-name-face ((,class :foreground ,fg-function)))
@@ -196,6 +196,14 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(font-lock-regexp-grouping-construct ((,class :foreground ,fg :weight bold)))
   `(font-lock-negation-char-face ((,class :foreground ,fg :weight bold)))
   `(elisp-shorthand-font-lock-face ((,class :inherit 'font-lock-keyword-face)))
+  `(outline-1 ((,class :foreground ,fg-cyan))) ; font-lock-function-name-face
+  `(outline-2 ((,class :foreground ,fg-blue))) ; font-lock-variable-name-face
+  `(outline-3 ((,class :foreground ,fg-purple))) ; font-lock-keyword-face
+  `(outline-4 ((,class :foreground ,fg-pink))) ; font-lock-comment-face
+  `(outline-5 ((,class :foreground ,fg-red))) ; font-lock-type-face
+  `(outline-6 ((,class :foreground ,fg-coral))) ; font-lock-constant-face
+  `(outline-7 ((,class :foreground ,fg-orange))) ; font-lock-builtin-face
+  `(outline-8 ((,class :foreground ,fg-yellow))) ; font-lock-string-face
 
 ;;;;; special characters
   `(trailing-whitespace ((,class :background ,bg-red-max)))
