@@ -60,69 +60,56 @@
   "Init Emacs settings (You must restart Emacs to apply these changes)."
   :group 'local)
 
-(defcustom dotemacs-font-fixed "Monospace"
-  "Emacs fixed font.  Mono or code variant."
-  :group 'dotemacs
-  :type 'string)
-
-(defcustom dotemacs-font-size-fixed 120
-  "Emacs font size.  integer in units of 1/10 point (140 = 14pt)."
-  :group 'dotemacs
-  :type 'integer)
-
-(defcustom dotemacs-font-variable "Sans Serif"
-  "Emacs variable font.  Sans or Serif."
-  :group 'dotemacs
-  :type 'string)
-
-(defcustom dotemacs-font-size-variable 120
-  "Emacs font size (variable).  integer in units of 1/10 point (140 = 14pt)."
-  :group 'dotemacs
-  :type 'integer)
-
-(defcustom dotemacs-font-org-title "Sans Serif"
-  "Font to use in Org titles."
-  :group 'dotemacs
-  :type 'string)
-
-(defcustom dotemacs-font-size-org-title 140
-  "Font size to use in Org titles.  integer in units of 1/10 point (140 = 14pt)."
-  :group 'dotemacs
-  :type 'integer)
-
-(defcustom dotemacs-openai-key nil
-  "Api key for OpenAI (chatgpt)."
-  :group 'dotemacs
-  :type '(choice (string :tag "OpenAI API key")
-                 (const :tag "None" nil)))
-
 (defcustom dotemacs-roam-dir nil
   "Org Roam directory (where your org files will live)."
   :group 'dotemacs
   :type '(choice (directory :tag "Roam directory")
                  (const :tag "None" nil)))
 
-(defcustom dotemacs-elfeed-org-file nil
-  "Org file with feed urls (elfeed)."
-  :group 'dotemacs
-  :type '(repeat (file :must-match t)))
-
-(set-face-attribute 'default
-                    nil
-                    :family dotemacs-font-fixed
-                    :height dotemacs-font-size-fixed)
-(set-face-attribute 'fixed-pitch
-                    nil
-                    :family dotemacs-font-fixed
-                    :height dotemacs-font-size-fixed)
-(set-face-attribute 'fixed-pitch-serif
-                    nil
-                    :family dotemacs-font-fixed
-                    :height dotemacs-font-size-fixed)
-(set-face-attribute 'variable-pitch
-                    nil
-                    :family dotemacs-font-variable
-                    :height dotemacs-font-size-variable)
+(use-package fontaine
+  :custom
+  (fontaine-latest-state-file
+      (locate-user-emacs-file "var/fontaine-latest-state.eld"))
+  (fontaine-presets
+   '((safe
+      :default-family "Monospace"
+      :default-height 120
+      :fixed-pitch-height 120
+      :fixed-pitch-serif-height 120
+      :variable-pitch-family "Sans"
+      :variable-pitch-height 120)
+     (fancy
+      :default-family "MonoLisa"
+      :default-height 140
+      :fixed-pitch-height 140
+      :fixed-pitch-serif-height 140
+      :variable-pitch-family "Concourse T3 Tab"
+      :variable-pitch-height 170)
+     (ibm
+      :default-family "IBM Plex Mono"
+      :default-height 140
+      :fixed-pitch-height 140
+      :fixed-pitch-serif-height 140
+      :variable-pitch-family "IBM Plex Sans"
+      :variable-pitch-height 140)
+     (t
+      :default-weight normal
+      :fixed-pitch-family nil
+      :fixed-pitch-weight nil
+      :fixed-pitch-serif-family nil
+      :fixed-pitch-serif-weight nil
+      :variable-pitch-weight nil
+      :bold-family nil
+      :bold-weight bold
+      :italic-family nil
+      :italic-slant italic
+      :line-spacing nil
+      )))
+  :init
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'safe))
+  :config
+  (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)
+  :bind ("C-z f" . fontaine-set-preset))
 
 (use-package emacs
   :elpaca nil
@@ -197,7 +184,11 @@
   :custom
   (display-time-default-load-average nil)
   (display-time-format "%H:%M") ; %d/%m/%Y %H:%M
-  :bind ("<f6>" . display-time-mode))
+  :bind ("<f6>" . display-time-mode)
+  :custom-face
+  (display-time-date-and-time ((t (:inherit 'font-lock-constant-face
+                                            :family "Minisystem"
+                                            :bold t)))))
 
 (use-package uniquify
   :elpaca nil
@@ -947,20 +938,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook ((org-mode . dotemacs-text-mode)
          (org-mode . variable-pitch-mode))
   :config
-  (add-to-list 'org-latex-packages-alist '("" "listings" t))
-  (let* ((family `(:family ,dotemacs-font-org-title))
-         (heading `(:height ,dotemacs-font-size-org-title ,@family)))
-    (custom-theme-set-faces
-     'user
-     `(org-level-1 ((t (:inherit outline-1 ,@heading))))
-     `(org-level-2 ((t (:inherit outline-2 ,@heading))))
-     `(org-level-3 ((t (:inherit outline-3 ,@heading))))
-     `(org-level-4 ((t (:inherit outline-4 ,@heading))))
-     `(org-level-5 ((t (:inherit outline-5 ,@heading))))
-     `(org-level-6 ((t (:inherit outline-6 ,@heading))))
-     `(org-level-7 ((t (:inherit outline-7 ,@heading))))
-     `(org-level-8 ((t (:inherit outline-8 ,@heading))))
-     `(org-document-title ((t (,@family)))))))
+  (add-to-list 'org-latex-packages-alist '("" "listings" t)))
 
 (use-package visual-fill-column
   ;; `visual-line-mode' are already hooked on `dotemacs-text-mode'.
@@ -1077,15 +1055,6 @@ _d_: Capture daily        _m_: Refile current TODO
 (use-package elpher :defer t)
 (use-package restclient :defer t)
 
-(use-package elfeed
-  :defer t
-  :if (bound-and-true-p dotemacs-elfeed-org-file))
-
-(use-package elfeed-org
-  :defer t
-  :if (bound-and-true-p dotemacs-elfeed-org-file)
-  :custom (rmh-elfeed-org-files dotemacs-elfeed-org-file))
-
 (use-package vterm
   :elpaca nil
   :custom
@@ -1098,10 +1067,5 @@ _d_: Capture daily        _m_: Refile current TODO
          ("C-n" . multi-vterm)
          ("C->" . multi-vterm-next)
          ("C-<" . multi-vterm-prev)))
-
-(use-package gptel ; use C-c <Enter> to send request
-  :defer t
-  :if (bound-and-true-p dotemacs-openai-key)
-  :custom (gptel-api-key dotemacs-openai-key))
 
 (load (expand-file-name "user.el" user-emacs-directory) :no-error)
