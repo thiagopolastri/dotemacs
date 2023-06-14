@@ -184,11 +184,7 @@
   :custom
   (display-time-default-load-average nil)
   (display-time-format "%H:%M") ; %d/%m/%Y %H:%M
-  :bind ("<f6>" . display-time-mode)
-  :custom-face
-  (display-time-date-and-time ((t (:inherit 'font-lock-constant-face
-                                            :family "Minisystem"
-                                            :bold t)))))
+  :bind ("<f6>" . display-time-mode))
 
 (use-package uniquify
   :elpaca nil
