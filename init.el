@@ -48,6 +48,7 @@
   (elpaca eglot))
 (elpaca geiser)
 (elpaca vterm)
+
 (elpaca-wait)
 
 (require 'recentf)
@@ -123,6 +124,145 @@
                     :family dotemacs-font-variable
                     :height dotemacs-font-size-variable)
 
+(use-package emacs
+  :elpaca nil
+  :custom
+  (y-or-n-p-use-read-key t)
+  (tab-always-indent 'complete)
+  (cursor-type 'bar)
+  (use-short-answers t)
+  (visible-bell 1)
+  (use-dialog-box nil)
+  (fill-column 80)
+  (tab-width 4)
+  (word-wrap t)
+  (truncate-lines t)
+  (truncate-partial-width-windows nil)
+  (frame-resize-pixelwise t)
+  (kill-buffer-query-functions nil)
+  (create-lockfiles nil)
+  (enable-recursive-minibuffers t)
+  (scroll-step 1)
+  (scroll-conservatively 10000)
+  (auto-window-vscroll nil)
+  (bidi-paragraph-direction 'left-to-right)
+  (bidi-inhibit-bpa t)
+  :init
+  (global-unset-key (kbd "C-z"))
+  (delete-selection-mode 1)
+  (show-paren-mode 1)
+  (save-place-mode 1)
+  (global-so-long-mode 1))
+
+(use-package mule
+  :elpaca nil
+  :init
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8))
+
+(use-package async
+  :elpaca nil
+  :if (fboundp 'async-bytecomp-package-mode)
+  :init (async-bytecomp-package-mode 1))
+
+(use-package pixel-scroll
+  :elpaca nil
+  :if (fboundp 'pixel-scroll-precision-mode)
+  :init (pixel-scroll-precision-mode 1))
+
+(use-package window
+  :elpaca nil
+  :custom (switch-to-buffer-obey-display-actions t))
+
+(use-package files
+  :elpaca nil
+  :custom
+  (confirm-kill-emacs 'yes-or-no-p)
+  (large-file-warning-threshold 100000000) ; 100MB
+  (require-final-newline t)
+  (find-file-visit-truename t)
+  (revert-without-query t)
+  (make-backup-files nil)
+  (auto-save-default nil)
+  :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
+
+(use-package vc
+  :elpaca nil
+  :custom
+  (vc-follow-symlinks t)
+  (vc-handled-backends '(Git)))
+
+(use-package time
+  :elpaca nil
+  :custom
+  (display-time-default-load-average nil)
+  (display-time-format "%H:%M") ; %d/%m/%Y %H:%M
+  :bind ("<f6>" . display-time-mode))
+
+(use-package uniquify
+  :elpaca nil
+  :custom (uniquify-buffer-name-style 'forward))
+
+(use-package autorevert
+  :elpaca nil
+  :custom
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-interval 3)
+  (auto-revert-check-vc-info t)
+  :config (global-auto-revert-mode 1))
+
+(use-package savehist
+  :elpaca nil
+  :custom (history-length 25)
+  :config (savehist-mode 1))
+
+(use-package dired
+  :elpaca nil
+  :custom
+  (dired-auto-revert-buffer t)
+  (dired-dwim-target t)
+  (dired-hide-details-hide-symlink-targets nil)
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'top)
+  (dired-listing-switches "-valho --group-directories-first")
+  :hook (dired-mode . dired-hide-details-mode)) ; use ( to show details
+
+(use-package eldoc
+  :elpaca nil
+  :delight eldoc-mode
+  :custom
+  ;; Prevent echo area resize and always prefer buffer (C-h .)
+  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-prefer-doc-buffer t))
+
+(use-package proced
+  :elpaca nil
+  :custom
+  (proced-auto-update-flag t)
+  (proced-auto-update-interval 1)
+  (proced-enable-color-flag t))
+
+(use-package isearch
+  :elpaca nil
+  :bind ("C-z s" . isearch-forward))
+
+(use-package gdb-mi
+  :elpaca nil
+  :custom
+  (gdb-many-windows t)
+  (gdb-show-main t))
+
+(use-package speedbar
+  :elpaca nil
+  :custom (speedbar-show-unknown-files t))
+
+(use-package sr-speedbar
+  :custom (sr-speedbar-right-side nil))
+
+(use-package face-remap
+  :elpaca nil
+  :delight buffer-face-mode)
+
 (require 'cl-macs)
 
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
@@ -146,6 +286,17 @@ MODE - list to add to `auto-mode-alist'"
       (add-to-list 'major-mode-remap-alist remap))
     (when (and tsp lang mode (treesit-ready-p lang t))
       (add-to-list 'auto-mode-alist mode))))
+
+(defun dotemacs-treesit-install-all ()
+  "Install all language grammar."
+  (interactive)
+  (with-temp-buffer
+    (dolist (lang-list treesit-language-source-alist)
+      (let ((lang (car lang-list)))
+        (message "Installing %s" lang)
+        (treesit-install-language-grammar
+         lang
+         (expand-file-name "tree-sitter" user-emacs-directory))))))
 
 (use-package project
   :elpaca nil
@@ -210,52 +361,6 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package realgud :defer t)
 
-(use-package emacs
-  :elpaca nil
-  :custom
-  (y-or-n-p-use-read-key t)
-  (tab-always-indent 'complete)
-  (cursor-type 'bar)
-  (use-short-answers t)
-  (visible-bell 1)
-  (use-dialog-box nil)
-  (fill-column 80)
-  (tab-width 4)
-  (word-wrap t)
-  (truncate-lines t)
-  (truncate-partial-width-windows nil)
-  (frame-resize-pixelwise t)
-  (kill-buffer-query-functions nil)
-  (create-lockfiles nil)
-  (enable-recursive-minibuffers t)
-  (scroll-step 1)
-  (scroll-conservatively 10000)
-  (auto-window-vscroll nil)
-  (bidi-paragraph-direction 'left-to-right)
-  (bidi-inhibit-bpa t)
-  :init
-  (global-unset-key (kbd "C-z"))
-  (delete-selection-mode 1)
-  (show-paren-mode 1)
-  (save-place-mode 1)
-  (global-so-long-mode 1))
-
-(use-package mule
-  :elpaca nil
-  :init
-  (prefer-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8))
-
-(use-package async ; maybe unecessary
-  :elpaca nil
-  :if (fboundp 'async-bytecomp-package-mode)
-  :init (async-bytecomp-package-mode 1))
-
-(use-package pixel-scroll
-  :elpaca nil
-  :if (fboundp 'pixel-scroll-precision-mode)
-  :init (pixel-scroll-precision-mode 1))
-
 (use-package simple
   :elpaca nil
   :delight visual-line-mode
@@ -265,76 +370,11 @@ MODE - list to add to `auto-mode-alist'"
   (line-number-mode 1)
   (column-number-mode 1))
 
-(use-package window
-  :elpaca nil
-  :custom (switch-to-buffer-obey-display-actions t))
-
-(use-package files
-  :elpaca nil
-  :custom
-  (confirm-kill-emacs 'yes-or-no-p)
-  (large-file-warning-threshold 100000000) ; 100MB
-  (require-final-newline t)
-  (find-file-visit-truename t)
-  (revert-without-query t)
-  (make-backup-files nil)
-  (auto-save-default nil)
-  :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
-
-(use-package vc ; vc-hooks
-  :elpaca nil
-  :custom
-  (vc-follow-symlinks t)
-  (vc-handled-backends '(Git)))
-
-(use-package time
-  :elpaca nil
-  :custom
-  (display-time-default-load-average nil)
-  (display-time-format "%H:%M")
-  :bind ("<f6>" . display-time-mode))
-
-(use-package uniquify
-  :elpaca nil
-  :custom (uniquify-buffer-name-style 'forward))
-
 (use-package glyphless-mode
   :elpaca nil
   :if (fboundp 'glyphless-display-mode)
   :delight glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
-
-(use-package autorevert
-  :elpaca nil
-  :custom
-  (global-auto-revert-non-file-buffers t)
-  (auto-revert-interval 3)
-  (auto-revert-check-vc-info t)
-  :config (global-auto-revert-mode 1))
-
-(use-package savehist
-  :elpaca nil
-  :custom (history-length 25)
-  :config (savehist-mode 1))
-
-(use-package dired
-  :elpaca nil
-  :custom
-  (dired-auto-revert-buffer t)
-  (dired-dwim-target t)
-  (dired-hide-details-hide-symlink-targets nil)
-  (dired-recursive-copies 'always)
-  (dired-recursive-deletes 'top)
-  (dired-listing-switches "-valho --group-directories-first")
-  :hook (dired-mode . dired-hide-details-mode)) ; use ( to show details
-
-(use-package eldoc
-  :elpaca nil
-  :delight eldoc-mode
-  :custom
-  ;; Prevent echo area resize and always prefer buffer (C-h .)
-  (eldoc-echo-area-use-multiline-p nil)
-  (eldoc-echo-area-prefer-doc-buffer t))
 
 (use-package whitespace
   :elpaca nil
@@ -372,34 +412,6 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :delight hs-minor-mode
   :hook (dotemacs-prog-mode . hs-minor-mode))
-
-(use-package proced
-  :elpaca nil
-  :custom
-  (proced-auto-update-flag t)
-  (proced-auto-update-interval 1)
-  (proced-enable-color-flag t))
-
-(use-package isearch
-  :elpaca nil
-  :bind ("C-z s" . isearch-forward))
-
-(use-package gdb-mi
-  :elpaca nil
-  :custom
-  (gdb-many-windows t)
-  (gdb-show-main t))
-
-(use-package speedbar
-  :elpaca nil
-  :custom (speedbar-show-unknown-files t))
-
-(use-package sr-speedbar
-  :custom (sr-speedbar-right-side nil))
-
-(use-package face-remap
-  :elpaca nil
-  :delight buffer-face-mode)
 
 (use-package github-primer-theme
   :elpaca nil
@@ -1091,3 +1103,5 @@ _d_: Capture daily        _m_: Refile current TODO
   :defer t
   :if (bound-and-true-p dotemacs-openai-key)
   :custom (gptel-api-key dotemacs-openai-key))
+
+(load (expand-file-name "user.el" user-emacs-directory) :no-error)
