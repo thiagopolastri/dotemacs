@@ -76,7 +76,7 @@
       :default-height 120
       :fixed-pitch-height 120
       :fixed-pitch-serif-height 120
-      :variable-pitch-family "Sans"
+      :variable-pitch-family "Sans Serif"
       :variable-pitch-height 120)
      (fancy
       :default-family "MonoLisa"
@@ -621,9 +621,14 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package jinx
   :hook (dotemacs-text-mode . jinx-mode)
+  :delight '(:eval jinx-languages)
   :bind (:map jinx-mode-map
-         ("C-z h" . jinx-languages)
-         ("C-;"   . jinx-correct)))
+              ("C-z h" . jinx-languages)
+              ("C-;"   . jinx-correct)))
+
+(use-package flymake
+  :elpaca nil
+  :custom (flymake-mode-line-lighter "⚠"))
 
 (use-package flymake-eslint
   :defer t
