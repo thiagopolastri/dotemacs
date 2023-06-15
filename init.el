@@ -83,7 +83,7 @@
       :default-height 140
       :fixed-pitch-height 140
       :fixed-pitch-serif-height 140
-      :variable-pitch-family "Concourse T3 Tab"
+      :variable-pitch-family "Concourse T3"
       :variable-pitch-height 170)
      (ibm
       :default-family "IBM Plex Mono"
