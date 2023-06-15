@@ -103,8 +103,7 @@
       :bold-weight bold
       :italic-family nil
       :italic-slant italic
-      :line-spacing nil
-      )))
+      :line-spacing nil)))
   :init
   (fontaine-set-preset (or (fontaine-restore-latest-preset) 'safe))
   :config
