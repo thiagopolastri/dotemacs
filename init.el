@@ -170,7 +170,9 @@
   (revert-without-query t)
   (make-backup-files nil)
   (auto-save-default nil)
-  :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
+  :init
+  (add-hook 'after-save-hook
+            'executable-make-buffer-file-executable-if-script-p))
 
 (use-package vc
   :elpaca nil
