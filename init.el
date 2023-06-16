@@ -110,6 +110,22 @@
   (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)
   :bind ("C-z f" . fontaine-set-preset))
 
+(use-package github-primer-theme
+  :elpaca nil
+  :load-path "themes"
+  :commands (github-primer-cycle)
+  :bind ("<f5>" . github-primer-cycle)
+  :init
+  ;; https://github.com/jwiegley/use-package/issues/963
+  (add-to-list 'custom-theme-load-path
+               (expand-file-name "themes" user-emacs-directory))
+  (load-theme 'github-primer t))
+
+(use-package dotemacs-mode-line
+  :elpaca nil
+  :load-path "lisp"
+  :config (dotemacs-mode-line-mode 1))
+
 (use-package emacs
   :elpaca nil
   :custom
@@ -313,7 +329,6 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package drag-stuff
   :delight drag-stuff-mode
-  :demand t
   :config (drag-stuff-define-keys))
 
 (use-package combobulate
@@ -334,7 +349,7 @@ MODE - list to add to `auto-mode-alist'"
   (if (and (fboundp 'combobulate-mode)
            (string-match "-ts-mode" (symbol-name major-mode)))
       (combobulate-mode)
-    (drag-stuff-mode)))
+    (when (fboundp 'drag-stuff-mode) (drag-stuff-mode))))
 
 (define-minor-mode dotemacs-text-mode
   "Stub mode with modes that should be hooked in `text-mode'."
@@ -404,22 +419,6 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :delight hs-minor-mode
   :hook (dotemacs-prog-mode . hs-minor-mode))
-
-(use-package github-primer-theme
-  :elpaca nil
-  :load-path "themes"
-  :commands (github-primer-cycle)
-  :bind ("<f5>" . github-primer-cycle)
-  :init
-  ;; https://github.com/jwiegley/use-package/issues/963
-  (add-to-list 'custom-theme-load-path
-               (expand-file-name "themes" user-emacs-directory))
-  (load-theme 'github-primer t))
-
-(use-package dotemacs-mode-line
-  :elpaca nil
-  :load-path "lisp"
-  :config (dotemacs-mode-line-mode 1))
 
 (use-package which-key
   :delight which-key-mode
