@@ -251,6 +251,10 @@
   :elpaca nil
   :delight buffer-face-mode)
 
+(use-package subword
+  :elpaca nil
+  :delight (subword-mode) (superword-mode))
+
 (require 'cl-macs)
 
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
@@ -623,8 +627,8 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-text-mode . jinx-mode)
   :delight '(:eval jinx-languages)
   :bind (:map jinx-mode-map
-              ("C-z h" . jinx-languages)
-              ("C-;"   . jinx-correct)))
+         ("C-z h" . jinx-languages)
+         ("C-;"   . jinx-correct)))
 
 (use-package flymake
   :elpaca nil
@@ -776,17 +780,29 @@ MODE - list to add to `auto-mode-alist'"
 (use-package hindent
   :hook (haskell-mode . hindent-mode))
 
-(use-package rustic
-  :custom
-  (rustic-lsp-client 'eglot)
-  ;; (rustic-treesitter-derive t)
-  :hook (rustic-mode . superword-mode)
+;; (use-package rustic
+;;   :custom
+;;   (rustic-lsp-client 'eglot)
+;;   ;; (rustic-treesitter-derive t)
+;;   :hook (rustic-mode . superword-mode)
+;;   :init
+;;   ;; treesitter integration not ready yet
+;;   ;; https://github.com/brotzeit/rustic/issues/475
+;;   (dotemacs-use-treesit
+;;    :lang 'rust
+;;    :github "tree-sitter/tree-sitter-rust"))
+
+(use-package rust-mode
+  :hook ((rust-mode rust-ts-mode) . superword-mode)
   :init
-  ;; treesitter integration not ready yet
-  ;; https://github.com/brotzeit/rustic/issues/475
   (dotemacs-use-treesit
    :lang 'rust
-   :github "tree-sitter/tree-sitter-rust"))
+   :github "tree-sitter/tree-sitter-rust"
+   :remap '(rust-mode . rust-ts-mode)))
+
+(use-package cargo
+  :after rust-mode
+  :hook (rust-mode . cargo-minor-mode))
 
 (use-package typescript-mode
   :init
