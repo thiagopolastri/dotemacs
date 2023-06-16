@@ -765,11 +765,11 @@ MODE - list to add to `auto-mode-alist'"
   (haskell-process-suggest-remove-import-lines t)
   (haskell-process-auto-import-loaded-modules t)
   (haskell-process-log t)
+  (haskell-tags-on-save t)
   :init
   (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
     (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
     (add-to-list 'exec-path my-cabal-path))
-  (custom-set-variables '(haskell-tags-on-save t))
   :bind (:map haskell-mode-map
               ("<f8>" . haskell-navigate-imports)))
 
