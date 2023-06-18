@@ -301,10 +301,11 @@ MODE - list to add to `auto-mode-alist'"
   (with-temp-buffer
     (dolist (lang-list treesit-language-source-alist)
       (let ((lang (car lang-list)))
-        (message "Installing %s" lang)
-        (treesit-install-language-grammar
-         lang
-         (expand-file-name "tree-sitter" user-emacs-directory))))))
+        (unless (treesit-language-available-p lang)
+          (message "Installing %s" lang)
+          (treesit-install-language-grammar
+           lang
+           (expand-file-name "tree-sitter" user-emacs-directory)))))))
 
 (use-package project
   :elpaca nil
@@ -673,7 +674,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (dotemacs-use-treesit
  :lang 'csharp
- :github "tree-sitter/tree-sitter-c-sharp"
+ :github "tree-sitter/tree-sitter-c-sharp" ; TODO: undefined symbol: tree_sitter_csharp
  :remap '(csharp-mode . csharp-ts-mode))
 
 (dotemacs-use-treesit
@@ -861,7 +862,7 @@ MODE - list to add to `auto-mode-alist'"
    :remap '(go-mode . go-ts-mode))
   (dotemacs-use-treesit
    :lang 'go-mod
-   :github "camdencheek/tree-sitter-go-mod"
+   :github "camdencheek/tree-sitter-go-mod" ; TODO: undefined symbol: tree_sitter_go_mod
    :remap '(go-dot-mod-mode . go-mod-ts-mode)))
 
 (use-package web-mode
