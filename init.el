@@ -261,6 +261,7 @@
   :custom (speedbar-show-unknown-files t))
 
 (use-package sr-speedbar
+  :defer t
   :custom (sr-speedbar-right-side nil))
 
 (use-package face-remap
@@ -330,16 +331,6 @@ MODE - list to add to `auto-mode-alist'"
   :custom (eglot-autoshutdown t)
   :commands (eglot-ensure))
 
-(use-package drag-stuff
-  :delight drag-stuff-mode
-  :config (drag-stuff-define-keys))
-
-(use-package combobulate
-  :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
-  :delight combobulate-mode
-  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
-  :custom (combobulate-key-prefix "C-c o"))
-
 (define-minor-mode dotemacs-prog-mode
   "Stub mode with modes that should be hooked in `prog-mode'."
   :init-value nil
@@ -348,11 +339,7 @@ MODE - list to add to `auto-mode-alist'"
              (not (eq major-mode 'lisp-mode)) ; use Sly
              (not (eq major-mode 'scheme-mode)) ; use Geiser
              (eglot--lookup-mode major-mode))
-    (eglot-ensure))
-  (if (and (fboundp 'combobulate-mode)
-           (string-match "-ts-mode" (symbol-name major-mode)))
-      (combobulate-mode)
-    (when (fboundp 'drag-stuff-mode) (drag-stuff-mode))))
+    (eglot-ensure)))
 
 (define-minor-mode dotemacs-text-mode
   "Stub mode with modes that should be hooked in `text-mode'."
@@ -360,6 +347,45 @@ MODE - list to add to `auto-mode-alist'"
   :keymap (make-sparse-keymap))
 
 (add-hook 'prog-mode-hook 'dotemacs-prog-mode)
+
+(use-package drag-stuff
+  :delight drag-stuff-mode
+  :config (drag-stuff-define-keys)
+  :hook (dotemacs-prog-mode . drag-stuff-mode))
+
+(use-package combobulate
+  :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
+  :delight combobulate-mode
+  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :custom (combobulate-key-prefix "C-c o")
+  :hook ((combobulate-mode . (lambda () (drag-stuff-mode -1)))
+         (python-ts-mode . combobulate-mode)
+         (js-ts-mode . combobulate-mode)
+         (css-ts-mode . combobulate-mode)
+         (yaml-ts-mode . combobulate-mode)
+         (typescript-ts-mode . combobulate-mode)
+         (tsx-ts-mode . combobulate-mode)))
+
+(use-package smartparens
+  :delight smartparens-mode
+  :custom
+  (sp-highlight-pair-overlay nil)
+  (sp-highlight-wrap-overlay nil)
+  (sp-highlight-wrap-tag-overlay nil)
+  (sp-max-prefix-length 25)
+  (sp-max-pair-length 4)
+  ;; :config (smartparens-global-mode)
+  :hook (dotemacs-prog-mode . smartparens-mode))
+
+(use-package paredit
+  :delight paredit-mode
+  :hook ((paredit-mode . (lambda ()
+                           (smartparens-mode -1)
+                           (drag-stuff-mode -1)))
+         (lisp-mode-hook . paredit-mode)
+         (emacs-lisp-mode . paredit-mode)
+         (common-lisp-mode . paredit-mode)
+         (scheme-mode . paredit-mode)))
 
 (use-package eglot-x
   :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
@@ -479,16 +505,6 @@ MODE - list to add to `auto-mode-alist'"
 (use-package editorconfig
   :delight editorconfig-mode
   :config (editorconfig-mode 1))
-
-(use-package smartparens
-  :delight smartparens-mode
-  :custom
-  (sp-highlight-pair-overlay nil)
-  (sp-highlight-wrap-overlay nil)
-  (sp-highlight-wrap-tag-overlay nil)
-  (sp-max-prefix-length 25)
-  (sp-max-pair-length 4)
-  :config (smartparens-global-mode))
 
 (use-package rainbow-mode :defer t :delight)
 
@@ -726,21 +742,9 @@ MODE - list to add to `auto-mode-alist'"
 (add-hook 'xml-mode-hook 'dotemacs-prog-mode)
 (add-hook 'nxml-mode-hook 'dotemacs-prog-mode)
 
-(use-package paredit
-  :after smartparens
-  :delight paredit-mode
-  :init
-  (add-hook 'paredit-mode-hook (lambda ()
-                                 (smartparens-mode -1)
-                                 (drag-stuff-mode -1)))
-  (add-hook 'lisp-mode-hook 'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'common-lisp-mode-hook 'paredit-mode)
-  (add-hook 'scheme-mode-hook 'paredit-mode))
-
 (add-hook 'emacs-lisp-mode-hook 'flymake-mode)
-
 (customize-set-variable 'inferior-lisp-program "sbcl")
+(customize-set-variable 'scheme-program-name "guile")
 
 (use-package sly
   :defer t
@@ -750,7 +754,6 @@ MODE - list to add to `auto-mode-alist'"
 (use-package sly-asdf :after sly :defer t)
 (use-package sly-quicklisp :after sly :defer t)
 
-(customize-set-variable 'scheme-program-name "guile")
 (use-package geiser-guile :defer t)
 
 (use-package racket-mode
