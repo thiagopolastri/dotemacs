@@ -349,12 +349,14 @@ MODE - list to add to `auto-mode-alist'"
 (add-hook 'prog-mode-hook 'dotemacs-prog-mode)
 
 (use-package drag-stuff
+  :defer t
   :delight drag-stuff-mode
   :config (drag-stuff-define-keys)
   :hook (dotemacs-prog-mode . drag-stuff-mode))
 
 (use-package combobulate
   :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
+  :defer t
   :delight combobulate-mode
   :if (and (fboundp 'treesit-available-p) (treesit-available-p))
   :custom (combobulate-key-prefix "C-c o")
@@ -367,6 +369,7 @@ MODE - list to add to `auto-mode-alist'"
          (tsx-ts-mode . combobulate-mode)))
 
 (use-package smartparens
+  :defer t
   :delight smartparens-mode
   :custom
   (sp-highlight-pair-overlay nil)
@@ -378,6 +381,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-prog-mode . smartparens-mode))
 
 (use-package paredit
+  :defer t
   :delight paredit-mode
   :hook ((paredit-mode . (lambda ()
                            (smartparens-mode -1)
