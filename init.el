@@ -654,7 +654,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package flymake
   :elpaca nil
-  :custom (flymake-mode-line-lighter "⚠"))
+  :custom (flymake-mode-line-lighter "!"))
 
 (use-package flymake-eslint
   :defer t
