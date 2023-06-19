@@ -265,10 +265,12 @@
 
 (use-package face-remap
   :elpaca nil
+  :no-require t
   :delight buffer-face-mode)
 
 (use-package subword
   :elpaca nil
+  :no-require t
   :delight (subword-mode) (superword-mode))
 
 (require 'cl-macs)
@@ -451,8 +453,8 @@ MODE - list to add to `auto-mode-alist'"
   :config
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
-(use-package devdocs)
-(use-package sicp)
+(use-package devdocs :defer t)
+(use-package sicp :no-require t)
 
 (use-package magit
   :custom (magit-diff-refine-hunk t))
@@ -535,7 +537,7 @@ MODE - list to add to `auto-mode-alist'"
   :delight yas-minor-mode
   :init (yas-global-mode))
 
-(use-package yasnippet-snippets)
+(use-package yasnippet-snippets :no-require t)
 
 (use-package orderless
   :custom
@@ -637,7 +639,6 @@ MODE - list to add to `auto-mode-alist'"
 (use-package flymake-eslint
   :defer t
   :preface
-  (require 'project)
   (defun dotemacs-project-npm-bin-path ()
     "Get the local npm project bin path if exists."
     (when-let* ((proj (project-current))
@@ -674,7 +675,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (dotemacs-use-treesit
  :lang 'csharp
- :github "tree-sitter/tree-sitter-c-sharp" ; TODO: undefined symbol: tree_sitter_csharp
+ :github "tree-sitter/tree-sitter-c-sharp"
  :remap '(csharp-mode . csharp-ts-mode))
 
 (dotemacs-use-treesit
@@ -746,8 +747,8 @@ MODE - list to add to `auto-mode-alist'"
   :custom (sly-symbol-completion-mode nil)
   :hook (lisp-mode . sly-editing-mode))
 
-(use-package sly-asdf :after sly)
-(use-package sly-quicklisp :after sly)
+(use-package sly-asdf :after sly :defer t)
+(use-package sly-quicklisp :after sly :defer t)
 
 (customize-set-variable 'scheme-program-name "guile")
 (use-package geiser-guile :defer t)
@@ -862,7 +863,7 @@ MODE - list to add to `auto-mode-alist'"
    :remap '(go-mode . go-ts-mode))
   (dotemacs-use-treesit
    :lang 'go-mod
-   :github "camdencheek/tree-sitter-go-mod" ; TODO: undefined symbol: tree_sitter_go_mod
+   :github "camdencheek/tree-sitter-go-mod"
    :remap '(go-dot-mod-mode . go-mod-ts-mode)))
 
 (use-package web-mode
