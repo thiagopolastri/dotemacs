@@ -810,7 +810,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package cargo
   :after rust-mode
-  :hook (rust-mode . cargo-minor-mode))
+  :hook ((rust-mode rust-ts-mode) . cargo-minor-mode))
 
 (use-package typescript-mode
   :init
