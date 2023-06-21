@@ -809,7 +809,7 @@ MODE - list to add to `auto-mode-alist'"
    :remap '(rust-mode . rust-ts-mode)))
 
 (use-package cargo
-  :after rust-mode
+  :delight cargo-minor-mode
   :hook ((rust-mode rust-ts-mode) . cargo-minor-mode))
 
 (use-package typescript-mode
