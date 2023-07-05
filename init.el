@@ -50,6 +50,7 @@
 (elpaca vterm)
 
 (elpaca-wait)
+(customize-set-variable 'use-package-expand-minimally t)
 
 (require 'recentf)
 (require 'no-littering)
