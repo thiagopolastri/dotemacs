@@ -50,6 +50,7 @@
 (elpaca vterm)
 
 (elpaca-wait)
+
 (customize-set-variable 'use-package-expand-minimally t)
 
 (require 'recentf)
@@ -70,7 +71,7 @@
 (use-package fontaine
   :custom
   (fontaine-latest-state-file
-      (locate-user-emacs-file "var/fontaine-latest-state.eld"))
+   (locate-user-emacs-file "var/fontaine-latest-state.eld"))
   (fontaine-presets
    '((safe
       :default-family "Monospace"
@@ -92,6 +93,13 @@
       :fixed-pitch-height 140
       :fixed-pitch-serif-height 140
       :variable-pitch-family "IBM Plex Sans"
+      :variable-pitch-height 140)
+     (roboto
+      :default-family "Roboto Mono"
+      :default-height 140
+      :fixed-pitch-height 140
+      :fixed-pitch-serif-height 140
+      :variable-pitch-family "Roboto"
       :variable-pitch-height 140)
      (t
       :default-weight normal
