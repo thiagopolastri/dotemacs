@@ -232,7 +232,7 @@ Displays `nyan-mode' if enabled."
   :global t
   (if dotemacs-mode-line-mode
       (progn
-        (when (not (fboundp 'mode-line-window-selected-p))
+        (unless (fboundp 'mode-line-window-selected-p)
           (add-function :before pre-redisplay-function
                         #'dotemacs-mode-line-select-window))
 
@@ -275,7 +275,7 @@ Displays `nyan-mode' if enabled."
                  (:eval (dotemacs-mode-line-misc-info))
                  (:propertize " " display (raise -0.15)))))))))
     (progn
-      (when (not (fboundp 'mode-line-window-selected-p))
+      (unless (fboundp 'mode-line-window-selected-p)
         (remove-function pre-redisplay-function
                          #'dotemacs-mode-line-select-window))
       (setq-default mode-line-format dotemacs-mode-line-backup))))
