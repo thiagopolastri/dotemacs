@@ -63,6 +63,13 @@
   "Mode-line warning icon face."
   :group 'dotemacs-mode-line)
 
+;; -----------------------------------------------------------------------------
+;; this will be unecessary after `mode-line-window-selected-p' and
+;; `mode-line-format-right-align' introduction (Emacs 30.1).
+;; i'll keep this to make it compatible with the current stable version
+;; just change all ocurrences of `dotemacs-mode-line-active-p' to
+;; `mode-line-window-selected-p' and remove all the extra advice and branchs in
+;; the `dotemacs-mode-line-mode' function.
 (defvar dotemacs-mode-line-selected-window (selected-window)
   "Selected window state.")
 
@@ -73,7 +80,9 @@
 
 (defun dotemacs-mode-line-active-p ()
   "Check if select window is active."
-  (eq dotemacs-mode-line-selected-window (get-buffer-window)))
+  (if (fboundp 'mode-line-window-selected-p)
+      (mode-line-window-selected-p)
+    (eq dotemacs-mode-line-selected-window (get-buffer-window))))
 
 (defun dotemacs-mode-line-format (left right)
   "Format the mode-line in two parts and align it on LEFT and RIGHT."
@@ -84,6 +93,7 @@
     'display `((space :align-to (- (+ right right-fringe right-margin)
                                    ,(length right)))))
    right))
+;; -----------------------------------------------------------------------------
 
 (defun dotemacs-mode-line-active-buffer ()
   "Show active/modified buffer icon on mode-line."
@@ -222,29 +232,52 @@ Displays `nyan-mode' if enabled."
   :global t
   (if dotemacs-mode-line-mode
       (progn
-        (add-function :before pre-redisplay-function
-                      #'dotemacs-mode-line-select-window)
-        (setq-default
-         mode-line-format
-         '(:eval
-           (dotemacs-mode-line-format
-            (format-mode-line
-             '((:eval (dotemacs-mode-line-active-buffer))
-               (:eval (dotemacs-mode-line-buffer-status))
-               (:eval (dotemacs-mode-line-vc-mode))
-               (:eval (dotemacs-mode-line-buffer-identification))
-               (:eval (dotemacs-mode-line-position))
-               (:eval (dotemacs-mode-line-nyan))
-               " %e"))
-            (format-mode-line
-             '((:eval (dotemacs-mode-line-process))
-               (:eval (dotemacs-mode-line-major-mode))
-               (:eval (dotemacs-mode-line-minor-modes))
-               (:eval (dotemacs-mode-line-misc-info))
-               (:propertize " " display (raise -0.15))))))))
+        (when (not (fboundp 'mode-line-window-selected-p))
+          (add-function :before pre-redisplay-function
+                        #'dotemacs-mode-line-select-window))
+
+        (if mode-line-format-right-align
+            (setq-default
+             mode-line-format
+             '((:eval
+                (format-mode-line
+                 '((:eval (dotemacs-mode-line-active-buffer))
+                   (:eval (dotemacs-mode-line-buffer-status))
+                   (:eval (dotemacs-mode-line-vc-mode))
+                   (:eval (dotemacs-mode-line-buffer-identification))
+                   (:eval (dotemacs-mode-line-position))
+                   (:eval (dotemacs-mode-line-nyan))
+                   " %e")))
+               mode-line-format-right-align
+               (:eval
+                (format-mode-line
+                 '((:eval (dotemacs-mode-line-process))
+                   (:eval (dotemacs-mode-line-major-mode))
+                   (:eval (dotemacs-mode-line-minor-modes))
+                   (:eval (dotemacs-mode-line-misc-info))
+                   (:propertize " " display (raise -0.15)))))))
+          (setq-default
+           mode-line-format
+           '(:eval
+             (dotemacs-mode-line-format
+              (format-mode-line
+               '((:eval (dotemacs-mode-line-active-buffer))
+                 (:eval (dotemacs-mode-line-buffer-status))
+                 (:eval (dotemacs-mode-line-vc-mode))
+                 (:eval (dotemacs-mode-line-buffer-identification))
+                 (:eval (dotemacs-mode-line-position))
+                 (:eval (dotemacs-mode-line-nyan))
+                 " %e"))
+              (format-mode-line
+               '((:eval (dotemacs-mode-line-process))
+                 (:eval (dotemacs-mode-line-major-mode))
+                 (:eval (dotemacs-mode-line-minor-modes))
+                 (:eval (dotemacs-mode-line-misc-info))
+                 (:propertize " " display (raise -0.15)))))))))
     (progn
-      (remove-function pre-redisplay-function
-                       #'dotemacs-mode-line-select-window)
+      (when (not (fboundp 'mode-line-window-selected-p))
+        (remove-function pre-redisplay-function
+                         #'dotemacs-mode-line-select-window))
       (setq-default mode-line-format dotemacs-mode-line-backup))))
 
 (provide 'dotemacs-mode-line)
