@@ -201,9 +201,10 @@ Displays `nyan-mode' if enabled."
 
 (defun dotemacs-mode-line-misc-info ()
   "Displays the current value of `mode-line-misc-info' in the mode-line."
-  (let ((misc (string-trim (format-mode-line mode-line-misc-info))))
-    (unless (string= misc "")
-      (concat " " misc))))
+  (when (dotemacs-mode-line-active-p)
+    (let ((misc (string-trim (format-mode-line mode-line-misc-info))))
+      (unless (string= misc "")
+        (concat " " misc)))))
 
 (defun dotemacs-mode-line-process ()
  "Displays the current value of `mode-line-process' in the mode-line."
