@@ -237,7 +237,7 @@ Displays `nyan-mode' if enabled."
           (add-function :before pre-redisplay-function
                         #'dotemacs-mode-line-select-window))
 
-        (if mode-line-format-right-align
+        (if (boundp 'mode-line-format-right-align)
             (setq-default
              mode-line-format
              '((:eval
