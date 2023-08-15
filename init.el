@@ -101,6 +101,13 @@
       :fixed-pitch-serif-height 140
       :variable-pitch-family "Roboto"
       :variable-pitch-height 140)
+     (jetbrains
+      :default-family "JetBrains Mono"
+      :default-height 140
+      :fixed-pitch-height 140
+      :fixed-pitch-serif-height 140
+      :variable-pitch-family "Alegreya"
+      :variable-pitch-height 170)
      (t
       :default-weight normal
       :fixed-pitch-family nil
@@ -158,6 +165,8 @@
   (auto-window-vscroll nil)
   (bidi-paragraph-direction 'left-to-right)
   (bidi-inhibit-bpa t)
+  (read-process-output-max (* 1024 1024))
+  (delete-by-moving-to-trash t)
   :init
   (global-unset-key (kbd "C-z"))
   (delete-selection-mode 1)
