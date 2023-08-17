@@ -156,6 +156,7 @@
   (word-wrap t)
   (truncate-lines t)
   (truncate-partial-width-windows nil)
+  ;; (frame-inhibit-implied-resize t) ;; if you use tiling wm
   (frame-resize-pixelwise t)
   (kill-buffer-query-functions nil)
   (create-lockfiles nil)
@@ -347,7 +348,14 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :demand t
   :custom (eglot-autoshutdown t)
-  :commands (eglot-ensure))
+  :commands (eglot-ensure)
+  :config
+  (add-to-list 'eglot-server-programs
+               '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
+  ;; add ("intelephense" "--stdio" :initializationOptions (:licenseKey "KEY"))
+  ;; for premium access
+  (add-to-list 'eglot-server-programs
+               '((php-mode :language-id "php") . ("intelephense" "--stdio"))))
 
 (define-minor-mode dotemacs-prog-mode
   "Stub mode with modes that should be hooked in `prog-mode'."
@@ -921,8 +929,8 @@ MODE - list to add to `auto-mode-alist'"
 (define-derived-mode dotemacs-svelte-mode web-mode "Web/Svelte"
   "Custom Svelte major mode derived from `web-mode'.")
 (add-to-list 'auto-mode-alist '("\\.svelte\\'" . dotemacs-svelte-mode))
-;; TODO: fix lsp for svelte
-(add-to-list 'eglot-server-programs '(dotemacs-svelte-mode . "svelteserver"))
+;; (add-to-list 'eglot-server-programs
+;;              '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
 
 (use-package elixir-mode
   :init
