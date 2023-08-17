@@ -348,14 +348,7 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca nil
   :demand t
   :custom (eglot-autoshutdown t)
-  :commands (eglot-ensure)
-  :config
-  (add-to-list 'eglot-server-programs
-               '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
-  ;; add ("intelephense" "--stdio" :initializationOptions (:licenseKey "KEY"))
-  ;; for premium access
-  (add-to-list 'eglot-server-programs
-               '((php-mode :language-id "php") . ("intelephense" "--stdio"))))
+  :commands (eglot-ensure))
 
 (define-minor-mode dotemacs-prog-mode
   "Stub mode with modes that should be hooked in `prog-mode'."
@@ -929,8 +922,8 @@ MODE - list to add to `auto-mode-alist'"
 (define-derived-mode dotemacs-svelte-mode web-mode "Web/Svelte"
   "Custom Svelte major mode derived from `web-mode'.")
 (add-to-list 'auto-mode-alist '("\\.svelte\\'" . dotemacs-svelte-mode))
-;; (add-to-list 'eglot-server-programs
-;;              '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
+(add-to-list 'eglot-server-programs
+             '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
 
 (use-package elixir-mode
   :init
@@ -943,7 +936,14 @@ MODE - list to add to `auto-mode-alist'"
    :github "phoenixframework/tree-sitter-heex"
    :mode '("\\.(l|h)?eex\\'" . heex-ts-mode)))
 
-(use-package php-mode :defer t)
+(use-package php-mode
+  :no-require t
+  :config
+  ;; add ("intelephense" "--stdio" :initializationOptions (:licenseKey "KEY"))
+  ;; for premium access
+  (add-to-list 'eglot-server-programs
+               '((php-mode :language-id "php") . ("intelephense" "--stdio"))))
+
 (use-package lua-mode :defer t)
 (use-package zig-mode :defer t)
 (use-package julia-mode :defer t)
