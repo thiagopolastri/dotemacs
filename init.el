@@ -564,8 +564,12 @@ MODE - list to add to `auto-mode-alist'"
          ("C-<"           . mc/mark-previous-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
-(use-package expand-region
-  :bind (("C-=" . er/expand-region)))
+;; (use-package expand-region
+;;   :bind (("C-=" . er/expand-region)))
+
+(use-package expreg
+  :bind (("C-=" . expreg-expand)
+         ("C-+" . expreg-contract)))
 
 (use-package avy
   :bind (("C-:"   . avy-goto-char)
