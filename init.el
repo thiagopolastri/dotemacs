@@ -43,9 +43,9 @@
 
 (elpaca no-littering)
 (elpaca delight)
-(unless (fboundp 'eglot)
-  (elpaca project)
-  (elpaca eglot))
+;; (unless (fboundp 'eglot)
+;;   (elpaca project)
+;;   (elpaca eglot))
 (elpaca geiser)
 (elpaca vterm)
 
@@ -149,7 +149,8 @@
   (tab-always-indent 'complete)
   (cursor-type 'bar)
   (use-short-answers t)
-  (visible-bell 1)
+  ;; (visible-bell 1)
+  (ring-bell-function 'ignore)
   (use-dialog-box nil)
   (fill-column 80)
   (tab-width 4)
@@ -188,7 +189,7 @@
 
 (use-package pixel-scroll
   :elpaca nil
-  :if (fboundp 'pixel-scroll-precision-mode)
+  ;; :if (fboundp 'pixel-scroll-precision-mode)
   :init (pixel-scroll-precision-mode 1))
 
 (use-package window
@@ -296,7 +297,17 @@
 (require 'cl-macs)
 
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
-  (require 'treesit))
+  (require 'treesit)
+  (defun dotemacs-treesit-install-all ()
+  "Install all language grammar."
+  (interactive)
+  (with-temp-buffer
+    (dolist (lang-list treesit-language-source-alist)
+      (let ((lang (car lang-list)))
+        (unless (treesit-language-available-p lang)
+          (message "Installing %s" lang)
+          ;; (expand-file-name "tree-sitter" user-emacs-directory)
+          (treesit-install-language-grammar lang)))))))
 
 (cl-defun dotemacs-use-treesit (&key lang github path remap mode)
   "Setup treesiter for a given language.
@@ -316,18 +327,6 @@ MODE - list to add to `auto-mode-alist'"
       (add-to-list 'major-mode-remap-alist remap))
     (when (and tsp lang mode (treesit-ready-p lang t))
       (add-to-list 'auto-mode-alist mode))))
-
-(defun dotemacs-treesit-install-all ()
-  "Install all language grammar."
-  (interactive)
-  (with-temp-buffer
-    (dolist (lang-list treesit-language-source-alist)
-      (let ((lang (car lang-list)))
-        (unless (treesit-language-available-p lang)
-          (message "Installing %s" lang)
-          (treesit-install-language-grammar
-           lang
-           (expand-file-name "tree-sitter" user-emacs-directory)))))))
 
 (use-package project
   :elpaca nil
@@ -431,7 +430,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package glyphless-mode
   :elpaca nil
-  :if (fboundp 'glyphless-display-mode)
+  ;; :if (fboundp 'glyphless-display-mode)
   :delight glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
 
