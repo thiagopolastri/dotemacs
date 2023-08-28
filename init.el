@@ -299,15 +299,15 @@
 (when (and (fboundp 'treesit-available-p) (treesit-available-p))
   (require 'treesit)
   (defun dotemacs-treesit-install-all ()
-  "Install all language grammar."
-  (interactive)
-  (with-temp-buffer
-    (dolist (lang-list treesit-language-source-alist)
-      (let ((lang (car lang-list)))
-        (unless (treesit-language-available-p lang)
-          (message "Installing %s" lang)
-          ;; (expand-file-name "tree-sitter" user-emacs-directory)
-          (treesit-install-language-grammar lang)))))))
+    "Install all language grammar."
+    (interactive)
+    (with-temp-buffer
+      (dolist (lang-list treesit-language-source-alist)
+        (let ((lang (car lang-list)))
+          (unless (treesit-language-available-p lang)
+            (message "Installing %s" lang)
+            ;; (expand-file-name "tree-sitter" user-emacs-directory)
+            (treesit-install-language-grammar lang)))))))
 
 (cl-defun dotemacs-use-treesit (&key lang github path remap mode)
   "Setup treesiter for a given language.
