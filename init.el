@@ -848,6 +848,10 @@ MODE - list to add to `auto-mode-alist'"
    :mode '("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-mode typescript-ts-mode tsx-ts-mode) . subword-mode))
 
+(use-package deno-ts-mode
+  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :config (deno-ts-setup-eglot))
+
 (use-package npm-mode
   :delight
   :hook ((javascript-mode js-ts-mode typescript-mode typescript-ts-mode tsx-ts-mode) . npm-mode))
