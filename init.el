@@ -354,6 +354,7 @@ MODE - list to add to `auto-mode-alist'"
   :init-value nil
   :keymap (make-sparse-keymap)
   (when (and (not (eq major-mode 'clojure-mode)) ; use Cider
+             (not (eq major-mode 'clojure-ts-mode)) ; use Cider
              (not (eq major-mode 'lisp-mode)) ; use Sly
              (not (eq major-mode 'scheme-mode)) ; use Geiser
              (eglot--lookup-mode major-mode))
@@ -785,13 +786,23 @@ MODE - list to add to `auto-mode-alist'"
 (use-package racket-mode
   :hook (racket-mode . paredit-mode))
 
+(use-package clojure-ts-mode
+  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :hook ((clojure-ts-mode clojurescript-ts-mode) . paredit-mode))
+
 (use-package clojure-mode
-  :hook ((clojure-mode . paredit-mode)))
+  :hook ((clojure-mode clojurescript-mode) . paredit-mode)
+  :init
+  (dotemacs-use-treesit
+   :lang 'clojure
+   :github "sogaiu/tree-sitter-clojure"
+   :remap '(clojure-mode . clojure-ts-mode)
+   :mode '("\\.cljs\\'" . clojurescript-ts-mode)))
 
 (use-package cider
   :defer t
   :after clojure-mode
-  :hook (cider-mode . cider-turn-on-eldoc-mode))
+  :hook ((clojure-mode clojure-ts-mode) . cider-mode))
 
 (use-package haskell-mode
   :custom
