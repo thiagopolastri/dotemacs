@@ -289,6 +289,11 @@
   :no-require t
   :delight buffer-face-mode)
 
+(use-package ibuffer
+  :elpaca nil
+  :no-require t
+  :bind ("C-z b" . ibuffer))
+
 (use-package subword
   :elpaca nil
   :no-require t
@@ -523,7 +528,7 @@ MODE - list to add to `auto-mode-alist'"
   :custom
   (blamer-idle-time 0.3)
   (blamer-min-offset 70)
-  :bind ("C-z b" . blamer-mode))
+  :bind ("C-z g" . blamer-mode))
 
 (use-package editorconfig
   :delight editorconfig-mode
@@ -536,17 +541,6 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package highlight-numbers
   :hook (dotemacs-prog-mode . highlight-numbers-mode))
-
-(use-package highlight-indent-guides
-  :delight highlight-indent-guides-mode
-  :custom
-  (highlight-indent-guides-method 'character) ; or 'bitmap or 'column
-  (highlight-indent-guides-suppress-auto-error t)
-  (highlight-indent-guides-auto-odd-face-perc 1.5)
-  (highlight-indent-guides-auto-even-face-perc 1.5)
-  (highlight-indent-guides-auto-character-face-perc 35)
-  :bind (:map dotemacs-prog-mode-map
-              ("C-z g" . highlight-indent-guides-mode)))
 
 (use-package crux
   :bind (("C-z /"   . crux-duplicate-current-line-or-region)
@@ -820,18 +814,6 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package hindent
   :hook (haskell-mode . hindent-mode))
-
-;; (use-package rustic
-;;   :custom
-;;   (rustic-lsp-client 'eglot)
-;;   ;; (rustic-treesitter-derive t)
-;;   :hook (rustic-mode . superword-mode)
-;;   :init
-;;   ;; treesitter integration not ready yet
-;;   ;; https://github.com/brotzeit/rustic/issues/475
-;;   (dotemacs-use-treesit
-;;    :lang 'rust
-;;    :github "tree-sitter/tree-sitter-rust"))
 
 (use-package rust-mode
   :hook ((rust-mode rust-ts-mode) . superword-mode)
