@@ -925,6 +925,16 @@ MODE - list to add to `auto-mode-alist'"
 (add-to-list 'eglot-server-programs
              '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
 
+;; (use-package vue-ts-mode
+;;   :elpaca (vue-ts-mode :repo "https://github.com/8uff3r/vue-ts-mode.git")
+;;   :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+;;   :init
+;;   (dotemacs-use-treesit
+;;    :lang 'vue
+;;    :github "ikatyang/tree-sitter-vue"
+;;    :mode '("\\.vue\\'" . vue-ts-mode))
+;;   (add-to-list 'eglot-server-programs '(dotemacs-vue-mode . "vls")))
+
 (use-package elixir-mode
   :init
   (dotemacs-use-treesit
@@ -1106,6 +1116,7 @@ _d_: Capture daily        _m_: Refile current TODO
 
 (use-package elpher :defer t)
 (use-package restclient :defer t)
+(use-package es-mode :defer t) ;; https://github.com/dakrone/es-mode
 
 (use-package vterm
   :elpaca nil
