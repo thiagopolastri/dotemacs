@@ -43,9 +43,14 @@
 
 (elpaca no-littering)
 (elpaca delight)
+
+;; Emacs 28
 ;; (unless (fboundp 'eglot)
 ;;   (elpaca project)
 ;;   (elpaca eglot))
+;; (unless (fboundp 'treesit-available-p)
+;;   (defun treesit-available-p () nil))
+
 (elpaca geiser)
 (elpaca vterm)
 
@@ -89,11 +94,11 @@
       :variable-pitch-height 170)
      (ibm
       :default-family "IBM Plex Mono"
-      :default-height 140
-      :fixed-pitch-height 140
-      :fixed-pitch-serif-height 140
+      :default-height 150
+      :fixed-pitch-height 150
+      :fixed-pitch-serif-height 150
       :variable-pitch-family "IBM Plex Sans"
-      :variable-pitch-height 140)
+      :variable-pitch-height 150)
      (roboto
       :default-family "Roboto Mono"
       :default-height 140
@@ -103,11 +108,11 @@
       :variable-pitch-height 140)
      (jetbrains
       :default-family "JetBrains Mono"
-      :default-height 140
-      :fixed-pitch-height 140
-      :fixed-pitch-serif-height 140
-      :variable-pitch-family "Alegreya"
-      :variable-pitch-height 170)
+      :default-height 150
+      :fixed-pitch-height 150
+      :fixed-pitch-serif-height 150
+      :variable-pitch-family "Noto Sans"
+      :variable-pitch-height 150)
      (t
       :default-weight normal
       :fixed-pitch-family nil
@@ -189,7 +194,7 @@
 
 (use-package pixel-scroll
   :elpaca nil
-  ;; :if (fboundp 'pixel-scroll-precision-mode)
+  ;; :if (fboundp 'pixel-scroll-precision-mode) ; Emacs 28
   :init (pixel-scroll-precision-mode 1))
 
 (use-package window
@@ -301,8 +306,10 @@
 
 (require 'cl-macs)
 
-(when (and (fboundp 'treesit-available-p) (treesit-available-p))
-  (require 'treesit)
+(use-package treesit
+  :elpaca nil
+  :if (treesit-available-p)
+  :preface
   (defun dotemacs-treesit-install-all ()
     "Install all language grammar."
     (interactive)
@@ -311,27 +318,24 @@
         (let ((lang (car lang-list)))
           (unless (treesit-language-available-p lang)
             (message "Installing %s" lang)
-            ;; (expand-file-name "tree-sitter" user-emacs-directory)
-            (treesit-install-language-grammar lang)))))))
+            (treesit-install-language-grammar lang))))))
 
-(cl-defun dotemacs-use-treesit (&key lang github path remap mode)
-  "Setup treesiter for a given language.
+  (cl-defun dotemacs-use-treesit (&key lang github path remap mode)
+    "Setup treesiter for a given language.
 LANG - language to setup (symbol)
 GITHUB - github path to grammar (only user/repo)
 PATH - path to src inside github repository
 REMAP - list to add to `major-mode-remap-alist'
 MODE - list to add to `auto-mode-alist'"
-  (let ((tsp (and (fboundp 'treesit-available-p) (treesit-available-p))))
-    (when (and tsp lang github)
-      (unless (boundp 'treesit-language-source-alist)
-        (setq treesit-language-source-alist '()))
+    (when (and lang github)
       (add-to-list
        'treesit-language-source-alist
        `(,lang . (,(concat "https://github.com/" github) nil ,path))))
-    (when (and tsp lang remap (treesit-ready-p lang t))
+    (when (and lang remap (treesit-ready-p lang t))
       (add-to-list 'major-mode-remap-alist remap))
-    (when (and tsp lang mode (treesit-ready-p lang t))
+    (when (and lang mode (treesit-ready-p lang t))
       (add-to-list 'auto-mode-alist mode))))
+
 
 (use-package project
   :elpaca nil
@@ -382,7 +386,7 @@ MODE - list to add to `auto-mode-alist'"
   :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
   :defer t
   :delight combobulate-mode
-  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :if (treesit-available-p)
   :custom (combobulate-key-prefix "C-c o")
   :hook ((combobulate-mode . (lambda () (drag-stuff-mode -1)))
          (python-ts-mode . combobulate-mode)
@@ -436,7 +440,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package glyphless-mode
   :elpaca nil
-  ;; :if (fboundp 'glyphless-display-mode)
+  ;; :if (fboundp 'glyphless-display-mode) ; Emacs 28
   :delight glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
 
@@ -781,7 +785,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (racket-mode . paredit-mode))
 
 (use-package clojure-ts-mode
-  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+  :if (treesit-available-p)
   :hook ((clojure-ts-mode clojurescript-ts-mode) . paredit-mode))
 
 (use-package clojure-mode
@@ -841,9 +845,7 @@ MODE - list to add to `auto-mode-alist'"
    :mode '("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-mode typescript-ts-mode tsx-ts-mode) . subword-mode))
 
-(use-package deno-ts-mode
-  :if (and (fboundp 'treesit-available-p) (treesit-available-p))
-  :config (deno-ts-setup-eglot))
+(use-package deno-ts-mode :if (treesit-available-p)) ; :config (deno-ts-setup-eglot)
 
 (use-package npm-mode
   :delight
@@ -927,7 +929,7 @@ MODE - list to add to `auto-mode-alist'"
 
 ;; (use-package vue-ts-mode
 ;;   :elpaca (vue-ts-mode :repo "https://github.com/8uff3r/vue-ts-mode.git")
-;;   :if (and (fboundp 'treesit-available-p) (treesit-available-p))
+;;   :if (treesit-available-p)
 ;;   :init
 ;;   (dotemacs-use-treesit
 ;;    :lang 'vue
