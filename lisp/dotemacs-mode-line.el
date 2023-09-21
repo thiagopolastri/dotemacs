@@ -38,6 +38,11 @@
   :group 'dotemacs-mode-line
   :type 'string)
 
+(defcustom dotemacs-mode-line-padding 0.15
+  "Vertical padding."
+  :group 'dotemacs-mode-line
+  :type 'float)
+
 (defface dotemacs-mode-line-muted '((t (:inherit 'shadow)))
   "Mode-line muted face."
   :group 'dotemacs-mode-line)
@@ -98,7 +103,7 @@
 (defun dotemacs-mode-line-active-buffer ()
   "Show active/modified buffer icon on mode-line."
   (let ((modifiedp (and (not buffer-read-only) (buffer-modified-p)))
-        (start-padding (propertize " " 'display '(raise 0.15))))
+        (start-padding (propertize " " 'display `(raise ,dotemacs-mode-line-padding))))
     (if (dotemacs-mode-line-active-p)
         (propertize
          (concat
@@ -224,6 +229,11 @@ Displays `nyan-mode' if enabled."
     (string-trim (format-mode-line minor-mode-alist))
     t t))
 
+(defun dotemacs-mode-line-bottom-padding ()
+  "Bottom padding."
+  (let ((padding (- dotemacs-mode-line-padding)))
+    (propertize " " 'display `(raise ,padding))))
+
 (defvar dotemacs-mode-line-backup mode-line-format)
 
 ;;;###autoload
@@ -256,7 +266,7 @@ Displays `nyan-mode' if enabled."
                    (:eval (dotemacs-mode-line-major-mode))
                    (:eval (dotemacs-mode-line-minor-modes))
                    (:eval (dotemacs-mode-line-misc-info))
-                   (:propertize " " display (raise -0.15)))))))
+                   (:eval (dotemacs-mode-line-bottom-padding)))))))
           (setq-default
            mode-line-format
            '(:eval
@@ -274,7 +284,7 @@ Displays `nyan-mode' if enabled."
                  (:eval (dotemacs-mode-line-major-mode))
                  (:eval (dotemacs-mode-line-minor-modes))
                  (:eval (dotemacs-mode-line-misc-info))
-                 (:propertize " " display (raise -0.15)))))))))
+                 (:eval (dotemacs-mode-line-bottom-padding)))))))))
     (progn
       (unless (fboundp 'mode-line-window-selected-p)
         (remove-function pre-redisplay-function
