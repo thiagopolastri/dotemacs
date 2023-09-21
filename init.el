@@ -318,24 +318,24 @@
         (let ((lang (car lang-list)))
           (unless (treesit-language-available-p lang)
             (message "Installing %s" lang)
-            (treesit-install-language-grammar lang))))))
+            (treesit-install-language-grammar lang)))))))
 
-  (cl-defun dotemacs-use-treesit (&key lang github path remap mode)
-    "Setup treesiter for a given language.
+(cl-defun dotemacs-use-treesit (&key lang github path remap mode)
+  "Setup treesiter for a given language.
 LANG - language to setup (symbol)
 GITHUB - github path to grammar (only user/repo)
 PATH - path to src inside github repository
 REMAP - list to add to `major-mode-remap-alist'
 MODE - list to add to `auto-mode-alist'"
-    (when (and lang github)
+  (let ((tsp (treesit-available-p)))
+    (when (and tsp lang github)
       (add-to-list
        'treesit-language-source-alist
        `(,lang . (,(concat "https://github.com/" github) nil ,path))))
-    (when (and lang remap (treesit-ready-p lang t))
+    (when (and tsp lang remap (treesit-ready-p lang t))
       (add-to-list 'major-mode-remap-alist remap))
-    (when (and lang mode (treesit-ready-p lang t))
+    (when (and tsp lang mode (treesit-ready-p lang t))
       (add-to-list 'auto-mode-alist mode))))
-
 
 (use-package project
   :elpaca nil
@@ -898,7 +898,6 @@ MODE - list to add to `auto-mode-alist'"
   :mode "\\.[px]?html?\\'"
   :mode "\\.\\(?:tpl\\|blade\\)\\(?:\\.php\\)?\\'"
   :mode "\\.erb\\'"
-  :mode "\\.[lh]?eex\\'"
   :mode "\\.sface\\'"
   :mode "\\.jsp\\'"
   :mode "\\.as[cp]x\\'"
