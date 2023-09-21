@@ -146,7 +146,7 @@ json files."
       (_ (append colors-dark github-primer-override-colors-alist)))))
 
 (defmacro github-primer-with-color-variables (&rest body)
-  "`let' bind all colors defined in `github-colors-alist' around BODY.
+  "`let' bind all colors defined in `github-primer-colors-alist' around BODY.
 Also bind `class' to ((class color) (min-colors 89))."
   (declare (indent 0))
   `(let ((class '((class color) (min-colors 89)))
@@ -168,11 +168,11 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(fringe ((,class :foreground ,fg :background ,bg)))
   `(cursor ((,class :background ,fg)))
   `(shadow ((,class :foreground ,fg-comment)))
-  `(file-name-shadow ((,class :inherit 'shadow)))
+  `(file-name-shadow ((,class :inherit shadow)))
   `(link ((,class :foreground ,fg-link :underline t)))
   `(link-visited ((,class :foreground ,fg-link-visited :underline t)))
-  `(button ((,class :inherit 'link)))
-  `(browse-url-button ((,class :inherit 'link)))
+  `(button ((,class :inherit link)))
+  `(browse-url-button ((,class :inherit link)))
   `(success ((,class :foreground ,fg-success :weight bold)))
   `(warning ((,class :foreground ,fg-warning :weight bold)))
   `(error ((,class :foreground ,fg-error :weight bold)))
@@ -188,16 +188,16 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(font-lock-type-face ((,class :foreground ,fg-type :slant italic)))
   `(font-lock-warning-face ((,class :foreground ,fg-error :weight bold)))
   `(font-lock-comment-face ((,class :foreground ,fg-comment :slant italic)))
-  `(font-lock-comment-delimiter-face ((,class :inherit 'font-lock-comment-face :italic nil)))
-  `(font-lock-doc-face ((,class :inherit 'font-lock-string-face)))
-  `(font-lock-doc-markup-face ((,class :inherit 'font-lock-constant-face)))
-  `(font-lock-preprocessor-face ((,class :inherit 'font-lock-builtin-face)))
-  `(font-lock-regexp-grouping-backslash ((,class :inherit 'bold)))
-  `(font-lock-regexp-grouping-construct ((,class :inherit 'bold)))
+  `(font-lock-comment-delimiter-face ((,class :inherit font-lock-comment-face :italic nil)))
+  `(font-lock-doc-face ((,class :inherit font-lock-string-face)))
+  `(font-lock-doc-markup-face ((,class :inherit font-lock-constant-face)))
+  `(font-lock-preprocessor-face ((,class :inherit font-lock-builtin-face)))
+  `(font-lock-regexp-grouping-backslash ((,class :inherit bold)))
+  `(font-lock-regexp-grouping-construct ((,class :inherit bold)))
   `(font-lock-regexp-grouping-backslash ((,class :foreground ,fg :weight bold)))
   `(font-lock-regexp-grouping-construct ((,class :foreground ,fg :weight bold)))
   `(font-lock-negation-char-face ((,class :foreground ,fg :weight bold)))
-  `(elisp-shorthand-font-lock-face ((,class :inherit 'font-lock-keyword-face)))
+  `(elisp-shorthand-font-lock-face ((,class :inherit font-lock-keyword-face)))
   `(outline-1 ((,class :foreground ,fg-cyan))) ; font-lock-function-name-face
   `(outline-2 ((,class :foreground ,fg-blue))) ; font-lock-variable-name-face
   `(outline-3 ((,class :foreground ,fg-purple))) ; font-lock-keyword-face
@@ -210,18 +210,18 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;;; special characters
   `(trailing-whitespace ((,class :background ,bg-red-max)))
   `(escape-glyph ((,class :foreground ,fg-cyan)))
-  `(nobreak-hyphen ((,class :inherit 'escape-glyph)))
-  `(nobreak-space ((,class :inherit 'escape-glyph :underline t)))
+  `(nobreak-hyphen ((,class :inherit escape-glyph)))
+  `(nobreak-space ((,class :inherit escape-glyph :underline t)))
   `(homoglyph ((,class :foreground ,fg-cyan)))
   `(glyphless-char ((,class :height 0.6)))
 
 ;;;;; borders & lines
   `(vertical-border ((,class :foreground ,bd-light)))
   `(border ((,class :background ,bg))) ; bd-light
-  `(internal-border ((,class :inherit 'vertical-border)))
-  `(window-divider ((,class :inherit 'vertical-border)))
-  `(window-divider-first-pixel ((,class :inherit 'vertical-border)))
-  `(window-divider-last-pixel ((,class :inherit 'vertical-border)))
+  `(internal-border ((,class :inherit vertical-border)))
+  `(window-divider ((,class :inherit vertical-border)))
+  `(window-divider-first-pixel ((,class :inherit vertical-border)))
+  `(window-divider-last-pixel ((,class :inherit vertical-border)))
   `(separator-line ((,class :background ,bd-light :height 0.1)))
   `(fill-column-indicator ((,class :foreground ,bd-light)))
 
@@ -230,16 +230,16 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(line-number-current-line ((,class :foreground ,fg :background ,bg-min)))
   `(line-number-major-tick ((,class :foreground ,fg-comment :background ,bg-blue-max)))
   `(line-number-minor-tick ((,class :foreground ,fg-comment :background ,bg-purple-max)))
-  `(linum ((,class :inherit 'line-number)))
+  `(linum ((,class :inherit line-number)))
 
 ;;;;; region & highlights
   `(hl-line ((,class :background ,bg-hl :extend t)))
   `(highlight ((,class :background ,bg-blue)))
   `(region ((,class :background ,bg-blue :extend t)))
-  `(mouse-drag-and-drop-region ((,class :inherit 'region)))
+  `(mouse-drag-and-drop-region ((,class :inherit region)))
   `(secondary-selection ((,class :background ,bg-purple :extend t)))
-  `(next-error ((,class :inherit 'highlight)))
-  `(next-error-message ((,class :inherit 'highlight :extend t)))
+  `(next-error ((,class :inherit highlight)))
+  `(next-error-message ((,class :inherit highlight :extend t)))
 
 ;;;;; search & replace
   `(isearch ((,class :foreground ,fg :background ,bg-blue)))
@@ -248,48 +248,48 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(isearch-group-2 ((,class :foreground ,fg :background ,bg-purple-max)))
   `(lazy-highlight ((,class :foreground ,fg :background ,bg-purple-max)))
   `(match ((,class :foreground ,fg :background ,bg-green)))
-  `(query-replace ((,class :inherit 'isearch)))
+  `(query-replace ((,class :inherit isearch)))
 
 ;;;;; minibuffer
   `(minibuffer-prompt ((,class :foreground ,fg-cyan :bold nil)))
-  `(completions-annotations ((,class :inherit 'shadow :slant italic)))
+  `(completions-annotations ((,class :inherit shadow :slant italic)))
   `(completions-common-part ((,class :foreground ,fg-string)))
-  `(completions-first-difference ((,class :inherit 'bold)))
-  `(completions-group-separator ((,class :inherit 'shadow :strike-through t)))
-  `(completions-group-title ((,class :inherit 'completions-annotations)))
-  `(completions-highlight ((,class :inherit 'highlight)))
+  `(completions-first-difference ((,class :inherit bold)))
+  `(completions-group-separator ((,class :inherit shadow :strike-through t)))
+  `(completions-group-title ((,class :inherit completions-annotations)))
+  `(completions-highlight ((,class :inherit highlight)))
   `(buffer-menu-buffer ((,class :weight bold)))
   `(ido-first-match ((,class :weight bold)))
-  `(ido-incomplete-regexp ((,class :inherit 'font-lock-warning-face)))
+  `(ido-incomplete-regexp ((,class :inherit font-lock-warning-face)))
   `(ido-indicator ((,class :foreground ,fg-yellow :background ,bg-red-max)))
   `(ido-only-match ((,class :foreground ,fg-green)))
   `(ido-subdir ((,class :foreground ,fg-constant)))
   `(ido-virtual ((,class :foreground ,fg-coral)))
 
 ;;;;; help & doc
-  `(eldoc-highlight-function-argument ((,class :inherit 'bold)))
-  `(help-argument-name ((,class :inherit 'italic)))
+  `(eldoc-highlight-function-argument ((,class :inherit bold)))
+  `(help-argument-name ((,class :inherit italic)))
   `(help-for-help-header ((,class :height 1.26)))
   `(help-key-binding ((,class :foreground ,fg-keyword :background ,bg-max :box (:line-width 1 :color ,bd-light :style nil))))
-  `(woman-bold ((,class :inherit 'bold)))
-  `(woman-italic ((,class :inherit 'italic)))
-  `(woman-addition ((,class :inherit 'font-lock-builtin-face)))
-  `(woman-unknown ((,class :inherit 'font-lock-warning-face)))
+  `(woman-bold ((,class :inherit bold)))
+  `(woman-italic ((,class :inherit italic)))
+  `(woman-addition ((,class :inherit font-lock-builtin-face)))
+  `(woman-unknown ((,class :inherit font-lock-warning-face)))
   ;; defaults for man are fine
 
 ;;;;; dired
   `(dired-broken-symlink ((,class :foreground ,fg-warning :background ,bg-red)))
   `(dired-directory ((,class :foreground ,fg-dir))) ; fg-constant
   `(dired-header ((,class :foreground ,fg-string)))
-  `(dired-flagged ((,class :inherit 'error)))
-  `(dired-ignored ((,class :inherit 'shadow)))
+  `(dired-flagged ((,class :inherit error)))
+  `(dired-ignored ((,class :inherit shadow)))
   `(dired-mark ((,class :foreground ,fg-cyan :weight bold))) ; font-lock-constant-face
-  `(dired-marked ((,class :inherit 'warning)))
+  `(dired-marked ((,class :inherit warning)))
   `(dired-perm-write ((,class :foreground ,fg-red :underline t))) ; font-lock-comment-delimiter-face
   `(dired-symlink ((,class :foreground ,fg-purple))) ; font-lock-keyword-face
-  `(dired-warning ((,class :inherit 'font-lock-warning-face)))
-  `(dired-set-id ((,class :inherit 'font-lock-warning-face)))
-  `(dired-special ((,class :inherit 'font-lock-variable-name-face)))
+  `(dired-warning ((,class :inherit font-lock-warning-face)))
+  `(dired-set-id ((,class :inherit font-lock-warning-face)))
+  `(dired-special ((,class :inherit font-lock-variable-name-face)))
 
 ;;;;; whitespace-mode
   `(whitespace-space ((,class :foreground ,fg-disabled :background unspecified)))
@@ -307,7 +307,7 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; show-paren
   `(show-paren-match ((,class :foreground ,fg :background ,bg-blue-max)))
-  `(show-paren-match-expression ((,class :inherit 'show-paren-match)))
+  `(show-paren-match-expression ((,class :inherit show-paren-match)))
   `(show-paren-mismatch ((,class :foreground ,fg :background ,bg-red-max)))
 
 ;;;;; Flymake & Flyspell
@@ -319,36 +319,36 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(confusingly-reordered ((,class :underline (:style wave :color ,fg-error))))
 
 ;;;;; Compilation
-  `(compilation-error ((,class :inherit 'error)))
-  `(compilation-warning ((,class :inherit 'warning)))
-  `(compilation-info ((,class :inherit 'success)))
+  `(compilation-error ((,class :inherit error)))
+  `(compilation-warning ((,class :inherit warning)))
+  `(compilation-info ((,class :inherit success)))
   `(compilation-line-number ((,class :foreground ,fg-cyan)))
   `(compilation-column-number ((,class :foreground ,fg-string)))
-  `(compilation-mode-line-exit ((,class :inherit 'success :weight bold)))
-  `(compilation-mode-line-fail ((,class :inherit 'error)))
-  `(compilation-mode-line-run ((,class :inherit 'warning :weight bold)))
+  `(compilation-mode-line-exit ((,class :inherit success :weight bold)))
+  `(compilation-mode-line-fail ((,class :inherit error)))
+  `(compilation-mode-line-run ((,class :inherit warning :weight bold)))
 
 ;;;;; diff
   `(diff-added ((,class :foreground ,fg-success :background ,bg-green-max :extend t)))
-  `(diff-indicator-added ((,class :inherit 'diff-added)))
+  `(diff-indicator-added ((,class :inherit diff-added)))
   `(diff-changed ((,class :foreground ,fg-constant :background ,bg-blue-max)))
-  `(diff-indicator-changed ((,class :inherit 'diff-changed :extend t)))
+  `(diff-indicator-changed ((,class :inherit diff-changed :extend t)))
   `(diff-removed ((,class :foreground ,fg-error :background ,bg-red-max :extend t)))
-  `(diff-indicator-removed ((,class :inherit 'diff-removed)))
+  `(diff-indicator-removed ((,class :inherit diff-removed)))
   `(diff-changed-unspecified ((,class :background ,bg-hl :extend t)))
   `(diff-error ((,class :foreground ,fg-error :weight bold)))
   `(diff-file-header ((,class :background ,bg-hl :weight bold :extend t)))
-  `(diff-function ((,class :inherit 'diff-file-header)))
-  `(diff-index ((,class :inherit 'diff-file-header)))
+  `(diff-function ((,class :inherit diff-file-header)))
+  `(diff-index ((,class :inherit diff-file-header)))
   `(diff-header ((,class :background ,bg-hl :extend t)))
-  `(diff-hunk-header ((,class :inherit 'diff-header)))
+  `(diff-hunk-header ((,class :inherit diff-header)))
   `(diff-refine-added ((,class :background ,bg-green :extend t)))
   `(diff-refine-changed ((,class :background ,bg-green-max :extend t)))
   `(diff-refine-removed ((,class :background ,bg-red :extend t)))
   `(diff-nonexistent ((,class :background ,bg-min)))
-  `(diff-indicator-changed ((,class :inherit 'diff-changed)))
-  `(diff-indicator-added ((,class :inherit 'diff-added)))
-  `(diff-indicator-removed ((,class :inherit 'diff-removed)))
+  `(diff-indicator-changed ((,class :inherit diff-changed)))
+  `(diff-indicator-added ((,class :inherit diff-added)))
+  `(diff-indicator-removed ((,class :inherit diff-removed)))
   `(ediff-current-diff-Ancestor ((,class :background ,bg-green-min :extend t)))
   `(ediff-current-diff-A ((,class :background ,bg-red-max :extend t)))
   `(ediff-current-diff-B ((,class :background ,bg-green-max :extend t)))
@@ -369,7 +369,7 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;;; hi-lock
   `(hi-aquamarine ((,class :background ,bg-cyan)))
   `(hi-black-b ((,class :foreground ,fg :bold t)))
-  `(hi-black-hb ((,class :inherit 'fixed-pitch :height 1.0 :foreground ,fg :background ,bg-max :bold t)))
+  `(hi-black-hb ((,class :inherit fixed-pitch :height 1.0 :foreground ,fg :background ,bg-max :bold t)))
   `(hi-blue ((,class :background ,bg-blue)))
   `(hi-blue-b ((,class :foreground ,fg-blue :bold t)))
   `(hi-green ((,class :background ,bg-green)))
@@ -381,37 +381,37 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; mode-line & ui
   `(mode-line ((,class :foreground ,fg :background ,bg-min :box (:line-width 1 :color ,bd-light :style nil))))
-  `(mode-line-active ((,class :inherit 'mode-line)))
-  `(mode-line-inactive ((,class :inherit 'mode-line :foreground ,fg-disabled :background ,bg-hl)))
+  `(mode-line-active ((,class :inherit mode-line)))
+  `(mode-line-inactive ((,class :inherit mode-line :foreground ,fg-disabled :background ,bg-hl)))
   `(mode-line-highlight ((,class :foreground ,fg :background ,bg-blue :box nil)))
   `(mode-line-buffer-id ((,class :weight bold)))
   `(mode-line-emphasis  ((,class :weight bold)))
-  `(header-line ((,class :inherit 'mode-line)))
-  `(header-line-highlight ((,class :inherit 'mode-line-highlight)))
+  `(header-line ((,class :inherit mode-line)))
+  `(header-line-highlight ((,class :inherit mode-line-highlight)))
   `(tooltip ((,class :background ,bg-max :box (:line-width 1 :color ,bd-light :style nil))))
   `(tool-bar ((,class :foreground ,fg :background ,bg-max)))
   `(widget-field ((,class :foreground ,fg :background ,bg-min :box (:line-width 1 :color ,bd-light :style nil))))
   `(widget-button ((,class :foreground ,fg :weight bold)))
   `(widget-button-pressed ((,class :foreground ,fg-red)))
   `(widget-documentation ((,class :foreground ,fg-green)))
-  `(widget-inactive ((,class :inherit 'shadow)))
+  `(widget-inactive ((,class :inherit shadow)))
   `(widget-single-line-field ((,class :foreground ,fg :background ,bg-min)))
   `(custom-button ((,class :foreground ,fg :background ,bg)))
   `(custom-button-mouse ((,class :foreground ,fg-blue :background ,bg)))
   `(custom-button-pressed ((,class :foreground ,fg-disabled :background ,bg)))
   `(custom-button-unraised ((,class :foreground ,fg :background ,bg)))
-  `(custom-button-pressed-unraised ((,class :inherit 'custom-button-unraised)))
+  `(custom-button-pressed-unraised ((,class :inherit custom-button-unraised)))
   `(custom-changed ((,class :foreground ,fg-coral :background ,bg)))
   `(custom-comment ((,class :foreground ,fg :background ,bg-hl)))
   `(custom-comment-tag ((,class :foreground ,fg-comment)))
   `(custom-documentation ((,class :foreground ,fg)))
   `(custom-variable-tag ((,class :foreground ,fg-cyan :weight bold)))
-  `(custom-face-tag ((,class :inherit 'custom-variable-tag)))
+  `(custom-face-tag ((,class :inherit custom-variable-tag)))
   `(custom-group-subtitle ((,class :weight bold)))
-  `(custom-group-tag ((,class :inherit 'fixed-pitch :foreground ,fg-blue :weight bold :height 1.0)))
+  `(custom-group-tag ((,class :inherit fixed-pitch :foreground ,fg-blue :weight bold :height 1.0)))
   `(custom-group-tag-1 ((,class :foreground ,fg-purple)))
   `(custom-invalid ((,class :foreground ,fg-yellow :background ,bg-red-max)))
-  `(custom-link ((,class :inherit 'link)))
+  `(custom-link ((,class :inherit link)))
   `(custom-modified ((,class :foreground ,fg-coral)))
   `(custom-rogue ((,class :foreground ,fg-pink :background ,bg-max)))
   `(custom-saved ((,class :foreground ,fg-green :weight bold)))
@@ -422,12 +422,12 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(custom-variable-obsolete ((,class :foreground ,fg-blue-bright)))
   `(custom-visibility ((,class :foreground ,fg-blue :height 0.8 :underline t)))
   `(tab-bar ((,class :foreground ,fg :background ,bg-min)))
-  `(tab-bar-tab ((,class :inherit 'tab-bar :background ,bg :box (:line-width 4 :color ,bg :style nil))))
-  `(tab-bar-tab-inactive ((,class :inherit 'tab-bar :foreground ,fg-comment :background ,bg-min :box (:line-width 4 :color ,bd-light :style nil))))
-  `(tab-bar-tab-group-current ((,class :inherit 'tab-bar-tab)))
-  `(tab-bar-tab-group-inactive ((,class :inherit 'tab-bar-tab-inactive)))
-  `(tab-bar-tab-ungrouped ((,class :inherit 'tab-bar-tab-inactive)))
-  `(tab-line ((,class :inherit 'tab-bar :background ,bg-hl :height 0.9)))
+  `(tab-bar-tab ((,class :inherit tab-bar :background ,bg :box (:line-width 4 :color ,bg :style nil))))
+  `(tab-bar-tab-inactive ((,class :inherit tab-bar :foreground ,fg-comment :background ,bg-min :box (:line-width 4 :color ,bd-light :style nil))))
+  `(tab-bar-tab-group-current ((,class :inherit tab-bar-tab)))
+  `(tab-bar-tab-group-inactive ((,class :inherit tab-bar-tab-inactive)))
+  `(tab-bar-tab-ungrouped ((,class :inherit tab-bar-tab-inactive)))
+  `(tab-line ((,class :inherit tab-bar :background ,bg-hl :height 0.9)))
 
 ;;;;; shell
   `(tty-menu-disabled-face ((,class :foreground ,fg-disabled :background ,bg-blue-max)))
@@ -511,8 +511,8 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(TeX-error-description-error ((,class :foreground ,fg-coral :weight bold)))
   `(TeX-error-description-tex-said ((,class :foreground ,fg-string :weight bold)))
   `(TeX-error-description-warning ((,class :foreground ,fg-warning :weight bold)))
-  `(font-latex-bold-face ((,class :inherit 'bold :foreground unspecified)))
-  `(font-latex-italic-face ((,class :inherit 'italic :foreground unspecified)))
+  `(font-latex-bold-face ((,class :inherit bold :foreground unspecified)))
+  `(font-latex-italic-face ((,class :inherit italic :foreground unspecified)))
   `(font-latex-math-face ((,class :foreground ,fg-string)))
   `(font-latex-script-char-face ((,class :foreground ,fg-builtin)))
   `(font-latex-sedate-face ((,class :foreground ,fg-comment)))
@@ -522,9 +522,9 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(font-latex-sectioning-3-face ((,class :foreground ,fg-variable :weight semi-bold :height unspecified)))
   `(font-latex-sectioning-4-face ((,class :foreground ,fg-cyan :weight semi-bold :height unspecified)))
   `(font-latex-sectioning-5-face ((,class :foreground ,fg-purple :weight semi-bold :height unspecified)))
-  `(font-latex-string-face ((,class :inherit 'font-lock-string-face)))
+  `(font-latex-string-face ((,class :inherit font-lock-string-face)))
   `(font-latex-verbatim-face ((,class :foreground ,fg-cyan :slant italic)))
-  `(font-latex-warning-face ((,class :inherit 'font-lock-warning-face)))
+  `(font-latex-warning-face ((,class :inherit font-lock-warning-face)))
 
 ;;;;; avy
   `(avy-background-face ((,class :foreground ,fg-disabled)))
@@ -538,12 +538,12 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; corfu
   `(corfu-default ((,class :background ,bg-max)))
-  `(corfu-border ((,class :inherit 'vertical-border)))
-  `(corfu-current ((,class :inherit 'highlight)))
+  `(corfu-border ((,class :inherit vertical-border)))
+  `(corfu-current ((,class :inherit highlight)))
   `(corfu-bar ((,class :background ,bg-min)))
-  `(corfu-annotations ((,class :inherit 'completions-annotations)))
-  `(corfu-deprecated ((,class :inherit 'shadow :strike-through t)))
-  `(corfu-echo ((,class :inherit 'completions-annotations)))
+  `(corfu-annotations ((,class :inherit completions-annotations)))
+  `(corfu-deprecated ((,class :inherit shadow :strike-through t)))
+  `(corfu-echo ((,class :inherit completions-annotations)))
 
 ;;;;; diff-hl
   `(diff-hl-change ((,class :foreground ,bg-blue :background ,bg-blue)))
@@ -560,7 +560,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(elfeed-search-tag-face ((,class :foreground ,fg-green)))
   `(elfeed-search-title-face ((,class :foreground ,fg)))
   `(elfeed-search-unread-count-face ((,class :foreground ,fg)))
-  `(elfeed-search-unread-title-face ((,class :inherit 'bold)))
+  `(elfeed-search-unread-title-face ((,class :inherit bold)))
 
 ;;;;; elpaca
   `(elpaca-blocked ((,class :foreground ,fg-warning :weight bold)))
@@ -580,49 +580,49 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(hl-todo ((,class :foreground ,fg-coral :weight bold)))
 
 ;;;;; marginalia (defaults are fine, just fix wrong italic)
-  `(marginalia-file-priv-read ((,class :inherit 'font-lock-type-face :italic nil)))
+  `(marginalia-file-priv-read ((,class :inherit font-lock-type-face :italic nil)))
 
 ;;;;; Markdown
-  `(markdown-bold-face ((,class :inherit 'bold)))
-  `(markdown-italic-face ((,class :inherit 'italic)))
+  `(markdown-bold-face ((,class :inherit bold)))
+  `(markdown-italic-face ((,class :inherit italic)))
   `(markdown-strike-through-face ((,class :strike-through t)))
-  `(markdown-highlight-face ((,class :inherit 'highlight)))
-  `(markdown-markup-face ((,class :inherit 'shadow)))
-  `(markdown-hr-face ((,class :inherit 'markdown-markup-face)))
-  `(markdown-list-face ((,class :inherit 'markdown-markup-face)))
-  `(markdown-reference-face ((,class :inherit 'markdown-markup-face)))
-  `(markdown-comment-face ((,class :inherit 'font-lock-comment-face)))
-  `(markdown-url-face ((,class :inherit 'font-lock-string-face)))
-  `(markdown-link-face ((,class :inherit 'link)))
-  `(markdown-plain-url-face ((,class :inherit 'markdown-link-face)))
-  `(markdown-link-title-face ((,class :inherit 'font-lock-comment-face :italic nil)))
+  `(markdown-highlight-face ((,class :inherit highlight)))
+  `(markdown-markup-face ((,class :inherit shadow)))
+  `(markdown-hr-face ((,class :inherit markdown-markup-face)))
+  `(markdown-list-face ((,class :inherit markdown-markup-face)))
+  `(markdown-reference-face ((,class :inherit markdown-markup-face)))
+  `(markdown-comment-face ((,class :inherit font-lock-comment-face)))
+  `(markdown-url-face ((,class :inherit font-lock-string-face)))
+  `(markdown-link-face ((,class :inherit link)))
+  `(markdown-plain-url-face ((,class :inherit markdown-link-face)))
+  `(markdown-link-title-face ((,class :inherit font-lock-comment-face :italic nil)))
   `(markdown-missing-link-face ((,class :foreground ,fg-error)))
-  `(markdown-blockquote-face ((,class :inherit 'font-lock-doc-face)))
-  `(markdown-code-face ((,class :inherit 'fixed-pitch :background ,bg-max :extend t)))
-  `(markdown-inline-code-face ((,class :inherit 'fixed-pitch)))
-  `(markdown-pre-face ((,class :inherit 'fixed-pitch)))
-  `(markdown-html-tag-delimiter-face ((,class :inherit 'fixed-pitch :foreground ,fg-green)))
-  `(markdown-html-tag-name-face ((,class :inherit 'fixed-pitch :foreground ,fg-green)))
-  `(markdown-html-attr-name-face ((,class :inherit 'fixed-pitch :foreground ,fg-constant)))
-  `(markdown-html-attr-value-face ((,class :inherit 'fixed-pitch :foreground ,fg-string)))
-  `(markdown-html-entity-face ((,class :inherit 'fixed-pitch :slant italic)))
-  `(markdown-metadata-key-face ((,class :inherit 'font-lock-constant-face)))
-  `(markdown-metadata-value-face ((,class :inherit 'font-lock-string-face)))
-  `(markdown-table-face ((,class :inherit 'fixed-pitch)))
-  `(markdown-language-info-face ((,class :inherit 'fixed-pitch :foreground ,fg-string)))
-  `(markdown-language-keyword-face ((,class :inherit 'fixed-pitch)))
-  `(markdown-header-delimiter-face ((,class :inherit 'markdown-markup-face)))
-  `(markdown-header-rule-face ((,class :inherit 'markdown-markup-face)))
-  `(markdown-math-face ((,class :inherit 'font-lock-string-face)))
-  `(markdown-line-break-face ((,class :inherit 'font-lock-constant-face :underline t)))
-  `(markdown-gfm-checkbox-face ((,class :inherit 'font-lock-builtin-face)))
-  `(markdown-footnote-marker-face ((,class :inherit 'markdown-markup-face)))
-  `(markdown-footnote-text-face ((,class :inherit 'font-lock-comment-face)))
+  `(markdown-blockquote-face ((,class :inherit font-lock-doc-face)))
+  `(markdown-code-face ((,class :inherit fixed-pitch :background ,bg-max :extend t)))
+  `(markdown-inline-code-face ((,class :inherit fixed-pitch)))
+  `(markdown-pre-face ((,class :inherit fixed-pitch)))
+  `(markdown-html-tag-delimiter-face ((,class :inherit fixed-pitch :foreground ,fg-green)))
+  `(markdown-html-tag-name-face ((,class :inherit fixed-pitch :foreground ,fg-green)))
+  `(markdown-html-attr-name-face ((,class :inherit fixed-pitch :foreground ,fg-constant)))
+  `(markdown-html-attr-value-face ((,class :inherit fixed-pitch :foreground ,fg-string)))
+  `(markdown-html-entity-face ((,class :inherit fixed-pitch :slant italic)))
+  `(markdown-metadata-key-face ((,class :inherit font-lock-constant-face)))
+  `(markdown-metadata-value-face ((,class :inherit font-lock-string-face)))
+  `(markdown-table-face ((,class :inherit fixed-pitch)))
+  `(markdown-language-info-face ((,class :inherit fixed-pitch :foreground ,fg-string)))
+  `(markdown-language-keyword-face ((,class :inherit fixed-pitch)))
+  `(markdown-header-delimiter-face ((,class :inherit markdown-markup-face)))
+  `(markdown-header-rule-face ((,class :inherit markdown-markup-face)))
+  `(markdown-math-face ((,class :inherit font-lock-string-face)))
+  `(markdown-line-break-face ((,class :inherit font-lock-constant-face :underline t)))
+  `(markdown-gfm-checkbox-face ((,class :inherit font-lock-builtin-face)))
+  `(markdown-footnote-marker-face ((,class :inherit markdown-markup-face)))
+  `(markdown-footnote-text-face ((,class :inherit font-lock-comment-face)))
 
 ;;;;; multiple-cursor
   `(mc/cursor-bar-face ((,class :background ,fg-coral :height 1)))
   `(mc/cursor-face ((,class :inverse-video t)))
-  `(mc/region-face ((,class :inherit 'region)))
+  `(mc/region-face ((,class :inherit region)))
 
 ;;;;; orderless
   `(orderless-match-face-0 ((,class :foreground ,fg-constant :weight bold)))
@@ -644,86 +644,86 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(rainbow-delimiters-depth-11-face ((,class :foreground ,fg-rainbow-3)))
   `(rainbow-delimiters-depth-12-face ((,class :foreground ,fg-rainbow-4)))
   `(rainbow-delimiters-base-error-face ((,class :foreground ,fg-error :background unspecified)))
-  `(rainbow-delimiters-unmatched-face ((,class :inherit 'rainbow-delimiters-base-error-face)))
-  `(rainbow-delimiters-mismatched-face ((,class :inherit 'rainbow-delimiters-base-error-face)))
+  `(rainbow-delimiters-unmatched-face ((,class :inherit rainbow-delimiters-base-error-face)))
+  `(rainbow-delimiters-mismatched-face ((,class :inherit rainbow-delimiters-base-error-face)))
 
 ;;;;; Web Mode
-  `(web-mode-bold-face ((,class :inherit 'bold)))
-  `(web-mode-italic-face ((,class :inherit 'italic)))
-  `(web-mode-underline-face ((,class :inherit 'underline)))
-  `(web-mode-comment-face ((,class :inherit 'font-lock-comment-face :italic nil)))
+  `(web-mode-bold-face ((,class :inherit bold)))
+  `(web-mode-italic-face ((,class :inherit italic)))
+  `(web-mode-underline-face ((,class :inherit underline)))
+  `(web-mode-comment-face ((,class :inherit font-lock-comment-face :italic nil)))
   `(web-mode-comment-keyword-face ((,class :weight bold :box nil)))
-  `(web-mode-doctype-face ((,class :inherit 'web-mode-comment-face)))
-  `(web-mode-string-face ((,class :inherit 'font-lock-string-face)))
-  `(web-mode-keyword-face ((,class :inherit 'font-lock-keyword-face)))
-  `(web-mode-constant-face ((,class :inherit 'font-lock-constant-face)))
-  `(web-mode-type-face ((,class :inherit 'font-lock-type-face)))
-  `(web-mode-variable-name-face ((,class :inherit 'font-lock-variable-name-face)))
-  `(web-mode-builtin-face ((,class :inherit 'font-lock-builtin-face)))
-  `(web-mode-function-name-face ((,class :inherit 'font-lock-function-name-face)))
-  `(web-mode-function-call-face ((,class :inherit 'font-lock-function-name-face)))
-  `(web-mode-filter-face ((,class :inherit 'font-lock-function-name-face)))
-  `(web-mode-preprocessor-face ((,class :inherit 'font-lock-preprocessor-face)))
+  `(web-mode-doctype-face ((,class :inherit web-mode-comment-face)))
+  `(web-mode-string-face ((,class :inherit font-lock-string-face)))
+  `(web-mode-keyword-face ((,class :inherit font-lock-keyword-face)))
+  `(web-mode-constant-face ((,class :inherit font-lock-constant-face)))
+  `(web-mode-type-face ((,class :inherit font-lock-type-face)))
+  `(web-mode-variable-name-face ((,class :inherit font-lock-variable-name-face)))
+  `(web-mode-builtin-face ((,class :inherit font-lock-builtin-face)))
+  `(web-mode-function-name-face ((,class :inherit font-lock-function-name-face)))
+  `(web-mode-function-call-face ((,class :inherit font-lock-function-name-face)))
+  `(web-mode-filter-face ((,class :inherit font-lock-function-name-face)))
+  `(web-mode-preprocessor-face ((,class :inherit font-lock-preprocessor-face)))
   `(web-mode-param-name-face ((,class :foreground ,fg)))
-  `(web-mode-symbol-face ((,class :inherit 'font-lock-variable-name-face)))
-  `(web-mode-warning-face ((,class :inherit 'warning)))
-  `(web-mode-error-face ((,class :inherit 'error)))
+  `(web-mode-symbol-face ((,class :inherit font-lock-variable-name-face)))
+  `(web-mode-warning-face ((,class :inherit warning)))
+  `(web-mode-error-face ((,class :inherit error)))
   `(web-mode-html-tag-face ((,class :foreground ,fg-green)))
-  `(web-mode-html-tag-custom-face ((,class :inherit 'web-mode-html-tag-face)))
-  `(web-mode-html-tag-namespaced-face ((,class :inherit 'web-mode-html-tag-face)))
-  `(web-mode-html-tag-unclosed-face ((,class :inherit 'web-mode-html-tag-face :underline t)))
+  `(web-mode-html-tag-custom-face ((,class :inherit web-mode-html-tag-face)))
+  `(web-mode-html-tag-namespaced-face ((,class :inherit web-mode-html-tag-face)))
+  `(web-mode-html-tag-unclosed-face ((,class :inherit web-mode-html-tag-face :underline t)))
   `(web-mode-html-tag-bracket-face ((,class :foreground ,fg-green)))
-  `(web-mode-html-attr-name-face ((,class :inherit 'font-lock-constant-face)))
-  `(web-mode-html-attr-value-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-html-attr-name-face ((,class :inherit font-lock-constant-face)))
+  `(web-mode-html-attr-value-face ((,class :inherit font-lock-string-face)))
   `(web-mode-html-entity-face ((,class :foreground ,fg :slant italic)))
-  `(web-mode-html-attr-custom-face ((,class :inherit 'web-mode-html-attr-name-face)))
-  `(web-mode-html-attr-engine-face ((,class :inherit 'web-mode-html-attr-name-face)))
-  `(web-mode-html-attr-equal-face ((,class :inherit 'web-mode-html-attr-name-face)))
-  `(web-mode-annotation-face ((,class :inherit 'web-mode-comment-face)))
-  `(web-mode-annotation-html-face ((,class :inherit 'web-mode-annotation-face :slant italic)))
-  `(web-mode-annotation-tag-face ((,class :inherit 'web-mode-annotation-face :underline t)))
-  `(web-mode-annotation-type-face ((,class :inherit 'web-mode-annotation-face :weight bold)))
-  `(web-mode-annotation-value-face ((,class :inherit 'web-mode-annotation-html-face)))
+  `(web-mode-html-attr-custom-face ((,class :inherit web-mode-html-attr-name-face)))
+  `(web-mode-html-attr-engine-face ((,class :inherit web-mode-html-attr-name-face)))
+  `(web-mode-html-attr-equal-face ((,class :inherit web-mode-html-attr-name-face)))
+  `(web-mode-annotation-face ((,class :inherit web-mode-comment-face)))
+  `(web-mode-annotation-html-face ((,class :inherit web-mode-annotation-face :slant italic)))
+  `(web-mode-annotation-tag-face ((,class :inherit web-mode-annotation-face :underline t)))
+  `(web-mode-annotation-type-face ((,class :inherit web-mode-annotation-face :weight bold)))
+  `(web-mode-annotation-value-face ((,class :inherit web-mode-annotation-html-face)))
   `(web-mode-block-face ((,class :background ,bg-max)))
-  `(web-mode-block-comment-face ((,class :inherit 'web-mode-comment-face)))
-  `(web-mode-block-control-face ((,class :inherit 'font-lock-preprocessor-face)))
-  `(web-mode-block-delimiter-face ((,class :inherit 'font-lock-preprocessor-face)))
-  `(web-mode-block-string-face ((,class :inherit 'web-mode-string-face)))
-  `(web-mode-block-attr-name-face ((,class :inherit 'web-mode-html-attr-name-face)))
-  `(web-mode-block-attr-value-face ((,class :inherit 'web-mode-html-attr-value-face)))
-  `(web-mode-part-face ((,class :inherit 'default)))
-  `(web-mode-part-comment-face ((,class :inherit 'font-lock-comment-face)))
-  `(web-mode-part-string-face ((,class :inherit 'font-lock-string-face)))
-  `(web-mode-style-face ((,class :inherit 'web-mode-part-face)))
-  `(web-mode-script-face ((,class :inherit 'web-mode-part-face)))
-  `(web-mode-javascript-comment-face ((,class :inherit 'font-lock-comment-face)))
-  `(web-mode-javascript-string-face ((,class :inherit 'font-lock-string-face)))
-  `(web-mode-css-property-name-face ((,class :inherit 'font-lock-keyword-face)))
-  `(web-mode-css-selector-face ((,class :inherit 'font-lock-function-name-face)))
-  `(web-mode-css-selector-class-face ((,class :inherit 'web-mode-css-selector-face)))
-  `(web-mode-css-selector-tag-face ((,class :inherit 'web-mode-css-selector-face)))
-  `(web-mode-css-comment-face ((,class :inherit 'font-lock-comment-face)))
-  `(web-mode-css-string-face ((,class :inherit 'font-lock-string-face)))
-  `(web-mode-css-variable-face ((,class :inherit 'font-lock-variable-name-face)))
-  `(web-mode-css-color-face ((,class :inherit 'font-lock-builtin-face)))
-  `(web-mode-css-function-face ((,class :inherit 'font-lock-builtin-face)))
-  `(web-mode-css-priority-face ((,class :inherit 'font-lock-builtin-face)))
-  `(web-mode-css-pseudo-class-face ((,class :inherit 'font-lock-builtin-face)))
-  `(web-mode-css-at-rule-face ((,class :inherit 'font-lock-constant-face)))
+  `(web-mode-block-comment-face ((,class :inherit web-mode-comment-face)))
+  `(web-mode-block-control-face ((,class :inherit font-lock-preprocessor-face)))
+  `(web-mode-block-delimiter-face ((,class :inherit font-lock-preprocessor-face)))
+  `(web-mode-block-string-face ((,class :inherit web-mode-string-face)))
+  `(web-mode-block-attr-name-face ((,class :inherit web-mode-html-attr-name-face)))
+  `(web-mode-block-attr-value-face ((,class :inherit web-mode-html-attr-value-face)))
+  `(web-mode-part-face ((,class :inherit default)))
+  `(web-mode-part-comment-face ((,class :inherit font-lock-comment-face)))
+  `(web-mode-part-string-face ((,class :inherit font-lock-string-face)))
+  `(web-mode-style-face ((,class :inherit web-mode-part-face)))
+  `(web-mode-script-face ((,class :inherit web-mode-part-face)))
+  `(web-mode-javascript-comment-face ((,class :inherit font-lock-comment-face)))
+  `(web-mode-javascript-string-face ((,class :inherit font-lock-string-face)))
+  `(web-mode-css-property-name-face ((,class :inherit font-lock-keyword-face)))
+  `(web-mode-css-selector-face ((,class :inherit font-lock-function-name-face)))
+  `(web-mode-css-selector-class-face ((,class :inherit web-mode-css-selector-face)))
+  `(web-mode-css-selector-tag-face ((,class :inherit web-mode-css-selector-face)))
+  `(web-mode-css-comment-face ((,class :inherit font-lock-comment-face)))
+  `(web-mode-css-string-face ((,class :inherit font-lock-string-face)))
+  `(web-mode-css-variable-face ((,class :inherit font-lock-variable-name-face)))
+  `(web-mode-css-color-face ((,class :inherit font-lock-builtin-face)))
+  `(web-mode-css-function-face ((,class :inherit font-lock-builtin-face)))
+  `(web-mode-css-priority-face ((,class :inherit font-lock-builtin-face)))
+  `(web-mode-css-pseudo-class-face ((,class :inherit font-lock-builtin-face)))
+  `(web-mode-css-at-rule-face ((,class :inherit font-lock-constant-face)))
   `(web-mode-json-context-face ((,class :foreground ,fg-pink)))
   `(web-mode-json-key-face ((,class :foreground ,fg-pink-bright)))
-  `(web-mode-json-comment-face ((,class :inherit 'font-lock-comment-face)))
-  `(web-mode-json-string-face ((,class :inherit 'font-lock-string-face)))
+  `(web-mode-json-comment-face ((,class :inherit font-lock-comment-face)))
+  `(web-mode-json-string-face ((,class :inherit font-lock-string-face)))
   `(web-mode-sql-keyword-face ((,class :weight bold :slant italic)))
-  `(web-mode-whitespace-face ((,class :inherit 'trailing-whitespace)))
+  `(web-mode-whitespace-face ((,class :inherit trailing-whitespace)))
   `(web-mode-folded-face ((,class :underline t)))
   `(web-mode-inlay-face ((,class :background ,bg-max)))
   `(web-mode-current-column-highlight-face ((,class :background ,bg-min)))
   `(web-mode-current-element-highlight-face ((,class :foreground ,fg :background ,bg-max)))
-  `(web-mode-interpolate-color1-face ((,class :inherit 'web-mode-string-face)))
-  `(web-mode-interpolate-color2-face ((,class :inherit 'web-mode-string-face)))
-  `(web-mode-interpolate-color3-face ((,class :inherit 'web-mode-string-face)))
-  `(web-mode-interpolate-color4-face ((,class :inherit 'web-mode-string-face)))
+  `(web-mode-interpolate-color1-face ((,class :inherit web-mode-string-face)))
+  `(web-mode-interpolate-color2-face ((,class :inherit web-mode-string-face)))
+  `(web-mode-interpolate-color3-face ((,class :inherit web-mode-string-face)))
+  `(web-mode-interpolate-color4-face ((,class :inherit web-mode-string-face)))
 
   ;; Documentation on these faces are not clear. Keeping the defaults.
   ;; web-mode-jsx-depth-1-face
@@ -750,11 +750,11 @@ Also bind `class' to ((class color) (min-colors 89))."
   ;; org-level-7 - inherits outline
   ;; org-level-8 - inherits outline
 
-  `(org-block ((,class :inherit 'fixed-pitch :foreground ,fg :background ,bg-max :extend t)))
+  `(org-block ((,class :inherit fixed-pitch :foreground ,fg :background ,bg-max :extend t)))
   `(org-quote ((,class :foreground ,fg-comment :background ,bg-max :extend t)))
-  `(org-verse ((,class :inherit 'org-quote :extend t)))
-  `(org-block-begin-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
-  `(org-block-end-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
+  `(org-verse ((,class :inherit org-quote :extend t)))
+  `(org-block-begin-line ((,class :inherit fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
+  `(org-block-end-line ((,class :inherit fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
   `(org-ellipsis ((,class :foreground ,fg-comment :underline nil)))
 
   `(org-hide ((,class :foreground ,bg)))
@@ -762,56 +762,57 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-done ((,class :foreground ,fg-success :weight bold)))
   `(org-todo ((,class :foreground ,fg-error :weight bold)))
   `(org-latex-and-related ((,class :foreground ,fg-warning)))
-
-  `(org-code ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
-  `(org-meta-line ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; comment-face
-  `(org-document-info-keyword ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
-  `(org-table ((,class :inherit 'fixed-pitch :foreground ,fg-string)))
-  `(org-table-header ((t (:inherit 'org-table :foreground ,bg :background ,fg))))
-
-  `(org-verbatim ((,class :inherit 'fixed-pitch :foreground ,fg-comment))) ; shadow
-  `(org-formula ((,class :inherit 'fixed-pitch :foreground ,fg-variable)))
-  `(org-special-keyword ((,class :inherit 'fixed-pitch :foreground ,fg-keyword)))
-  `(org-checkbox ((,class :inherit 'fixed-pitch :bold t))) ; bold
   ;; org-checkbox-statistics-done - inherits org-done
   ;; org-checkbox-statistics-todo - inherits org-todo
+  ;; org-macro - inherits org-latex-and-related
 
-  ;; org-document-info
-  ;; org-document-title
+  `(org-code ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; shadow
+  `(org-meta-line ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; comment-face
+  `(org-document-info-keyword ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; shadow
+  `(org-table ((,class :inherit fixed-pitch :foreground ,fg-string)))
+  `(org-table-header ((t (:inherit org-table :foreground ,bg :background ,fg))))
+
+  `(org-verbatim ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; shadow
+  `(org-formula ((,class :inherit fixed-pitch :foreground ,fg-variable)))
+  `(org-special-keyword ((,class :inherit fixed-pitch :foreground ,fg-keyword)))
+  `(org-checkbox ((,class :inherit fixed-pitch :bold t))) ; bold
+
+  `(org-document-info ((,class :foreground ,fg-cyan)))
+  `(org-document-title ((,class :foreground ,fg-cyan :bold t)))
 
   ;; org-warning - inherits font-lock-warning-face (deadlines and todo)
+  ;; org-imminent-deadline - inherits org-warning
+  ;; org-inline-src-block - inherits org-block
   ;; org-archived - inherits shadow
   ;; org-cite - inherits link
   ;; org-cite-key - inherits link
 
-  ;; org-clock-overlay
-  ;; org-column
-  ;; org-column-title
-  ;; org-date-selected
-  ;; org-dispatcher-highlight
+  `(org-clock-overlay ((,class :foreground ,fg :background ,bg-cyan)))
+  `(org-column ((,class :foreground ,fg :background ,bd-light)))
+  `(org-column-title ((,class :foreground ,fg :background ,bd-light :bold t :underline t)))
+  `(org-date-selected ((,class :foreground ,fg :background ,bg-pink)))
+  `(org-dispatcher-highlight ((,class :foreground ,fg-yellow :background ,bg-yellow)))
+  `(org-mode-line-clock ((,class :inherit mode-line)))
+  `(org-mode-line-clock-overrun ((,class :inherit org-mode-line-clock :background ,bg-red)))
 
-  ;; org-drawer
-  ;; org-footnote
-  ;; org-headline-done
-  ;; org-headline-todo
-  ;; org-imminent-deadline
-  ;; org-inline-src-block
-  ;; org-list-dt
-  ;; org-macro
-  ;; org-mode-line-clock
-  ;; org-mode-line-clock-overrun
-  ;; org-priority
-  ;; org-property-value
-  ;; org-scheduled
-  ;; org-scheduled-previously
-  ;; org-scheduled-today
-  ;; org-sexp-date
-  ;; org-tag
-  ;; org-tag-group
-  ;; org-target
-  ;; org-time-grid
-  ;; org-upcoming-deadline
-  ;; org-upcoming-distant-deadline
+  `(org-list-dt ((,class :bold t)))
+  `(org-tag ((,class :bold t)))
+  `(org-tag-group ((,class :inherit org-tag)))
+  `(org-target ((,class :underline t)))
+
+  ;; org-drawer ; fg LightSkyBlue
+  ;; org-footnote ; fg Cyan underline t
+  ;; org-headline-done ; fg LightSalmon
+  ;; org-headline-todo ; fg Pink2
+  ;; org-priority - inherits font-lock-keyword-face
+  ;; org-property-value - inherits default (all unspecified)
+  ;; org-scheduled ; fg PaleGreen
+  ;; org-scheduled-previously ; fg chocolate1
+  ;; org-scheduled-today ; fg PaleGreen
+  ;; org-sexp-date ; fg Cyan
+  ;; org-time-grid ; fg LightGoldenrod
+  ;; org-upcoming-deadline ; fg chocolate1
+  ;; org-upcoming-distant-deadline - inherits org-default
 
   ;; org-roam-dim
   ;; org-roam-header-line
@@ -860,8 +861,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   ;; org-agenda-structure-filter
   ;; org-agenda-structure-secondary
 
-
-  ;; This theme is still incomplete
   ;; TODO:
   ;; - Info-mode
   ;; - eww
