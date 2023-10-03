@@ -981,7 +981,9 @@ MODE - list to add to `auto-mode-alist'"
   (dotemacs-use-treesit
    :lang 'blueprint
    :github "huanie/tree-sitter-blueprint"
-   :mode '("\\.blp\\'" . blueprint-ts-mode)))
+   :mode '("\\.blp\\'" . blueprint-ts-mode))
+  (add-to-list 'eglot-server-programs
+               '(blueprint-ts-mode . ("blueprint-compiler" "lsp"))))
 
 (add-hook 'rst-mode-hook 'dotemacs-text-mode)
 
