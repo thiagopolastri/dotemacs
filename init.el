@@ -853,6 +853,7 @@ MODE - list to add to `auto-mode-alist'"
 (use-package deno-ts-mode :if (treesit-available-p)) ; :config (deno-ts-setup-eglot)
 
 (use-package npm-mode
+  :defer t
   :delight
   :hook ((javascript-mode js-ts-mode typescript-mode typescript-ts-mode tsx-ts-mode) . npm-mode))
 
@@ -864,9 +865,11 @@ MODE - list to add to `auto-mode-alist'"
    :remap '(json-mode . json-ts-mode)))
 
 (use-package pyvenv
+  :defer t
   :hook ((python-mode python-ts-mode) . pyvenv-mode))
 
 (use-package cmake-mode
+  :no-require t
   :init
   (dotemacs-use-treesit
    :lang 'cmake
@@ -874,6 +877,7 @@ MODE - list to add to `auto-mode-alist'"
    :remap '(cmake-mode . cmake-ts-mode)))
 
 (use-package yaml-mode
+  :no-require t
   :init
   (dotemacs-use-treesit
    :lang 'yaml
@@ -882,6 +886,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook ((yaml-mode yaml-ts-mode) . dotemacs-prog-mode))
 
 (use-package dockerfile-mode
+  :no-require t
   :init
   (dotemacs-use-treesit
    :lang 'dockerfile
@@ -889,6 +894,7 @@ MODE - list to add to `auto-mode-alist'"
    :remap '(dockerfile-mode . dockerfile-ts-mode)))
 
 (use-package go-mode
+  :no-require t
   :init
   (dotemacs-use-treesit
    :lang 'go
@@ -920,28 +926,31 @@ MODE - list to add to `auto-mode-alist'"
   (web-mode-enable-auto-quoting nil)
   (web-mode-enable-auto-pairing t))
 
-(define-derived-mode dotemacs-vue-mode web-mode "Web/Vue"
-  "Custom Vue major mode derived from `web-mode'.")
-(add-to-list 'auto-mode-alist '("\\.vue\\'" . dotemacs-vue-mode))
-(add-to-list 'eglot-server-programs '(dotemacs-vue-mode . "vls"))
-
 (define-derived-mode dotemacs-svelte-mode web-mode "Web/Svelte"
   "Custom Svelte major mode derived from `web-mode'.")
 (add-to-list 'auto-mode-alist '("\\.svelte\\'" . dotemacs-svelte-mode))
 (add-to-list 'eglot-server-programs
              '(dotemacs-svelte-mode . ("svelteserver" "--stdio")))
 
-;; (use-package vue-ts-mode
-;;   :elpaca (vue-ts-mode :repo "https://github.com/8uff3r/vue-ts-mode.git")
-;;   :if (treesit-available-p)
-;;   :init
-;;   (dotemacs-use-treesit
-;;    :lang 'vue
-;;    :github "ikatyang/tree-sitter-vue"
-;;    :mode '("\\.vue\\'" . vue-ts-mode))
-;;   (add-to-list 'eglot-server-programs '(dotemacs-vue-mode . "vls")))
+(unless (and (treesit-available-p) (treesit-ready-p 'vue t))
+  (define-derived-mode dotemacs-vue-mode web-mode "Web/Vue"
+    "Custom Vue major mode derived from `web-mode'.")
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . dotemacs-vue-mode))
+  (add-to-list 'eglot-server-programs '(dotemacs-vue-mode . "vls")))
+
+(use-package vue-ts-mode
+  :elpaca (vue-ts-mode :repo "https://github.com/8uff3r/vue-ts-mode.git")
+  :when (treesit-available-p)
+  :no-require t
+  :init
+  (dotemacs-use-treesit
+   :lang 'vue
+   :github "ikatyang/tree-sitter-vue"
+   :mode '("\\.vue\\'" . vue-ts-mode))
+  (add-to-list 'eglot-server-programs '(dotemacs-vue-mode . "vls")))
 
 (use-package elixir-mode
+  :no-require t
   :init
   (dotemacs-use-treesit
    :lang 'elixir
@@ -963,6 +972,16 @@ MODE - list to add to `auto-mode-alist'"
 (use-package lua-mode :defer t)
 (use-package zig-mode :defer t)
 (use-package julia-mode :defer t)
+
+(use-package blueprint-ts-mode
+  ;; https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/
+  :when (treesit-available-p)
+  :no-require t
+  :init
+  (dotemacs-use-treesit
+   :lang 'blueprint
+   :github "huanie/tree-sitter-blueprint"
+   :mode '("\\.blp\\'" . blueprint-ts-mode)))
 
 (add-hook 'rst-mode-hook 'dotemacs-text-mode)
 
