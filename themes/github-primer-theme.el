@@ -647,6 +647,18 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(rainbow-delimiters-unmatched-face ((,class :inherit rainbow-delimiters-base-error-face)))
   `(rainbow-delimiters-mismatched-face ((,class :inherit rainbow-delimiters-base-error-face)))
 
+;;;;; popup (emr)
+  `(popup-face ((,class :background ,bg-max :foreground ,fg)))
+  `(popup-isearch-match ((,class :background ,bg-purple :foreground ,fg)))
+  `(popup-menu-face ((,class :background ,bg-max :foreground ,fg)))
+  `(popup-menu-mouse-face ((,class :inherit highlight)))
+  `(popup-menu-selection-face ((,class :inherit highlight)))
+  `(popup-menu-summary-face ((,class :background ,bg-max :foreground ,fg-comment)))
+  `(popup-scroll-bar-background-face ((,class :background ,bg-max)))
+  `(popup-scroll-bar-foreground-face ((,class :background ,bg-min)))
+  `(popup-summary-face ((,class :background ,bg-max :foreground ,fg-comment)))
+  `(popup-tip-face ((,class :background ,bg-max :foreground ,fg)))
+
 ;;;;; Web Mode
   `(web-mode-bold-face ((,class :inherit bold)))
   `(web-mode-italic-face ((,class :inherit italic)))

@@ -765,6 +765,8 @@ MODE - list to add to `auto-mode-alist'"
  :github "tree-sitter/tree-sitter-html"
  :remap '(html-mode . html-ts-mode))
 
+(add-hook 'conf-toml-mode-hook 'dotemacs-prog-mode)
+(add-hook 'toml-ts-mode-hook 'dotemacs-prog-mode)
 (add-hook 'conf-mode-hook 'dotemacs-prog-mode)
 (add-hook 'html-ts-mode-hook 'dotemacs-prog-mode)
 (add-hook 'html-mode-hook 'dotemacs-prog-mode) ; sgml-mode
