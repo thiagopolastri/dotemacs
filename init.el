@@ -357,10 +357,10 @@ MODE - list to add to `auto-mode-alist'"
   :demand t
   :custom
   (eglot-autoshutdown t)
-  ;; (eglot-events-buffer-size 0)
-  ;; (eglot-sync-connect nil)
-  ;; (eglot-connect-timeout nil)
-  ;; :init (fset #'jsonrpc--log-event #'ignore)
+  (eglot-events-buffer-size 0)
+  (eglot-sync-connect nil)
+  (eglot-connect-timeout nil)
+  :init (fset #'jsonrpc--log-event #'ignore)
   :commands (eglot-ensure))
 
 (define-minor-mode dotemacs-prog-mode
