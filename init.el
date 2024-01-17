@@ -522,9 +522,10 @@ MODE - list to add to `auto-mode-alist'"
 (use-package magit
   :custom (magit-diff-refine-hunk t))
 
-(use-package magit-todos
-  :after magit
-  :hook (magit-mode . magit-todos-mode))
+;; (use-package hl-todo)
+;; (use-package magit-todos
+;;   :after (magit hl-todo)
+;;   :hook (magit-mode . magit-todos-mode))
 
 (use-package diff-hl
   :after magit
@@ -1104,15 +1105,41 @@ MODE - list to add to `auto-mode-alist'"
   :after (markdown-mode hydra)
   :hook (markdown-mode . pandoc-mode))
 
+(use-package f
+  :demand t)
+
+(defun dotemacs:elpaca-build-dir (p)
+  "Return the elpaca build directory for package symbol P."
+  (-first-item
+   (f-directories elpaca-builds-directory
+                  (lambda (dir) (string-match-p (concat "^" (symbol-name p) "$") (f-filename dir))))))
+
 (use-package tex
-  :elpaca auctex
+  :elpaca (auctex :pre-build (("./autogen.sh")
+                              ("./configure" "--without-texmf-dir" "--with-lispdir=.")
+                              ("make")
+                              ("install-info" "doc/auctex.info" "doc/dir")
+                              ("install-info" "doc/preview-latex.info" "doc/dir")))
+  :mode (("\\.tex\\'" . TeX-latex-mode)
+         ("\\.tex\\.erb\\'" . TeX-latex-mode)
+         ("\\.etx\\'" . TeX-latex-mode))
   :hook ((LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . reftex-mode)
          (LaTeX-mode . dotemacs-text-mode))
-  :custom
-  (TeX-auto-save t)
-  (TeX-parse-self t)
-  :config (setq-default TeX-master nil))
+  :init
+  (require 'info)
+  (add-to-list 'Info-additional-directory-list (f-join (dotemacs:elpaca-build-dir 'auctex) "doc"))
+  (add-hook 'tex-mode-hook
+            (lambda ()
+              (load "auctex.el")
+              (setq TeX-command-extra-options "-shell-escape")))
+  :config
+  (setq-default TeX-global-PDF-mode 1)
+  (setq-default  preview-scale-function 1.5)
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-save-query nil
+        TeX-source-correlate-method 'synctex))
 
 (use-package le-thesaurus
   :bind (:map dotemacs-text-mode-map
