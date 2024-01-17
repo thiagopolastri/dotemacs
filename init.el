@@ -1108,7 +1108,7 @@ MODE - list to add to `auto-mode-alist'"
 (use-package f
   :demand t)
 
-(defun dotemacs:elpaca-build-dir (p)
+(defun dotemacs-elpaca-build-dir (p)
   "Return the elpaca build directory for package symbol P."
   (-first-item
    (f-directories elpaca-builds-directory
@@ -1128,7 +1128,7 @@ MODE - list to add to `auto-mode-alist'"
          (LaTeX-mode . dotemacs-text-mode))
   :init
   (require 'info)
-  (add-to-list 'Info-additional-directory-list (f-join (dotemacs:elpaca-build-dir 'auctex) "doc"))
+  (add-to-list 'Info-additional-directory-list (f-join (dotemacs-elpaca-build-dir 'auctex) "doc"))
   (add-hook 'tex-mode-hook
             (lambda ()
               (load "auctex.el")
