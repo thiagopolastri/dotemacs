@@ -194,7 +194,7 @@
 
 (use-package pixel-scroll
   :elpaca nil
-  ;; :if (fboundp 'pixel-scroll-precision-mode) ; Emacs 28
+  :custom (pixel-scroll-precision-interpolate-page t)
   :init (pixel-scroll-precision-mode 1))
 
 (use-package window
@@ -445,7 +445,6 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package glyphless-mode
   :elpaca nil
-  ;; :if (fboundp 'glyphless-display-mode) ; Emacs 28
   :delight glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
 
