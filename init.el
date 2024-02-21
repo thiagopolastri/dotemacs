@@ -74,6 +74,7 @@
                  (const :tag "None" nil)))
 
 (use-package fontaine
+  :ensure (fontaine :repo "https://git.sr.ht/~protesilaos/fontaine")
   :custom
   (fontaine-latest-state-file
    (locate-user-emacs-file "var/fontaine-latest-state.eld"))
@@ -132,7 +133,7 @@
   :bind ("C-z f" . fontaine-set-preset))
 
 (use-package github-primer-theme
-  :elpaca nil
+  :ensure nil
   :load-path "themes"
   :commands (github-primer-cycle)
   :bind ("<f5>" . github-primer-cycle)
@@ -143,12 +144,12 @@
   (load-theme 'github-primer t))
 
 (use-package dotemacs-mode-line
-  :elpaca nil
+  :ensure nil
   :load-path "lisp"
   :config (dotemacs-mode-line-mode 1))
 
 (use-package emacs
-  :elpaca nil
+  :ensure nil
   :custom
   (y-or-n-p-use-read-key t)
   (tab-always-indent 'complete)
@@ -182,27 +183,27 @@
   (global-so-long-mode 1))
 
 (use-package mule
-  :elpaca nil
+  :ensure nil
   :init
   (prefer-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8))
 
 (use-package async
-  :elpaca nil
+  :ensure nil
   :if (fboundp 'async-bytecomp-package-mode)
   :init (async-bytecomp-package-mode 1))
 
 (use-package pixel-scroll
-  :elpaca nil
+  :ensure nil
   :custom (pixel-scroll-precision-interpolate-page t)
   :init (pixel-scroll-precision-mode 1))
 
 (use-package window
-  :elpaca nil
+  :ensure nil
   :custom (switch-to-buffer-obey-display-actions t))
 
 (use-package files
-  :elpaca nil
+  :ensure nil
   :custom
   (confirm-kill-emacs 'yes-or-no-p)
   (large-file-warning-threshold 100000000) ; 100MB
@@ -216,24 +217,24 @@
             'executable-make-buffer-file-executable-if-script-p))
 
 (use-package vc
-  :elpaca nil
+  :ensure nil
   :custom
   (vc-follow-symlinks t)
   (vc-handled-backends '(Git)))
 
 (use-package time
-  :elpaca nil
+  :ensure nil
   :custom
   (display-time-default-load-average nil)
   (display-time-format "%H:%M") ; %d/%m/%Y %H:%M
   :bind ("<f6>" . display-time-mode))
 
 (use-package uniquify
-  :elpaca nil
+  :ensure nil
   :custom (uniquify-buffer-name-style 'forward))
 
 (use-package autorevert
-  :elpaca nil
+  :ensure nil
   :custom
   (global-auto-revert-non-file-buffers t)
   (auto-revert-interval 3)
@@ -241,12 +242,12 @@
   :config (global-auto-revert-mode 1))
 
 (use-package savehist
-  :elpaca nil
+  :ensure nil
   :custom (history-length 25)
   :config (savehist-mode 1))
 
 (use-package dired
-  :elpaca nil
+  :ensure nil
   :custom
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
@@ -257,7 +258,7 @@
   :hook (dired-mode . dired-hide-details-mode)) ; use ( to show details
 
 (use-package eldoc
-  :elpaca nil
+  :ensure nil
   :delight eldoc-mode
   :custom
   ;; Prevent echo area resize and always prefer buffer (C-h .)
@@ -265,24 +266,24 @@
   (eldoc-echo-area-prefer-doc-buffer t))
 
 (use-package proced
-  :elpaca nil
+  :ensure nil
   :custom
   (proced-auto-update-flag t)
   (proced-auto-update-interval 1)
   (proced-enable-color-flag t))
 
 (use-package isearch
-  :elpaca nil
+  :ensure nil
   :bind ("C-z s" . isearch-forward))
 
 (use-package gdb-mi
-  :elpaca nil
+  :ensure nil
   :custom
   (gdb-many-windows t)
   (gdb-show-main t))
 
 (use-package speedbar
-  :elpaca nil
+  :ensure nil
   :custom (speedbar-show-unknown-files t))
 
 (use-package sr-speedbar
@@ -290,24 +291,24 @@
   :custom (sr-speedbar-right-side nil))
 
 (use-package face-remap
-  :elpaca nil
+  :ensure nil
   :no-require t
   :delight buffer-face-mode)
 
 (use-package ibuffer
-  :elpaca nil
+  :ensure nil
   :no-require t
   :bind ("C-z b" . ibuffer))
 
 (use-package subword
-  :elpaca nil
+  :ensure nil
   :no-require t
   :delight (subword-mode) (superword-mode))
 
 (require 'cl-macs)
 
 (use-package treesit
-  :elpaca nil
+  :ensure nil
   :if (treesit-available-p)
   :preface
   (defun dotemacs-treesit-install-all ()
@@ -338,7 +339,7 @@ MODE - list to add to `auto-mode-alist'"
       (add-to-list 'auto-mode-alist mode))))
 
 (use-package project
-  :elpaca nil
+  :ensure nil
   :demand t
   :custom
   (project-vc-ignores '("target/"
@@ -353,7 +354,7 @@ MODE - list to add to `auto-mode-alist'"
                                    "*.csproj")))
 
 (use-package eglot
-  :elpaca nil
+  :ensure nil
   :demand t
   :custom
   (eglot-autoshutdown t)
@@ -388,7 +389,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-prog-mode . drag-stuff-mode))
 
 (use-package combobulate
-  :elpaca (combobulate :repo "https://github.com/mickeynp/combobulate")
+  :ensure (combobulate :repo "https://github.com/mickeynp/combobulate")
   :defer t
   :delight combobulate-mode
   :if (treesit-available-p)
@@ -425,7 +426,7 @@ MODE - list to add to `auto-mode-alist'"
          (scheme-mode . paredit-mode)))
 
 (use-package eglot-x
-  :elpaca (eglot-x :repo "https://github.com/nemethf/eglot-x")
+  :ensure (eglot-x :repo "https://github.com/nemethf/eglot-x")
   :config (eglot-x-setup))
 
 (use-package format-all
@@ -435,7 +436,7 @@ MODE - list to add to `auto-mode-alist'"
 (use-package realgud :defer t)
 
 (use-package simple
-  :elpaca nil
+  :ensure nil
   :delight visual-line-mode
   :custom (indent-tabs-mode nil)
   :hook (dotemacs-text-mode . visual-line-mode)
@@ -444,12 +445,12 @@ MODE - list to add to `auto-mode-alist'"
   (column-number-mode 1))
 
 (use-package glyphless-mode
-  :elpaca nil
+  :ensure nil
   :delight glyphless-display-mode
   :hook (dotemacs-prog-mode . glyphless-display-mode))
 
 (use-package whitespace
-  :elpaca nil
+  :ensure nil
   :delight whitespace-mode
   :custom
   (whitespace-style '(face tabs empty trailing tab-mark indentation::space))
@@ -457,7 +458,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-prog-mode . whitespace-mode))
 
 (use-package display-line-numbers
-  :elpaca nil
+  :ensure nil
   :hook (dotemacs-prog-mode . display-line-numbers-mode)
   :preface
   (defun dotemacs-toggle-line-numbers-type ()
@@ -472,16 +473,16 @@ MODE - list to add to `auto-mode-alist'"
               ("C-z n" . dotemacs-toggle-line-numbers-type)))
 
 (use-package hl-line
-  :elpaca nil
+  :ensure nil
   :hook ((dotemacs-prog-mode dired-mode) . hl-line-mode))
 
 (use-package display-fill-column-indicator
-  :elpaca nil
+  :ensure nil
   :custom (display-fill-column-indicator-character ?\u258F)
   :hook (dotemacs-prog-mode . display-fill-column-indicator-mode))
 
 (use-package hideshow
-  :elpaca nil
+  :ensure nil
   :delight hs-minor-mode
   :hook (dotemacs-prog-mode . hs-minor-mode))
 
@@ -518,10 +519,12 @@ MODE - list to add to `auto-mode-alist'"
 (use-package devdocs :defer t)
 (use-package sicp :no-require t)
 
+(use-package transient :no-require t)
 (use-package magit
+  :after transient
   :custom (magit-diff-refine-hunk t))
 
-;; (use-package hl-todo)
+;; (use-package hl-todo :no-require t)
 ;; (use-package magit-todos
 ;;   :after (magit hl-todo)
 ;;   :hook (magit-mode . magit-todos-mode))
@@ -629,7 +632,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
-  :elpaca (vertico :files (:defaults "extensions/*"))
+  :ensure (vertico :files (:defaults "extensions/*"))
   :custom (vertico-cycle t)
   :init (vertico-mode)
   :config
@@ -644,7 +647,7 @@ MODE - list to add to `auto-mode-alist'"
   :init (marginalia-mode))
 
 (use-package corfu
-  :elpaca (corfu :files (:defaults "extensions/*"))
+  :ensure (corfu :files (:defaults "extensions/*"))
   :custom
   (corfu-cycle t)
   (corfu-auto nil) ; call with C-M-i
@@ -679,7 +682,7 @@ MODE - list to add to `auto-mode-alist'"
          ("C-;"   . jinx-correct)))
 
 (use-package flymake
-  :elpaca nil
+  :ensure nil
   :custom
   (flymake-no-changes-timeout 2)
   (flymake-mode-line-lighter "!"))
@@ -943,7 +946,7 @@ MODE - list to add to `auto-mode-alist'"
   (add-to-list 'eglot-server-programs '(dotemacs-vue-mode . "vls")))
 
 (use-package vue-ts-mode
-  :elpaca (vue-ts-mode :repo "https://github.com/8uff3r/vue-ts-mode.git")
+  :ensure (vue-ts-mode :repo "https://github.com/8uff3r/vue-ts-mode.git")
   :when (treesit-available-p)
   :no-require t
   :init
@@ -976,7 +979,6 @@ MODE - list to add to `auto-mode-alist'"
 (use-package lua-mode :defer t)
 (use-package zig-mode :defer t)
 (use-package julia-mode :defer t)
-
 (use-package meson-mode :defer t)
 
 (use-package blueprint-ts-mode
@@ -994,7 +996,7 @@ MODE - list to add to `auto-mode-alist'"
 (add-hook 'rst-mode-hook 'dotemacs-text-mode)
 
 (use-package org
-  :elpaca nil
+  :ensure nil
   :custom
   (org-ellipsis " ⤵")
   (org-catch-invisible-edits 'show-and-error)
@@ -1104,8 +1106,7 @@ MODE - list to add to `auto-mode-alist'"
   :after (markdown-mode hydra)
   :hook (markdown-mode . pandoc-mode))
 
-(use-package f
-  :demand t)
+(use-package f :demand t)
 
 (defun dotemacs-elpaca-build-dir (p)
   "Return the elpaca build directory for package symbol P."
@@ -1114,7 +1115,7 @@ MODE - list to add to `auto-mode-alist'"
                   (lambda (dir) (string-match-p (concat "^" (symbol-name p) "$") (f-filename dir))))))
 
 (use-package tex
-  :elpaca (auctex :pre-build (("./autogen.sh")
+  :ensure (auctex :pre-build (("./autogen.sh")
                               ("./configure" "--without-texmf-dir" "--with-lispdir=.")
                               ("make")
                               ("install-info" "doc/auctex.info" "doc/dir")
@@ -1178,7 +1179,7 @@ _d_: Capture daily        _m_: Refile current TODO
 (use-package es-mode :defer t) ;; https://github.com/dakrone/es-mode
 
 (use-package vterm
-  :elpaca nil
+  :ensure nil
   :custom
   (vterm-always-compile-module t)
   (vterm-max-scrollback 100000))
