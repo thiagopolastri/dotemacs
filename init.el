@@ -556,7 +556,7 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package crux
   :bind (("C-z /"   . crux-duplicate-current-line-or-region)
-         ("C-z o"   . crux-open-with)
+         ("C-z C-f" . crux-open-with)
          ("C-z C-e" . crux-eval-and-replace)
          ("C-z C-s" . crux-sudo-edit)
          ("C-z C-/" . crux-duplicate-and-comment-current-line-or-region)
@@ -622,6 +622,7 @@ MODE - list to add to `auto-mode-alist'"
          ("C-s"                                 . consult-line)
          ("C-c k"                               . consult-ripgrep)
          ("C-z m"                               . consult-minor-mode-menu)
+         ("C-z o"                               . consult-outline)
          :map minibuffer-local-map
          ("C-r" . consult-history)
          :map flymake-mode-map
