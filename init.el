@@ -75,6 +75,7 @@
 
 (use-package fontaine
   :ensure (fontaine :repo "https://git.sr.ht/~protesilaos/fontaine")
+  :if (display-graphic-p)
   :custom
   (fontaine-latest-state-file
    (locate-user-emacs-file "var/fontaine-latest-state.eld"))
