@@ -136,14 +136,10 @@
   :bind ("C-z f" . fontaine-set-preset))
 
 (use-package github-primer-theme
-  :ensure nil
-  :load-path "themes"
+  :ensure (github-primer-theme :repo "https://github.com/thiagopolastri/github-primer-theme-emacs")
   :commands (github-primer-cycle)
   :bind ("<f5>" . github-primer-cycle)
   :init
-  ;; https://github.com/jwiegley/use-package/issues/963
-  (add-to-list 'custom-theme-load-path
-               (expand-file-name "themes" user-emacs-directory))
   (load-theme 'github-primer t))
 
 (use-package dotemacs-mode-line
