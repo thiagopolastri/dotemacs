@@ -919,14 +919,14 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(font-lock-regexp-grouping-construct ((,class :foreground ,fg :weight bold)))
   `(font-lock-negation-char-face ((,class :foreground ,fg :weight bold)))
   `(elisp-shorthand-font-lock-face ((,class :inherit font-lock-keyword-face)))
-  `(outline-1 ((,class :foreground ,fg-cyan))) ; font-lock-function-name-face
-  `(outline-2 ((,class :foreground ,fg-blue))) ; font-lock-variable-name-face
-  `(outline-3 ((,class :foreground ,fg-purple))) ; font-lock-keyword-face
-  `(outline-4 ((,class :foreground ,fg-pink))) ; font-lock-comment-face
-  `(outline-5 ((,class :foreground ,fg-red))) ; font-lock-type-face
-  `(outline-6 ((,class :foreground ,fg-coral))) ; font-lock-constant-face
-  `(outline-7 ((,class :foreground ,fg-orange))) ; font-lock-builtin-face
-  `(outline-8 ((,class :foreground ,fg-yellow))) ; font-lock-string-face
+  `(outline-1 ((,class :foreground ,fg-cyan)))
+  `(outline-2 ((,class :foreground ,fg-blue)))
+  `(outline-3 ((,class :foreground ,fg-purple)))
+  `(outline-4 ((,class :foreground ,fg-pink)))
+  `(outline-5 ((,class :foreground ,fg-red)))
+  `(outline-6 ((,class :foreground ,fg-coral)))
+  `(outline-7 ((,class :foreground ,fg-orange)))
+  `(outline-8 ((,class :foreground ,fg-yellow)))
 
 ;;;;; special characters
   `(trailing-whitespace ((,class :background ,bg-red-max)))
@@ -1000,14 +1000,14 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; dired
   `(dired-broken-symlink ((,class :foreground ,fg-warning :background ,bg-red)))
-  `(dired-directory ((,class :foreground ,fg-dir))) ; fg-constant
+  `(dired-directory ((,class :foreground ,fg-dir)))
   `(dired-header ((,class :foreground ,fg-string)))
   `(dired-flagged ((,class :inherit error)))
   `(dired-ignored ((,class :inherit shadow)))
-  `(dired-mark ((,class :foreground ,fg-cyan :weight bold))) ; font-lock-constant-face
+  `(dired-mark ((,class :foreground ,fg-cyan :weight bold)))
   `(dired-marked ((,class :inherit warning)))
-  `(dired-perm-write ((,class :foreground ,fg-red :underline t))) ; font-lock-comment-delimiter-face
-  `(dired-symlink ((,class :foreground ,fg-purple))) ; font-lock-keyword-face
+  `(dired-perm-write ((,class :foreground ,fg-red :underline t)))
+  `(dired-symlink ((,class :foreground ,fg-purple)))
   `(dired-warning ((,class :inherit font-lock-warning-face)))
   `(dired-set-id ((,class :inherit font-lock-warning-face)))
   `(dired-special ((,class :inherit font-lock-variable-name-face)))
@@ -1166,7 +1166,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(eshell-ls-symlink ((,class :foreground ,fg-purple)))
   `(eshell-ls-unreadable ((,class :foreground ,fg-disabled)))
   `(eshell-prompt ((,class :foreground ,fg-cyan :weight bold)))
-  ;; term will inherit ansi-colors and vterm inherit term
 
 ;;;; message
   `(message-cited-text-1 ((,class :foreground ,fg-pink-bright)))
@@ -1219,6 +1218,57 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(ansi-color-bright-blue ((,class :foreground ,fg-blue-bright :background ,fg-blue-bright)))
   `(ansi-color-bright-magenta ((,class :foreground ,fg-purple-bright :background ,fg-purple-bright)))
   `(ansi-color-bright-cyan ((,class :foreground ,fg-cyan-bright :background ,fg-cyan-bright)))
+
+;;;;; ORG
+  `(org-block ((,class :inherit fixed-pitch :foreground ,fg :background ,bg-max :extend t)))
+  `(org-quote ((,class :foreground ,fg-comment :background ,bg-max :extend t)))
+  `(org-verse ((,class :inherit org-quote :extend t)))
+  `(org-block-begin-line ((,class :inherit fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
+  `(org-block-end-line ((,class :inherit fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
+  `(org-ellipsis ((,class :foreground ,fg-comment :underline nil)))
+  `(org-hide ((,class :foreground ,bg)))
+  `(org-date ((,class :foreground ,fg-cyan :underline t)))
+  `(org-done ((,class :foreground ,fg-success :weight bold)))
+  `(org-todo ((,class :foreground ,fg-error :weight bold)))
+  `(org-latex-and-related ((,class :foreground ,fg-warning)))
+  `(org-code ((,class :inherit fixed-pitch :foreground ,fg-comment)))
+  `(org-meta-line ((,class :inherit fixed-pitch :foreground ,fg-comment)))
+  `(org-document-info-keyword ((,class :inherit fixed-pitch :foreground ,fg-comment)))
+  `(org-table ((,class :inherit fixed-pitch :foreground ,fg-string)))
+  `(org-table-header ((t (:inherit org-table :foreground ,bg :background ,fg))))
+  `(org-verbatim ((,class :inherit fixed-pitch :foreground ,fg-comment)))
+  `(org-formula ((,class :inherit fixed-pitch :foreground ,fg-variable)))
+  `(org-checkbox ((,class :inherit fixed-pitch :bold t)))
+  `(org-document-info ((,class :foreground ,fg-string)))
+  `(org-document-title ((,class :foreground ,fg-string :bold nil)))
+  `(org-clock-overlay ((,class :foreground ,fg :background ,bg-cyan)))
+  `(org-column ((,class :foreground ,fg :background ,bd-light)))
+  `(org-column-title ((,class :foreground ,fg :background ,bd-light :bold t :underline t)))
+  `(org-date-selected ((,class :foreground ,fg :background ,bg-pink)))
+  `(org-dispatcher-highlight ((,class :foreground ,fg-yellow :background ,bg-yellow)))
+  `(org-mode-line-clock ((,class :inherit mode-line)))
+  `(org-mode-line-clock-overrun ((,class :inherit org-mode-line-clock :background ,bg-red)))
+  `(org-list-dt ((,class :bold t)))
+  `(org-tag ((,class :bold t)))
+  `(org-tag-group ((,class :inherit org-tag)))
+  `(org-footnote ((,class :foreground ,fg-cyan :underline nil)))
+  `(org-target ((,class :underline t)))
+  `(org-drawer ((,class :foreground ,fg-comment)))
+  `(org-special-keyword ((,class :inherit fixed-pitch :foreground ,fg-keyword)))
+  `(org-property-value ((,class :foreground ,fg-string)))
+  `(org-headline-todo ((,class :foreground ,fg)))
+  `(org-headline-done ((,class :foreground ,fg-comment)))
+  `(org-priority ((,class :foreground ,fg-coral)))
+  `(org-scheduled ((,class :foreground ,fg-string)))
+  `(org-scheduled-today ((,class :foreground ,fg-string)))
+  `(org-scheduled-previously ((,class :foreground ,fg-coral)))
+  `(org-upcoming-deadline ((,class :foreground ,fg-coral)))
+  `(org-sexp-date ((,class :foreground ,fg-cyan)))
+  `(org-time-grid ((,class :foreground ,fg-function)))
+  `(org-agenda-structure ((,class :foreground ,fg-constant)))
+  `(org-agenda-dimmed-todo-face ((,class :foreground ,fg-comment)))
+  `(org-agenda-done ((,class :foreground ,fg-success)))
+  `(org-agenda-restriction-lock ((,class :background ,bg-max)))
 
 ;;;; External
 
@@ -1289,8 +1339,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(elpaca-failed ((,class :foreground ,fg-error :weight bold)))
   `(elpaca-finished ((,class :foreground ,fg-success :weight bold)))
 
-;;;;; embark (defaults are fine)
-
 ;;;;; helpful
   `(helpful-heading ((,class :foreground ,fg :weight bold :height 1.2)))
 
@@ -1300,7 +1348,7 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;;; hl-todo
   `(hl-todo ((,class :foreground ,fg-coral :weight bold)))
 
-;;;;; marginalia (keep the defaults, just fix wrong italic)
+;;;;; marginalia
   `(marginalia-file-priv-read ((,class :inherit font-lock-type-face :italic nil)))
 
 ;;;;; Markdown
@@ -1458,145 +1506,9 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(web-mode-interpolate-color3-face ((,class :inherit web-mode-string-face)))
   `(web-mode-interpolate-color4-face ((,class :inherit web-mode-string-face)))
 
-  ;; Documentation on these faces are not clear. Keeping the defaults.
-  ;; web-mode-jsx-depth-1-face
-  ;; web-mode-jsx-depth-2-face
-  ;; web-mode-jsx-depth-3-face
-  ;; web-mode-jsx-depth-4-face
-  ;; web-mode-jsx-depth-5-face
-
 ;;;;; which func
   `(which-func ((,class :foreground ,fg-function)))
 
-;;;;; which key (defaults are fine)
-
-;;;;; ORG
-  ;; org-default - inherits default
-  ;; org-link - inherits link
-  ;; org-level-1 - inherits outline
-  ;; org-level-2 - inherits outline
-  ;; org-level-3 - inherits outline
-  ;; org-level-4 - inherits outline
-  ;; org-level-5 - inherits outline
-  ;; org-level-6 - inherits outline
-  ;; org-level-7 - inherits outline
-  ;; org-level-8 - inherits outline
-  ;; org-checkbox-statistics-done - inherits org-done
-  ;; org-checkbox-statistics-todo - inherits org-todo
-  ;; org-macro - inherits org-latex-and-related
-  ;; org-warning - inherits font-lock-warning-face (deadlines and todo)
-  ;; org-imminent-deadline - inherits org-warning
-  ;; org-inline-src-block - inherits org-block
-  ;; org-archived - inherits shadow
-  ;; org-cite - inherits link
-  ;; org-cite-key - inherits link
-
-  `(org-block ((,class :inherit fixed-pitch :foreground ,fg :background ,bg-max :extend t)))
-  `(org-quote ((,class :foreground ,fg-comment :background ,bg-max :extend t)))
-  `(org-verse ((,class :inherit org-quote :extend t)))
-  `(org-block-begin-line ((,class :inherit fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
-  `(org-block-end-line ((,class :inherit fixed-pitch :foreground ,fg-comment :background ,bg-hl)))
-  `(org-ellipsis ((,class :foreground ,fg-comment :underline nil)))
-  `(org-hide ((,class :foreground ,bg)))
-  `(org-date ((,class :foreground ,fg-cyan :underline t)))
-  `(org-done ((,class :foreground ,fg-success :weight bold)))
-  `(org-todo ((,class :foreground ,fg-error :weight bold)))
-  `(org-latex-and-related ((,class :foreground ,fg-warning)))
-  `(org-code ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; shadow
-  `(org-meta-line ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; comment-face
-  `(org-document-info-keyword ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; shadow
-  `(org-table ((,class :inherit fixed-pitch :foreground ,fg-string)))
-  `(org-table-header ((t (:inherit org-table :foreground ,bg :background ,fg))))
-  `(org-verbatim ((,class :inherit fixed-pitch :foreground ,fg-comment))) ; shadow
-  `(org-formula ((,class :inherit fixed-pitch :foreground ,fg-variable)))
-  `(org-checkbox ((,class :inherit fixed-pitch :bold t))) ; bold
-  `(org-document-info ((,class :foreground ,fg-string))) ; fg-cyan
-  `(org-document-title ((,class :foreground ,fg-string :bold nil))) ; fg-cyan :bold t
-  `(org-clock-overlay ((,class :foreground ,fg :background ,bg-cyan)))
-  `(org-column ((,class :foreground ,fg :background ,bd-light)))
-  `(org-column-title ((,class :foreground ,fg :background ,bd-light :bold t :underline t)))
-  `(org-date-selected ((,class :foreground ,fg :background ,bg-pink)))
-  `(org-dispatcher-highlight ((,class :foreground ,fg-yellow :background ,bg-yellow)))
-  `(org-mode-line-clock ((,class :inherit mode-line)))
-  `(org-mode-line-clock-overrun ((,class :inherit org-mode-line-clock :background ,bg-red)))
-  `(org-list-dt ((,class :bold t)))
-  `(org-tag ((,class :bold t)))
-  `(org-tag-group ((,class :inherit org-tag)))
-  `(org-footnote ((,class :foreground ,fg-cyan :underline nil)))
-  `(org-target ((,class :underline t)))
-  `(org-drawer ((,class :foreground ,fg-comment)))
-  `(org-special-keyword ((,class :inherit fixed-pitch :foreground ,fg-keyword)))
-  `(org-property-value ((,class :foreground ,fg-string)))
-  `(org-headline-todo ((,class :foreground ,fg))) ; Pink2
-  `(org-headline-done ((,class :foreground ,fg-comment))) ; LightSalmon
-  `(org-priority ((,class :foreground ,fg-coral))) ; font-lock-keyword-face
-  `(org-scheduled ((,class :foreground ,fg-string))) ; PaleGreen
-  `(org-scheduled-today ((,class :foreground ,fg-string))) ; PaleGreen
-  `(org-scheduled-previously ((,class :foreground ,fg-coral))) ; Chocolate1
-  `(org-upcoming-deadline ((,class :foreground ,fg-coral))) ; Chocolate1
-  `(org-sexp-date ((,class :foreground ,fg-cyan)))
-  `(org-time-grid ((,class :foreground ,fg-function))) ; LightGoldenRod
-  `(org-agenda-structure ((,class :foreground ,fg-constant))) ; lightskyblue
-  `(org-agenda-dimmed-todo-face ((,class :foreground ,fg-comment))) ; grey50
-  `(org-agenda-done ((,class :foreground ,fg-success))) ; PaleGreen
-  `(org-agenda-restriction-lock ((,class :background ,bg-max))) ; background #1c1c1c
-
-  ;; `(org-upcoming-distant-deadline ((,class :inherit org-default)))
-  ;; org-agenda-calendar-event ; default
-  ;; org-agenda-calendar-sexp ; default
-  ;; org-agenda-clocking ; secondary-selection
-  ;; org-agenda-column-dateline ; org-column
-  ;; org-agenda-current-time ; org-time-grid
-  ;; org-agenda-date ; org-agenda-structure
-  ;; org-agenda-date-today ; org-agenda-date + italic and bold
-  ;; org-agenda-date-weekend ; org-agenda-date + bold
-  ;; org-agenda-date-weekend-today ; org-agenda-date-today
-  ;; org-agenda-diary ; default
-  ;; org-agenda-filter-category ; mode-line
-  ;; org-agenda-filter-effort ; mode-line
-  ;; org-agenda-filter-regexp ; mode-line
-  ;; org-agenda-filter-tags ; mode-line
-  ;; org-agenda-structure-filter ; org-warning + org-agenda-structure
-  ;; org-agenda-structure-secondary ; org-agenda-structure
-
-  ;; org-roam-dim
-  ;; org-roam-header-line
-  ;; org-roam-olp
-  ;; org-roam-preview-heading
-  ;; org-roam-preview-heading-highlight
-  ;; org-roam-preview-heading-selection
-  ;; org-roam-preview-region
-  ;; org-roam-shielded
-  ;; org-roam-title
-
-  ;; org-modern-block-name
-  ;; org-modern-date-active
-  ;; org-modern-date-inactive
-  ;; org-modern-done
-  ;; org-modern-horizontal-rule
-  ;; org-modern-internal-target
-  ;; org-modern-label
-  ;; org-modern-priority
-  ;; org-modern-radio-target
-  ;; org-modern-statistics
-  ;; org-modern-symbol
-  ;; org-modern-tag
-  ;; org-modern-time-active
-  ;; org-modern-time-inactive
-  ;; org-modern-todo
-
-  ;; TODO:
-  ;; - Info-mode
-  ;; - eww
-  ;; - grep
-  ;; - c-annotation-face
-  ;; - newsticker
-  ;; - org (org-ref)
-  ;; - magit
-  ;; - racket-mode
-  ;; - realgud
-  ;; - speedbar
-  ;; - vertico
   ))
 
 (github-primer-with-color-variables
