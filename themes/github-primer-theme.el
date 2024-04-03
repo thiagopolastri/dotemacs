@@ -1527,6 +1527,7 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-drawer ((,class :foreground ,fg-comment)))
   `(org-special-keyword ((,class :inherit fixed-pitch :foreground ,fg-keyword)))
   `(org-property-value ((,class :foreground ,fg-string)))
+  `(org-headline-todo ((,class :foreground ,fg))) ; Pink2
   `(org-headline-done ((,class :foreground ,fg-comment))) ; LightSalmon
   `(org-priority ((,class :foreground ,fg-coral))) ; font-lock-keyword-face
   `(org-scheduled ((,class :foreground ,fg-string))) ; PaleGreen
@@ -1541,7 +1542,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-agenda-restriction-lock ((,class :background ,bg-max))) ; background #1c1c1c
 
   ;; `(org-upcoming-distant-deadline ((,class :inherit org-default)))
-  ;; org-headline-todo ; fg Pink2
   ;; org-agenda-calendar-event ; default
   ;; org-agenda-calendar-sexp ; default
   ;; org-agenda-clocking ; secondary-selection

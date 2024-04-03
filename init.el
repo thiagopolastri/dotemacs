@@ -1022,6 +1022,7 @@ MODE - list to add to `auto-mode-alist'"
   (org-log-into-drawer t)
   (org-auto-align-tags nil) ; only for variable-pitch
   (org-tags-column 0) ; only for variable-pitch
+  (org-fontify-todo-headline t)
   ;; Latex
   (org-highlight-latex-and-related '(native))
   (org-latex-compiler "xelatex")
