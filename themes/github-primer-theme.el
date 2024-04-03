@@ -1525,19 +1525,39 @@ Also bind `class' to ((class color) (min-colors 89))."
   `(org-footnote ((,class :foreground ,fg-cyan :underline nil)))
   `(org-target ((,class :underline t)))
   `(org-drawer ((,class :foreground ,fg-comment)))
-  `(org-special-keyword ((,class :inherit fixed-pitch :foreground ,fg-keyword))) ;; property key
-  `(org-property-value ((,class :foreground ,fg-string))) ; default
+  `(org-special-keyword ((,class :inherit fixed-pitch :foreground ,fg-keyword)))
+  `(org-property-value ((,class :foreground ,fg-string)))
+  `(org-headline-done ((,class :foreground ,fg-comment))) ; LightSalmon
+  `(org-priority ((,class :foreground ,fg-coral))) ; font-lock-keyword-face
+  `(org-scheduled ((,class :foreground ,fg-string))) ; PaleGreen
+  `(org-scheduled-today ((,class :foreground ,fg-string))) ; PaleGreen
+  `(org-scheduled-previously ((,class :foreground ,fg-coral))) ; Chocolate1
+  `(org-upcoming-deadline ((,class :foreground ,fg-coral))) ; Chocolate1
+  `(org-sexp-date ((,class :foreground ,fg-cyan)))
+  `(org-time-grid ((,class :foreground ,fg-function))) ; LightGoldenRod
+  `(org-agenda-structure ((,class :foreground ,fg-constant))) ; lightskyblue
+  `(org-agenda-dimmed-todo-face ((,class :foreground ,fg-comment))) ; grey50
+  `(org-agenda-done ((,class :foreground ,fg-success))) ; PaleGreen
+  `(org-agenda-restriction-lock ((,class :background ,bg-max))) ; background #1c1c1c
 
-  ;; org-headline-done ; fg LightSalmon
+  ;; `(org-upcoming-distant-deadline ((,class :inherit org-default)))
   ;; org-headline-todo ; fg Pink2
-  ;; org-priority - inherits font-lock-keyword-face
-  ;; org-scheduled ; fg PaleGreen
-  ;; org-scheduled-previously ; fg chocolate1
-  ;; org-scheduled-today ; fg PaleGreen
-  ;; org-sexp-date ; fg Cyan
-  ;; org-time-grid ; fg LightGoldenrod
-  ;; org-upcoming-deadline ; fg chocolate1
-  ;; org-upcoming-distant-deadline - inherits org-default
+  ;; org-agenda-calendar-event ; default
+  ;; org-agenda-calendar-sexp ; default
+  ;; org-agenda-clocking ; secondary-selection
+  ;; org-agenda-column-dateline ; org-column
+  ;; org-agenda-current-time ; org-time-grid
+  ;; org-agenda-date ; org-agenda-structure
+  ;; org-agenda-date-today ; org-agenda-date + italic and bold
+  ;; org-agenda-date-weekend ; org-agenda-date + bold
+  ;; org-agenda-date-weekend-today ; org-agenda-date-today
+  ;; org-agenda-diary ; default
+  ;; org-agenda-filter-category ; mode-line
+  ;; org-agenda-filter-effort ; mode-line
+  ;; org-agenda-filter-regexp ; mode-line
+  ;; org-agenda-filter-tags ; mode-line
+  ;; org-agenda-structure-filter ; org-warning + org-agenda-structure
+  ;; org-agenda-structure-secondary ; org-agenda-structure
 
   ;; org-roam-dim
   ;; org-roam-header-line
@@ -1564,27 +1584,6 @@ Also bind `class' to ((class color) (min-colors 89))."
   ;; org-modern-time-active
   ;; org-modern-time-inactive
   ;; org-modern-todo
-
-  ;; org-agenda-calendar-event
-  ;; org-agenda-calendar-sexp
-  ;; org-agenda-clocking
-  ;; org-agenda-column-dateline
-  ;; org-agenda-current-time
-  ;; org-agenda-date
-  ;; org-agenda-date-today
-  ;; org-agenda-date-weekend
-  ;; org-agenda-date-weekend-today
-  ;; org-agenda-diary
-  ;; org-agenda-dimmed-todo-face
-  ;; org-agenda-done
-  ;; org-agenda-filter-category
-  ;; org-agenda-filter-effort
-  ;; org-agenda-filter-regexp
-  ;; org-agenda-filter-tags
-  ;; org-agenda-restriction-lock
-  ;; org-agenda-structure
-  ;; org-agenda-structure-filter
-  ;; org-agenda-structure-secondary
 
   ;; TODO:
   ;; - Info-mode
