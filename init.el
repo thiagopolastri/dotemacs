@@ -129,11 +129,34 @@
       :italic-family nil
       :italic-slant italic
       :line-spacing nil)))
+  :preface
+  (defun dotemacs-change-org-faces (&rest _)
+    "Set custom org faces for a given preset."
+    (let* ((family '(:family "Concourse C3"))
+           (heading (if (eq fontaine-current-preset 'fancy) `(:height 180 ,@family) '(:height 180))))
+      (custom-theme-set-faces
+       'user
+       `(org-level-1 ((t (:inherit outline-1 ,@heading))))
+       `(org-level-2 ((t (:inherit outline-2 ,@heading))))
+       `(org-level-3 ((t (:inherit outline-3 ,@heading))))
+       `(org-level-4 ((t (:inherit outline-4 ,@heading))))
+       `(org-level-5 ((t (:inherit outline-5 ,@heading))))
+       `(org-level-6 ((t (:inherit outline-6 ,@heading))))
+       `(org-level-7 ((t (:inherit outline-7 ,@heading))))
+       `(org-level-8 ((t (:inherit outline-8 ,@heading))))
+       `(org-headline-todo ((t (:inherit org-default))))
+       `(org-headline-done ((t (:inherit (org-headline-todo font-lock-comment-face))))))))
   :init
+  (advice-add 'fontaine-set-preset :after #'dotemacs-change-org-faces)
   (fontaine-set-preset (or (fontaine-restore-latest-preset) 'safe))
   :config
   (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)
   :bind ("C-z f" . fontaine-set-preset))
+
+(defun dotemacs-disable-theme (&rest _)
+  "Disable current theme before setting a new one."
+  (mapcar #'disable-theme custom-enabled-themes))
+(advice-add 'load-theme :before #'dotemacs-disable-theme)
 
 (use-package github-primer-theme
   :ensure (github-primer-theme :repo "https://github.com/thiagopolastri/github-primer-theme-emacs")
@@ -211,6 +234,7 @@
   (revert-without-query t)
   (make-backup-files nil)
   (auto-save-default nil)
+  ;; (remote-file-name-inhibit-delete-by-moving-to-trash t)  ; Emacs 30
   :init
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p))
@@ -437,7 +461,9 @@ MODE - list to add to `auto-mode-alist'"
 (use-package simple
   :ensure nil
   :delight visual-line-mode
-  :custom (indent-tabs-mode nil)
+  :custom
+  (indent-tabs-mode nil)
+  ;; (remote-file-name-inhibit-auto-save t) ; Emacs 30
   :hook (dotemacs-text-mode . visual-line-mode)
   :init
   (line-number-mode 1)
