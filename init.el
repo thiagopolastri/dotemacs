@@ -1,43 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
-(defvar elpaca-installer-version 0.7)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil :depth 1
-                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (< emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                 ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                 ,@(when-let ((depth (plist-get order :depth)))
-                                                     (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                 ,(plist-get order :repo) ,repo))))
-                 ((zerop (call-process "git" nil buffer t "checkout"
-                                       (or (plist-get order :ref) "--"))))
-                 (emacs (concat invocation-directory invocation-name))
-                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                 ((require 'elpaca))
-                 ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (load "./elpaca-autoloads")))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
+(load (expand-file-name "elpaca-bootstrap.el" user-emacs-directory))
 
 (elpaca elpaca-use-package
   (elpaca-use-package-mode)
@@ -89,7 +52,7 @@
       :fixed-pitch-serif-height 120
       :variable-pitch-family "Sans Serif"
       :variable-pitch-height 120)
-     (fancy
+     (monolisa
       :default-family "MonoLisa"
       :default-height 140
       :fixed-pitch-height 140
@@ -133,7 +96,7 @@
   (defun dotemacs-change-org-faces (&rest _)
     "Set custom org faces for a given preset."
     (let* ((family '(:family "Concourse C3"))
-           (heading (if (eq fontaine-current-preset 'fancy) `(:height 180 ,@family) '(:height 180))))
+           (heading (if (eq fontaine-current-preset 'monolisa) `(:height 180 ,@family) '(:height 180))))
       (custom-theme-set-faces
        'user
        `(org-level-1 ((t (:inherit outline-1 ,@heading))))
