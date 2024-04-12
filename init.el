@@ -512,11 +512,6 @@ MODE - list to add to `auto-mode-alist'"
   :after transient
   :custom (magit-diff-refine-hunk t))
 
-;; (use-package hl-todo :no-require t)
-;; (use-package magit-todos
-;;   :after (magit hl-todo)
-;;   :hook (magit-mode . magit-todos-mode))
-
 (use-package diff-hl
   :after magit
   :hook ((dired-mode . diff-hl-dired-mode)
@@ -558,11 +553,8 @@ MODE - list to add to `auto-mode-alist'"
          ("C-<"           . mc/mark-previous-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
-;; (use-package expand-region
-;;   :bind (("C-=" . er/expand-region)))
-
-(use-package expreg
-  :bind (("C-=" . expreg-expand)
+(use-package expreg ; expand-region alternative
+  :bind (("C-=" . expreg-expand) ; er/expand-region
          ("C-+" . expreg-contract)))
 
 (use-package avy
