@@ -125,8 +125,7 @@
   :ensure (github-primer-theme :repo "https://github.com/thiagopolastri/github-primer-theme-emacs")
   :commands (github-primer-cycle)
   :bind ("<f5>" . github-primer-cycle)
-  :init
-  (load-theme 'github-primer t))
+  :init (load-theme 'github-primer t))
 
 (use-package dotemacs-mode-line
   :ensure nil
