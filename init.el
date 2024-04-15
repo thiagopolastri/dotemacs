@@ -564,7 +564,8 @@ MODE - list to add to `auto-mode-alist'"
 
 (use-package yasnippet
   :delight yas-minor-mode
-  :init (yas-global-mode))
+  :init (yas-global-mode)
+  :bind (("C-z y" . yas-expand)))
 
 (use-package yasnippet-snippets :no-require t)
 
@@ -655,12 +656,20 @@ MODE - list to add to `auto-mode-alist'"
   :bind (("C-z p f" . consult-project-extra-find)
          ("C-z p o" . consult-project-extra-find-other-window)))
 
+(use-package consult-eglot
+  :after consult
+  :defer t)
+
+(use-package consult-eglot-embark
+  :after (embark consult-eglot)
+  :defer t)
+
 (use-package jinx
   :hook (dotemacs-text-mode . jinx-mode)
   :delight '(:eval jinx-languages)
   :bind (:map jinx-mode-map
-         ("C-z h" . jinx-languages)
-         ("C-;"   . jinx-correct)))
+              ("C-z h" . jinx-languages)
+              ("C-;"   . jinx-correct)))
 
 (use-package flymake
   :ensure nil
