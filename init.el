@@ -346,6 +346,7 @@ MODE - list to add to `auto-mode-alist'"
   (eglot-events-buffer-size 0)
   (eglot-sync-connect nil)
   (eglot-connect-timeout nil)
+  (eglot-report-progress nil)
   :init (fset #'jsonrpc--log-event #'ignore)
   :commands (eglot-ensure))
 
@@ -1167,6 +1168,7 @@ _d_: Capture daily        _m_: Refile current TODO
 (use-package elpher :defer t)
 (use-package restclient :defer t)
 (use-package es-mode :defer t) ;; https://github.com/dakrone/es-mode
+(use-package gptel :defer t)
 
 (use-package vterm
   :ensure nil
@@ -1180,5 +1182,12 @@ _d_: Capture daily        _m_: Refile current TODO
          ("C-n" . multi-vterm)
          ("C->" . multi-vterm-next)
          ("C-<" . multi-vterm-prev)))
+
+(use-package dape
+  :defer t
+  :custom
+  (dape-buffer-window-arrangement 'gud)
+  (dape-buffer-window-arrangement 'right)
+  :hook ((dape-compile-compile-hooks . kill-buffer)))
 
 (load (expand-file-name "user.el" user-emacs-directory) :no-error)
