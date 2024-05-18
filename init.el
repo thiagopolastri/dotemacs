@@ -1050,7 +1050,8 @@ MODE - list to add to `auto-mode-alist'"
   :custom
   (org-modern-block-fringe nil)
   (org-modern-table nil) ; valign do this better with variable-pitch
-  (org-modern-star ["❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽"]))
+  ;; (org-modern-star ["❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽"])
+  )
 
 (use-package valign
   :hook (org-mode . valign-mode)
