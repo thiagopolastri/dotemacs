@@ -970,6 +970,7 @@ MODE - list to add to `auto-mode-alist'"
 (use-package zig-mode :defer t)
 (use-package julia-mode :defer t)
 (use-package meson-mode :defer t)
+(use-package just-mode :defer t)
 
 (use-package blueprint-ts-mode
   ;; https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/
