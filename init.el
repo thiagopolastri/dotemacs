@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
+;; Emacs compiled with: JIT, AOT, TRAMPOLINES, PGTK, XI2, ALSA, SITTER and NOGZ
+
 (load (expand-file-name "elpaca-bootstrap.el" user-emacs-directory))
 
 (elpaca elpaca-use-package
@@ -529,7 +531,10 @@ MODE - list to add to `auto-mode-alist'"
   :delight editorconfig-mode
   :config (editorconfig-mode 1))
 
-(use-package rainbow-mode :defer t :delight)
+;; (use-package rainbow-mode :defer t :delight)
+(use-package colorful-mode
+  :ensure (colorful-mode :repo "https://github.com/DevelopmentCool2449/colorful-mode")
+  :defer t)
 
 (use-package rainbow-delimiters
   :hook (dotemacs-prog-mode . rainbow-delimiters-mode))
@@ -739,8 +744,8 @@ MODE - list to add to `auto-mode-alist'"
  :github "tree-sitter/tree-sitter-css"
  :remap '(css-mode . css-ts-mode))
 
-(add-hook 'css-mode-hook 'rainbow-mode)
-(add-hook 'css-ts-mode-hook 'rainbow-mode)
+(add-hook 'css-mode-hook 'colorful-mode) ; rainbow-mode
+(add-hook 'css-ts-mode-hook 'colorful-mode) ; rainbow-mode
 
 (dotemacs-use-treesit
  :lang 'javascript
