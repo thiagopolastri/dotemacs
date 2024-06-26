@@ -45,20 +45,13 @@
       :fixed-pitch-serif-height 120
       :variable-pitch-family "Sans Serif"
       :variable-pitch-height 120)
-     (monolisa
-      :default-family "MonoLisa"
+     (ibm
+      :default-family "IBM Plex Mono"
       :default-height 140
       :fixed-pitch-height 140
       :fixed-pitch-serif-height 140
-      :variable-pitch-family "Concourse T3"
-      :variable-pitch-height 170)
-     (ibm
-      :default-family "IBM Plex Mono"
-      :default-height 150
-      :fixed-pitch-height 150
-      :fixed-pitch-serif-height 150
       :variable-pitch-family "IBM Plex Sans"
-      :variable-pitch-height 150)
+      :variable-pitch-height 140)
      (roboto
       :default-family "Roboto Mono"
       :default-height 140
@@ -88,8 +81,8 @@
   :preface
   (defun dotemacs-change-org-faces (&rest _)
     "Set custom org faces for a given preset."
-    (let* ((family '(:family "Concourse C3"))
-           (heading (if (eq fontaine-current-preset 'monolisa) `(:height 180 ,@family) '(:height 180))))
+    (let* ((family '(:family "Fjalla One"))
+           (heading (if (eq fontaine-current-preset 'jetbrains) `(:height 180 ,@family) '(:height 160))))
       (custom-theme-set-faces
        'user
        `(org-level-1 ((t (:inherit outline-1 ,@heading))))
