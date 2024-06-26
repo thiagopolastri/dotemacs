@@ -10,20 +10,12 @@
 
 (elpaca no-littering)
 (elpaca delight)
-
-;; Emacs 28
-;; (unless (fboundp 'eglot)
-;;   (elpaca project)
-;;   (elpaca eglot))
-;; (unless (fboundp 'treesit-available-p)
-;;   (defun treesit-available-p () nil))
-
 (elpaca geiser)
 (elpaca vterm)
 
 (elpaca-wait)
 
-(customize-set-variable 'use-package-expand-minimally t)
+(setopt use-package-expand-minimally t)
 
 (require 'recentf)
 (require 'no-littering)
@@ -41,7 +33,6 @@
                  (const :tag "None" nil)))
 
 (use-package fontaine
-  ;; :ensure (fontaine :repo "https://git.sr.ht/~protesilaos/fontaine")
   :if (display-graphic-p)
   :custom
   (fontaine-latest-state-file
@@ -54,20 +45,13 @@
       :fixed-pitch-serif-height 120
       :variable-pitch-family "Sans Serif"
       :variable-pitch-height 120)
-     (monolisa
-      :default-family "MonoLisa"
+     (ibm
+      :default-family "IBM Plex Mono"
       :default-height 140
       :fixed-pitch-height 140
       :fixed-pitch-serif-height 140
-      :variable-pitch-family "Concourse T3"
-      :variable-pitch-height 170)
-     (ibm
-      :default-family "IBM Plex Mono"
-      :default-height 150
-      :fixed-pitch-height 150
-      :fixed-pitch-serif-height 150
       :variable-pitch-family "IBM Plex Sans"
-      :variable-pitch-height 150)
+      :variable-pitch-height 140)
      (roboto
       :default-family "Roboto Mono"
       :default-height 140
@@ -97,8 +81,8 @@
   :preface
   (defun dotemacs-change-org-faces (&rest _)
     "Set custom org faces for a given preset."
-    (let* ((family '(:family "Concourse C3"))
-           (heading (if (eq fontaine-current-preset 'monolisa) `(:height 180 ,@family) '(:height 180))))
+    (let* ((family '(:family "Fjalla One"))
+           (heading (if (eq fontaine-current-preset 'jetbrains) `(:height 180 ,@family) '(:height 160))))
       (custom-theme-set-faces
        'user
        `(org-level-1 ((t (:inherit outline-1 ,@heading))))
@@ -198,7 +182,7 @@
   (revert-without-query t)
   (make-backup-files nil)
   (auto-save-default nil)
-  ;; (remote-file-name-inhibit-delete-by-moving-to-trash t)  ; Emacs 30
+  (remote-file-name-inhibit-delete-by-moving-to-trash t)
   :init
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p))
@@ -211,10 +195,14 @@
 
 (use-package time
   :ensure nil
+  :init (display-time-mode 1)
   :custom
   (display-time-default-load-average nil)
   (display-time-format "%H:%M") ; %d/%m/%Y %H:%M
-  :bind ("<f6>" . display-time-mode))
+  :custom-face
+  (display-time-date-and-time ((t (:inherit 'font-lock-constant-face
+                                   :family "Led"
+                                   :height 1.2)))))
 
 (use-package uniquify
   :ensure nil
@@ -428,7 +416,7 @@ MODE - list to add to `auto-mode-alist'"
   :delight visual-line-mode
   :custom
   (indent-tabs-mode nil)
-  ;; (remote-file-name-inhibit-auto-save t) ; Emacs 30
+  (remote-file-name-inhibit-auto-save t)
   :hook (dotemacs-text-mode . visual-line-mode)
   :init
   (line-number-mode 1)
@@ -477,6 +465,7 @@ MODE - list to add to `auto-mode-alist'"
   :hook (dotemacs-prog-mode . hs-minor-mode))
 
 (use-package which-key
+  :ensure nil
   :delight which-key-mode
   :custom
   (which-key-sort-order 'which-key-key-order-alpha)
@@ -531,10 +520,7 @@ MODE - list to add to `auto-mode-alist'"
   :delight editorconfig-mode
   :config (editorconfig-mode 1))
 
-;; (use-package rainbow-mode :defer t :delight)
-(use-package colorful-mode
-  :ensure (colorful-mode :repo "https://github.com/DevelopmentCool2449/colorful-mode")
-  :defer t)
+(use-package rainbow-mode :defer t :delight)
 
 (use-package rainbow-delimiters
   :hook (dotemacs-prog-mode . rainbow-delimiters-mode))
@@ -648,14 +634,7 @@ MODE - list to add to `auto-mode-alist'"
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  ;; Sanitize the `pcomplete-completions-at-point' Capf.
-  ;; The Capf has undesired side effects on Emacs 28 and earlier.
-
-  ;; Wrap a chatty Capf and silence it.
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-  ;; Purify a broken Capf and ensure that it does not modify the buffer.
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
 
 (use-package consult-project-extra
   :bind (("C-z p f" . consult-project-extra-find)
@@ -744,8 +723,8 @@ MODE - list to add to `auto-mode-alist'"
  :github "tree-sitter/tree-sitter-css"
  :remap '(css-mode . css-ts-mode))
 
-(add-hook 'css-mode-hook 'colorful-mode) ; rainbow-mode
-(add-hook 'css-ts-mode-hook 'colorful-mode) ; rainbow-mode
+(add-hook 'css-mode-hook 'rainbow-mode)
+(add-hook 'css-ts-mode-hook 'rainbow-mode)
 
 (dotemacs-use-treesit
  :lang 'javascript
@@ -775,8 +754,9 @@ MODE - list to add to `auto-mode-alist'"
 (add-hook 'nxml-mode-hook 'dotemacs-prog-mode)
 
 (add-hook 'emacs-lisp-mode-hook 'flymake-mode)
-(customize-set-variable 'inferior-lisp-program "sbcl")
-(customize-set-variable 'scheme-program-name "guile")
+
+(setopt inferior-lisp-program "sbcl"
+        scheme-program-name "guile")
 
 (use-package sly
   :defer t
@@ -1054,13 +1034,11 @@ MODE - list to add to `auto-mode-alist'"
 (use-package org-modern
   :hook (org-mode . org-modern-mode)
   :custom
-  (org-modern-block-fringe nil)
-  (org-modern-table nil) ; valign do this better with variable-pitch
-  ;; (org-modern-star ["❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽"])
-  )
+  ;; (org-modern-table nil) ; valign do this better with variable-pitch
+  (org-modern-block-fringe nil))
 
 (use-package valign
-  :hook (org-mode . valign-mode)
+  ;; :hook (org-mode . valign-mode)
   :custom (valign-fancy-bar t)
   :delight valign-mode)
 

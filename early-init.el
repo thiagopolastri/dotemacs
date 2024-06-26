@@ -21,20 +21,21 @@
       load-prefer-newer t)
 
 (when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
-  (customize-set-variable 'native-comp-async-report-warnings-errors 'silent)
-  (customize-set-variable 'native-comp-jit-compilation t)
+  (setopt native-comp-async-report-warnings-errors 'silent
+          native-comp-jit-compilation t)
   (let ((cache (expand-file-name "var/eln-cache/" user-emacs-directory)))
     (add-to-list 'native-comp-eln-load-path cache)
     (startup-redirect-eln-cache cache)))
 
-(customize-set-variable 'custom-file
-                        (expand-file-name "custom.el" user-emacs-directory))
+(setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file)
   (with-temp-buffer (write-file custom-file)))
 (load custom-file)
 
-(customize-set-variable 'inhibit-startup-message t)
-(customize-set-variable 'initial-scratch-message "")
+(setopt inhibit-startup-message t
+        initial-scratch-message ""
+        auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)

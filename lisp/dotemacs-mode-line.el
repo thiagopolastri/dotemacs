@@ -68,43 +68,11 @@
   "Mode-line warning icon face."
   :group 'dotemacs-mode-line)
 
-;; -----------------------------------------------------------------------------
-;; this will be unecessary after `mode-line-window-selected-p' and
-;; `mode-line-format-right-align' introduction (Emacs 30.1).
-;; i'll keep this to make it compatible with the current stable version
-;; just change all ocurrences of `dotemacs-mode-line-active-p' to
-;; `mode-line-window-selected-p' and remove all the extra advice and branchs in
-;; the `dotemacs-mode-line-mode' function.
-(defvar dotemacs-mode-line-selected-window (selected-window)
-  "Selected window state.")
-
-(defun dotemacs-mode-line-select-window (_window)
-  "Save selected window state."
-  (when (not (minibuffer-window-active-p (frame-selected-window)))
-    (setq dotemacs-mode-line-selected-window (selected-window))))
-
-(defun dotemacs-mode-line-active-p ()
-  "Check if select window is active."
-  (if (fboundp 'mode-line-window-selected-p)
-      (mode-line-window-selected-p)
-    (eq dotemacs-mode-line-selected-window (get-buffer-window))))
-
-(defun dotemacs-mode-line-format (left right)
-  "Format the mode-line in two parts and align it on LEFT and RIGHT."
-  (concat
-   left
-   (propertize
-    " "
-    'display `((space :align-to (- (+ right right-fringe right-margin)
-                                   ,(length right)))))
-   right))
-;; -----------------------------------------------------------------------------
-
 (defun dotemacs-mode-line-active-buffer ()
   "Show active/modified buffer icon on mode-line."
   (let ((modifiedp (and (not buffer-read-only) (buffer-modified-p)))
         (start-padding (propertize " " 'display `(raise ,dotemacs-mode-line-padding))))
-    (if (dotemacs-mode-line-active-p)
+    (if (mode-line-window-selected-p)
         (propertize
          (concat
           start-padding
@@ -148,7 +116,7 @@ Highlight if file is open with Tramp.
 Show encoding/eol and path information on help-echo."
   (propertize
    "%b"
-   'face (if (dotemacs-mode-line-active-p)
+   'face (if (mode-line-window-selected-p)
              (if (file-remote-p default-directory)
                  'dotemacs-mode-line-accented
                'mode-line-buffer-id)
@@ -189,7 +157,7 @@ Show encoding/eol and path information on help-echo."
   "Displays column and line position on mode-line."
   (propertize
    " %l:%c "
-   'face (if (dotemacs-mode-line-active-p)
+   'face (if (mode-line-window-selected-p)
              'dotemacs-mode-line-muted
            'mode-line-inactive)))
 
@@ -200,13 +168,13 @@ Displays `nyan-mode' if enabled."
       (list (nyan-create))
     (propertize
      "%p%%  "
-     'face (if (dotemacs-mode-line-active-p)
+     'face (if (mode-line-window-selected-p)
                'dotemacs-mode-line-muted
              'mode-line-inactive))))
 
 (defun dotemacs-mode-line-misc-info ()
   "Displays the current value of `mode-line-misc-info' in the mode-line."
-  (when (dotemacs-mode-line-active-p)
+  (when (mode-line-window-selected-p)
     (let ((misc (string-trim (format-mode-line mode-line-misc-info))))
       (unless (string= misc "")
         (concat " " misc)))))
@@ -243,52 +211,26 @@ Displays `nyan-mode' if enabled."
   :global t
   (if dotemacs-mode-line-mode
       (progn
-        (unless (fboundp 'mode-line-window-selected-p)
-          (add-function :before pre-redisplay-function
-                        #'dotemacs-mode-line-select-window))
-
-        (if (boundp 'mode-line-format-right-align)
-            (setq-default
-             mode-line-format
-             '((:eval
-                (format-mode-line
-                 '((:eval (dotemacs-mode-line-active-buffer))
-                   (:eval (dotemacs-mode-line-buffer-status))
-                   (:eval (dotemacs-mode-line-vc-mode))
-                   (:eval (dotemacs-mode-line-buffer-identification))
-                   (:eval (dotemacs-mode-line-position))
-                   (:eval (dotemacs-mode-line-nyan))
-                   " %e")))
-               mode-line-format-right-align
-               (:eval
-                (format-mode-line
-                 '((:eval (dotemacs-mode-line-process))
-                   (:eval (dotemacs-mode-line-major-mode))
-                   (:eval (dotemacs-mode-line-minor-modes))
-                   (:eval (dotemacs-mode-line-misc-info))
-                   (:eval (dotemacs-mode-line-bottom-padding)))))))
-          (setq-default
-           mode-line-format
-           '(:eval
-             (dotemacs-mode-line-format
-              (format-mode-line
-               '((:eval (dotemacs-mode-line-active-buffer))
-                 (:eval (dotemacs-mode-line-buffer-status))
-                 (:eval (dotemacs-mode-line-vc-mode))
-                 (:eval (dotemacs-mode-line-buffer-identification))
-                 (:eval (dotemacs-mode-line-position))
-                 (:eval (dotemacs-mode-line-nyan))
-                 " %e"))
-              (format-mode-line
-               '((:eval (dotemacs-mode-line-process))
-                 (:eval (dotemacs-mode-line-major-mode))
-                 (:eval (dotemacs-mode-line-minor-modes))
-                 (:eval (dotemacs-mode-line-misc-info))
-                 (:eval (dotemacs-mode-line-bottom-padding)))))))))
+        (setq-default
+         mode-line-format
+         '((:eval
+            (format-mode-line
+             '((:eval (dotemacs-mode-line-active-buffer))
+               (:eval (dotemacs-mode-line-buffer-status))
+               (:eval (dotemacs-mode-line-vc-mode))
+               (:eval (dotemacs-mode-line-buffer-identification))
+               (:eval (dotemacs-mode-line-position))
+               (:eval (dotemacs-mode-line-nyan))
+               " %e")))
+           mode-line-format-right-align
+           (:eval
+            (format-mode-line
+             '((:eval (dotemacs-mode-line-process))
+               (:eval (dotemacs-mode-line-major-mode))
+               (:eval (dotemacs-mode-line-minor-modes))
+               (:eval (dotemacs-mode-line-misc-info))
+               (:eval (dotemacs-mode-line-bottom-padding))))))))
     (progn
-      (unless (fboundp 'mode-line-window-selected-p)
-        (remove-function pre-redisplay-function
-                         #'dotemacs-mode-line-select-window))
       (setq-default mode-line-format dotemacs-mode-line-backup))))
 
 (provide 'dotemacs-mode-line)
